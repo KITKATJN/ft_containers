@@ -14,7 +14,7 @@ public:
 	typedef typename iterator_traits<RanIt>::pointer Pt;
 	typedef typename iterator_traits<RanIt>::reference Rt;
 	typedef RanIt iterator_type;
-	reverse_iterator(){}
+	reverse_iterator() {}
 	explicit reverse_iterator(RanIt X) : current(X){}
 	template<class U>
 	reverse_iterator(const reverse_iterator<U>& X)
