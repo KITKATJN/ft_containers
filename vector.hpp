@@ -22,10 +22,14 @@ namespace ft
 		{ return m_size; }
 
 		reference at( size_type pos )
-		{}
+		{if (pos >= size())
+			throw std::out_of_range;
+		return (*this)[pos]}
 
 		const_reference at( size_type pos ) const
-		{}
+		{{if (pos >= size())
+			throw std::out_of_range;
+		return (*this)[pos]}}
 
 		reference operator[]( size_type pos )
 		{ return (*(begin() + pos)); }
@@ -45,16 +49,33 @@ namespace ft
 		const_reference back() const
 		{ return (*(end() - 1)); }
 
-		T* data();
+		T* data()
+		{if (size() == 0)
+			return nullptr;
+		else
+			return begin();}
 
-		const T* data() const;
+		const T* data() const
+		{if (size() == 0)
+			return nullptr;
+		else
+			return begin();}
 
+		bool empty() const
+		{ return begin() == end(); }
+		//{ return (size() == 0); } так нельзя?
+
+		size_type size() const
+		{ return (begin() - end()); }
+		//return m_size;
+
+		
 	private:
 		T m_arr;
 		size_type m_size;
 		size_type m_capacity;
 		allocator_type m_allocator;
-	}
-}
-#endif /* BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834 *
+	};
+};
+#endif /* BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834 */
 
