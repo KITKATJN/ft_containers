@@ -1,18 +1,20 @@
 #ifndef AD0D52DA_0548_4615_A1E0_3A1DF85E73A1
 #define AD0D52DA_0548_4615_A1E0_3A1DF85E73A1
 
+#include "iterator_traits.hpp"
+namespace ft{
 template <class RanIt>
 class reverse_iterator : public iterator <
-	typename iterator_traits<RanIt>::iterator_category,
-	typename iterator_traits<RanIt>::value_type,
-	typename iterator_traits<RanIt>::difference_type,
-	typename iterator_traits<RanIt>::pointer,
-	typename iterator_traits<RanIt>::reference>{
+	typename ft::iterator_traits<RanIt>::iterator_category,
+	typename ft::iterator_traits<RanIt>::value_type,
+	typename ft::iterator_traits<RanIt>::difference_type,
+	typename ft::iterator_traits<RanIt>::pointer,
+	typename ft::iterator_traits<RanIt>::reference>{
 public:
 	typedef reverse_iterator<RanIt> Myt;
-	typedef typename iterator_traits<RanIt>::difference_type D;
-	typedef typename iterator_traits<RanIt>::pointer Pt;
-	typedef typename iterator_traits<RanIt>::reference Rt;
+	typedef typename ft::iterator_traits<RanIt>::difference_type D;
+	typedef typename ft::iterator_traits<RanIt>::pointer Pt;
+	typedef typename ft::iterator_traits<RanIt>::reference Rt;
 	typedef RanIt iterator_type;
 
 	reverse_iterator() {}
@@ -77,6 +79,7 @@ public:
 
 protected:
 	RanIt current;
+};
 };
 
 #endif /* AD0D52DA_0548_4615_A1E0_3A1DF85E73A1 */

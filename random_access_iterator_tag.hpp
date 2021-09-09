@@ -1,8 +1,10 @@
 #ifndef D8E59AD7_9804_44EC_AAF4_BC3939597654
 #define D8E59AD7_9804_44EC_AAF4_BC3939597654
 
+#include "iterator_traits.hpp"
+namespace ft {
 template<class T, class D, class Pt, class Rt, class Pt2, class Rt2>
-	class Ptrit : public iterator<random_access_iterator_tag,
+	class Ptrit : public ft::iterator<random_access_iterator_tag,
 		T, D, Pt, Rt> {
 public:
 	typedef Ptrit<T, D, Pt, Rt, Pt2, Rt2> Myt;
@@ -84,5 +86,6 @@ public:
 
 protected:
 	Pt current;
+};
 };
 #endif /* D8E59AD7_9804_44EC_AAF4_BC3939597654 */
