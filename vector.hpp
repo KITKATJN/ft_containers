@@ -2,6 +2,7 @@
 #define BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834
 
 #include <memory>
+#include <limits>
 
 namespace ft
 {
@@ -9,6 +10,7 @@ namespace ft
 	{
 		typedef Alloc vector_allocator;
 		typedef T value_type;
+		typedef size_t size_type;
 		iterator begin();
 		const_iterator begin() const;
 		iterator end();
@@ -69,12 +71,24 @@ namespace ft
 		{ return (begin() - end()); }
 		//return m_size;
 
-		
+		size_type capacity() const
+		{ return m_capacity; }
+
+		size_type max_size() const
+		{ return (std::min)(std::numeric_limits<size_type>::max() / sizeof(), //sizeof what?
+		std::numeric_limits<std::ptrdiff_t>::max()) }
+
+		void reserve( size_type new_cap )
+		{ }
+
+		void clear()
+		{ }
+
 	private:
 		T m_arr;
 		size_type m_size;
 		size_type m_capacity;
-		allocator_type m_allocator;
+		allocator_type m_allocator; //typedef for allocator_type
 	};
 };
 #endif /* BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834 */

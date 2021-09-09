@@ -11,5 +11,7 @@ int main()
 	array.at();
 	array.empty();
 	array.size();
+	array.max_size();
+	~array();
     return 0;
 }
