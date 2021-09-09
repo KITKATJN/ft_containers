@@ -3,16 +3,33 @@
 
 #include <memory>
 #include <limits>
+#include "random_access_iterator_tag.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
 	template < class T, class Alloc = std::allocator<T> > class vector
 	{
-		typedef Alloc vector_allocator;
+		typedef Alloc allocator_type;
 		typedef T value_type;
 		typedef size_t size_type;
-		iterator begin();
-		const_iterator begin() const;
+		typedef allocator_type::reference reference;
+		typedef allocator_type::const_reference const_reference;
+		typedef allocator_type::pointer pointer;
+		typedef allocator_type::const_pointer const_pointer;
+		typedef allocator_type::difference_type difference_type;
+		typedef Ptrit<T, difference_type, pointer, reference> iterator;
+		typedef reverse_iterator<iterator> reverse_iterator;
+		typedef reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef iterator_traits<iterator>::difference_type difference_type;
+
+
+		iterator begin()
+		{ return iterator(m_arr); }
+
+		const_iterator begin() const
+		{ return iterator(m_arr); }
+
 		iterator end();
 		const_iterator end() const;
 		reverse_iterator rbegin();
@@ -64,19 +81,20 @@ namespace ft
 			return begin();}
 
 		bool empty() const
-		{ return begin() == end(); }
-		//{ return (size() == 0); } так нельзя?
+		//{ return begin() == end(); }
+		{ return (m_size == 0); }// так нельзя?
 
 		size_type size() const
-		{ return (begin() - end()); }
-		//return m_size;
+		//{ return (begin() - end()); }
+		return m_size;
 
 		size_type capacity() const
 		{ return m_capacity; }
 
 		size_type max_size() const
-		{ return (std::min)(std::numeric_limits<size_type>::max() / sizeof(), //sizeof what?
-		std::numeric_limits<std::ptrdiff_t>::max()) }
+		{ return m_allocator.max_size(); }
+		//{ return (std::min)(std::numeric_limits<size_type>::max() / sizeof(), //sizeof what?
+		//std::numeric_limits<std::ptrdiff_t>::max()) }
 
 		void reserve( size_type new_cap )
 		{ }
@@ -84,11 +102,33 @@ namespace ft
 		void clear()
 		{ }
 
+		explicit vector (const allocator_type& alloc = allocator_type()):
+			m_size(0), m_capacity(0), m_arr(0), m_allocator(alloc) {
+				m_arr = m_allocator.allocate(1);
+				m_allocator.construct(m_arr, 1);
+			}
+
+		explicit vector (size_type n, const value_type& val = value_type(),
+			const allocator_type& alloc = allocator_type()):
+			m_size(n), m_capacity()
+			{
+				m_arr = m_allocator.allocate(n);
+				for (size_type i = 0; i < n; i++)
+				{
+					m_allocator.construct(m_arr + i, val);
+				}
+
+			}
+
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last,
+			const allocator_type& alloc = allocator_type());
+
 	private:
-		T m_arr;
+		pointer m_arr;
 		size_type m_size;
 		size_type m_capacity;
-		allocator_type m_allocator; //typedef for allocator_type
+		std::allocator<T> m_allocator; //typedef for allocator_type
 	};
 };
 #endif /* BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834 */

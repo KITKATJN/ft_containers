@@ -10,6 +10,7 @@ int main()
 	array.data();
 	array.at();
 	array.empty();
+	array.pop_back
 	array.size();
 	array.max_size();
 	~array();
