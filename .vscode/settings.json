@@ -67,6 +67,17 @@
         "ios": "cpp",
         "locale": "cpp",
         "mutex": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "strstream": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "iomanip": "cpp",
+        "thread": "cpp",
+        "cfenv": "cpp",
+        "typeindex": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp"
     }
 }

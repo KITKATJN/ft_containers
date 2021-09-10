@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <limits>
+#include <algorithm>
 #include "iterator.hpp"
 
 namespace ft
@@ -110,7 +111,33 @@ public:
 	}
 
 	void clear()
-	{ }
+	{ erase(begin(), end()); }
+
+	void pop_back()
+	{ erase(end() - 1); }
+
+	iterator erase (iterator position)
+	{
+		std::copy(position + 1, end(), position);
+		std::_Destroy(end() - 2, end() - 1); // правильный ли дестрой? std::_Destroy(end() - 1, end())
+		m_size--;
+		return position;
+	}
+
+	iterator erase (iterator first, iterator last)
+	{
+		if (first != last)
+		{
+			//std::copy(last + 1, end(), last);
+			std::_Destroy(std::copy(last + 1, end(), last), end());
+			m_size -= (last - first);
+		}
+		return first;
+	}
+
+
+	// iterator insert( iterator pos, const T& value )
+	// {}
 
 	explicit vector (const allocator_type& alloc = allocator_type()):
 		m_arr(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
@@ -133,6 +160,9 @@ public:
 	// template <class InputIterator>
 	// vector (InputIterator first, InputIterator last,
 	// 	const allocator_type& alloc = allocator_type());
+
+	~vector()
+	{ clear(begin(), end()); }
 
 private:
 	pointer m_arr;
