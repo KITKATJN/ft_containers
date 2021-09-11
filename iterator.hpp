@@ -211,6 +211,14 @@ public:
 	bool operator>=(const Myt& x) const
 	{return (!(current < x.current));}
 
+	Ptrit &operator=(const Ptrit& op)
+    {
+        if (this == &op)
+        return (*this);
+        this->current = op.current;
+        return (*this);
+    }
+
 protected:
 	Pt current;
 };

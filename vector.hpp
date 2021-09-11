@@ -4,6 +4,7 @@
 #include <memory>
 #include <limits>
 #include <algorithm>
+#include <iostream>
 #include "iterator.hpp"
 
 namespace ft
@@ -25,16 +26,16 @@ public:
 	typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 	iterator begin()
-	{ return iterator(m_arr); }
+	{ return iterator(m_vector); }
 
 	const_iterator begin() const
-	{ return iterator(m_arr); }
+	{ return iterator(m_vector); }
 
 	iterator end()
-	{ return iterator(m_arr + m_size); }
+	{ return iterator(m_vector + m_size); }
 
 	const_iterator end() const
-	{ return iterator(m_arr + m_size); }
+	{ return iterator(m_vector + m_size); }
 
 	reverse_iterator rbegin()
 	{ return reverse_iterator(end() - 1); }
@@ -104,9 +105,9 @@ public:
 		pointer new_arr = allocator_type::allocate(new_cap);
 		std::uninitialized_copy(begin(), end(), new_arr);
 		for (size_type i = 0; i < m_size; i++)
-		{ m_allocator.destroy(m_arr + i); }
+		{ m_allocator.destroy(m_vector + i); }
 		m_allocator.deallocate();
-		m_arr = new_arr;
+		m_vector = new_arr;
 		m_capacity = new_cap;
 	}
 
@@ -118,21 +119,83 @@ public:
 
 	iterator erase (iterator position)
 	{
-		std::copy(position + 1, end(), position);
-		std::_Destroy(end() - 2, end() - 1); // правильный ли дестрой? std::_Destroy(end() - 1, end())
+		difference_type pos = position - begin();
+		//std::cout << *(m_vector + pos) << "<--------------------\n";
+		m_allocator.destroy(m_vector + pos);
+		for (size_type i = static_cast<size_type>(pos); i < m_size - 1; i++){
+			m_allocator.construct(m_vector + i, m_vector[i + 1]);
+		}
+		//std::copy(position + 1, end(), position - 1);
 		m_size--;
 		return position;
+		return erase(position, position + 1);
 	}
 
 	iterator erase (iterator first, iterator last)
 	{
-		if (first != last)
+		// if (first != last){
+		// 	size_type destr = last - begin();
+		// 	for (size_type i = static_cast<size_type>(first - begin()); i < destr; i++){
+		// 		m_allocator.destroy(m_vector + i);
+		// 		//std::cout << "d " << m_vector[i] << i;
+		// 	}
+		// 	std::cout << std::endl;
+		// 	for (size_type i = static_cast<size_type>(first - begin()); i < m_size - (last - first); i++){
+		// 		m_allocator.construct(m_vector + i, m_vector[i + (last - first)]);
+		// 	}
+
+		// 	// iterator ret;
+		// 	// for (; first != last; first++)
+		// 	// {
+		// 	// 	ret = erase(first);
+		// 	// }
+		// 	// return ret;
+		// 	// for (size_type i = 0; i < static_cast<size_type>(last - first); i++){
+		// 	// 	ret = erase(first++);
+		// 		//first = begin() + fir;
+		// 		//std::cout << "d " << m_vector[i] << i;
+		// 	//}
+		// 	//return ret;
+		// }
+		// else{
+		// 	erase(first);
+		// }
+		// return first;
+
+		iterator ret = first;
+		for (; &(*first) != &(*first); first++)
 		{
-			//std::copy(last + 1, end(), last);
-			std::_Destroy(std::copy(last + 1, end(), last), end());
-			m_size -= (last - first);
+			m_allocator.destroy(&(*first));
 		}
-		return first;
+		for (int i = 0; i < (last - ret); i++)
+		{
+			//m_allocator.construct()
+			m_allocator.construct(first + i, last + i);
+			m_allocator.destroy(&(*last) + i);
+		}
+		m_size -= (last - ret);
+		return (iterator(ret));
+
+		// iterator ret;
+		// for (; first != last; first++)
+		// {
+		// 	ret = erase(first);
+		// }
+		// return ret;
+
+		// iterator fir = first;
+
+		// if (first != last)
+		// {
+		// 	while (first != last)
+		// 	{
+		// 		m_allocator.destroy(m_vector + (first - begin()));
+		// 		++first;
+		// 	}
+		// 	std::copy(last, end(), fir - 1);
+		// 	m_size -= (last - fir);
+		// }
+		// return fir;
 	}
 
 
@@ -140,9 +203,9 @@ public:
 	// {}
 
 	explicit vector (const allocator_type& alloc = allocator_type()):
-		m_arr(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
-		// m_arr = m_allocator.allocate(1);
-		// m_allocator.construct(m_arr, 1);
+		m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
+		// m_vector = m_allocator.allocate(1);
+		// m_allocator.construct(m_vector, 1);
 	}
 
 	explicit vector (size_type n, const value_type& val = value_type(),
@@ -150,10 +213,10 @@ public:
 	m_size(n), m_capacity(n)
 	{
         (void)alloc;
-		m_arr = m_allocator.allocate(n);
+		m_vector = m_allocator.allocate(n);
 		for (size_type i = 0; i < n; i++)
 		{
-			m_allocator.construct(m_arr + i, val);
+			m_allocator.construct(m_vector + i, val);
 		}
 	}
 
@@ -161,11 +224,11 @@ public:
 	// vector (InputIterator first, InputIterator last,
 	// 	const allocator_type& alloc = allocator_type());
 
-	~vector()
-	{ clear(begin(), end()); }
+	// ~vector()
+	// { clear(); }
 
 private:
-	pointer m_arr;
+	pointer m_vector;
 	size_type m_size;
 	size_type m_capacity;
 	std::allocator<T> m_allocator; //typedef for allocator_type
