@@ -120,7 +120,7 @@ public:
 	iterator erase (iterator position)
 	{
 		difference_type pos = position - begin();
-		//std::cout << *(m_vector + pos) << "<--------------------\n";
+		std::cout << *(m_vector + pos) << "<--------------------\n";
 		m_allocator.destroy(m_vector + pos);
 		for (size_type i = static_cast<size_type>(pos); i < m_size - 1; i++){
 			m_allocator.construct(m_vector + i, m_vector[i + 1]);
@@ -133,16 +133,18 @@ public:
 
 	iterator erase (iterator first, iterator last)
 	{
-		// if (first != last){
-		// 	size_type destr = last - begin();
-		// 	for (size_type i = static_cast<size_type>(first - begin()); i < destr; i++){
-		// 		m_allocator.destroy(m_vector + i);
-		// 		//std::cout << "d " << m_vector[i] << i;
-		// 	}
-		// 	std::cout << std::endl;
-		// 	for (size_type i = static_cast<size_type>(first - begin()); i < m_size - (last - first); i++){
-		// 		m_allocator.construct(m_vector + i, m_vector[i + (last - first)]);
-		// 	}
+		if (first != last){
+			size_type destr = last - begin();
+			for (size_type i = static_cast<size_type>(first - begin()); i < destr; i++){
+				m_allocator.destroy(m_vector + i);
+				std::cout << " d-> " << m_vector[i];
+			}
+			std::cout << std::endl;
+			for (size_type i = static_cast<size_type>(first - begin()); i < m_size - (last - first); i++){
+				m_allocator.construct(m_vector + i, m_vector[i + (last - first)]);
+				std::cout << " c-> " << m_vector[i + (last - first)];
+			}
+			std::cout << std::endl;
 
 		// 	// iterator ret;
 		// 	// for (; first != last; first++)
@@ -156,29 +158,33 @@ public:
 		// 		//std::cout << "d " << m_vector[i] << i;
 		// 	//}
 		// 	//return ret;
-		// }
-		// else{
-		// 	erase(first);
-		// }
-		// return first;
-
-		iterator ret = first;
-		for (; &(*first) != &(*first); first++)
-		{
-			m_allocator.destroy(&(*first));
 		}
-		for (int i = 0; i < (last - ret); i++)
-		{
-			//m_allocator.construct()
-			m_allocator.construct(first + i, last + i);
-			m_allocator.destroy(&(*last) + i);
+		else{
+			erase(first);
 		}
-		m_size -= (last - ret);
-		return (iterator(ret));
+		m_size -= (last - first);
+		return first;
 
+		// iterator ret = first;
+		// for (; &(*first) != &(*first); first++)
+		// {
+		// 	m_allocator.destroy(&(*first));
+		// }
+		// for (int i = 0; i < (last - ret); i++)
+		// {
+		// 	//m_allocator.construct()
+		// 	m_allocator.construct(first + i, last + i);
+		// 	m_allocator.destroy(&(*last) + i);
+		// }
+		// m_size -= (last - ret);
+		// return (iterator(ret));
+
+		// std::cout << *first << " <-f2 \n";
+		// first++;
 		// iterator ret;
 		// for (; first != last; first++)
 		// {
+		// 	std::cout << *first << " <-f "; // это не работает, хотя должно!
 		// 	ret = erase(first);
 		// }
 		// return ret;

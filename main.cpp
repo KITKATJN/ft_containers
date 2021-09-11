@@ -32,5 +32,6 @@ int main()
 		std::cout << v[i] << " ";
 	}
 	std::cout << std::endl;
+	v.clear();
 	return 0;
 }
