@@ -20,6 +20,8 @@ int main()
 	std::cout << std::endl;
 	v.erase(v.begin() + 2);
 	v.pop_back();
+	// v.reserve(20);
+	// std::cout << "!!!!!!!!!!!!!" << v.capacity() << std::endl;
 	for (size_t i = 0; i < v.size(); i++)
 	{
 		std::cout << v[i] << " ";
@@ -33,5 +35,6 @@ int main()
 	}
 	std::cout << std::endl;
 	v.clear();
+	std::cout << v.empty() << std::endl;
 	return 0;
 }

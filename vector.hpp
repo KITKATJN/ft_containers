@@ -102,11 +102,11 @@ public:
 	{
 		if (new_cap <= m_capacity)
 			return ;
-		pointer new_arr = allocator_type::allocate(new_cap);
+		pointer new_arr = m_allocator.allocate(new_cap);
 		std::uninitialized_copy(begin(), end(), new_arr);
 		for (size_type i = 0; i < m_size; i++)
 		{ m_allocator.destroy(m_vector + i); }
-		m_allocator.deallocate();
+		m_allocator.deallocate(m_vector, m_capacity);
 		m_vector = new_arr;
 		m_capacity = new_cap;
 	}
@@ -133,6 +133,8 @@ public:
 
 	iterator erase (iterator first, iterator last)
 	{
+		if (m_size == 0)
+			return first;
 		if (first != last){
 			size_type destr = last - begin();
 			for (size_type i = static_cast<size_type>(first - begin()); i < destr; i++){
@@ -230,8 +232,11 @@ public:
 	// vector (InputIterator first, InputIterator last,
 	// 	const allocator_type& alloc = allocator_type());
 
-	// ~vector()
-	// { clear(); }
+	~vector()
+	{
+		clear();
+		m_allocator.deallocate(m_vector, m_capacity);
+	}
 
 private:
 	pointer m_vector;
