@@ -5,7 +5,7 @@
 
 void print_vector(ft::vector<int> &v)
 {
-    for (size_t i = 0; i < v.size(); i++)
+    for (size_t i = 0; i < v.size()+1; i++)
 	{
 		std::cout << v[i] << " ";
 	}
@@ -24,28 +24,31 @@ int main()
 	{
 		v[i] = i;
 	}
-	for (size_t i = 0; i < v.size(); i++)
-	{
-		std::cout << v[i] << " ";
-	}
+	print_vector(v);
 	std::cout << std::endl;
 	v.erase(v.begin() + 2);
-	v.pop_back();
     print_vector(v);
-    v.push_back(67);
+    std::cout << v[9]  << " " << v[8] << std::endl;
+    v.resize(20);
     print_vector(v);
-    v.push_back(67);
+    v.resize(5);
     print_vector(v);
-    std::cout << "cap = "<< v.capacity() << std::endl;
-    v.push_back(68);
-    print_vector(v);
-    std::cout << "cap = "<< v.capacity() << std::endl;
-    v.push_back(69);
-    print_vector(v);
-    v.push_back(70);
-    print_vector(v);
-    v.push_back(75);
-    print_vector(v);
+	// v.pop_back();
+    // print_vector(v);
+    // v.push_back(67);
+    // print_vector(v);
+    // v.push_back(67);
+    // print_vector(v);
+    // std::cout << "cap = "<< v.capacity() << std::endl;
+    // v.push_back(68);
+    // print_vector(v);
+    // std::cout << "cap = "<< v.capacity() << std::endl;
+    // v.push_back(69);
+    // print_vector(v);
+    // v.push_back(70);
+    // print_vector(v);
+    // v.push_back(75);
+    // print_vector(v);
 	// v.reserve(20);
 	// std::cout << "!!!!!!!!!!!!!" << v.capacity() << std::endl;
 	// for (size_t i = 0; i < v.size(); i++)

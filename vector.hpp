@@ -242,7 +242,6 @@ public:
         // return fir;
     }
 
-
     void push_back( const T& value )
     {
         if (m_size < m_capacity)
@@ -251,6 +250,21 @@ public:
         m_size++;
     }
 
+    void resize( size_type count, T value = T() )
+    {
+        if (count == m_capacity)
+            return ;
+        reserve(count);
+        if (count > m_capacity)
+        {
+            for (size_type i = m_size; i < m_capacity; i++)
+            {
+                //::new((void*)(m_vector + i)) T();
+                m_allocator.construct(m_vector + i, value);
+            }
+        }
+        m_size = count;
+    }
     // iterator insert( iterator pos, const T& value )
     // {}
 
