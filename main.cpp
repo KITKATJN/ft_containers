@@ -1,5 +1,16 @@
 #include "vector.hpp"
 #include <iostream>
+#include <iostream>
+#include <type_traits>
+
+void print_vector(ft::vector<int> &v)
+{
+    for (size_t i = 0; i < v.size(); i++)
+	{
+		std::cout << v[i] << " ";
+	}
+	std::cout << std::endl;
+}
 
 int main()
 {
@@ -33,8 +44,14 @@ int main()
 	{
 		std::cout << v[i] << " ";
 	}
+    // std::cout << v[2] << " ";
 	std::cout << std::endl;
-	v.clear();
+	//v.clear();
 	std::cout << v.empty() << std::endl;
+    //v.assign(5, 5);
+    //print_vector(v);
+    ft::vector<int> extra(6, 9);
+    v.assign(extra.begin(), extra.end());
+    print_vector(v);
 	return 0;
 }
