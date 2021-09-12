@@ -39,13 +39,16 @@ public:
     { return iterator(m_vector + m_size); }
 
     reverse_iterator rbegin()
-    { return reverse_iterator(end() - 1); }
+    { return reverse_iterator(m_vector + m_size - 1); }
 
-    // const_reverse_iterator rbegin() const;
-    // { return const_reverse_iterator(end() - 1); }
+    const_reverse_iterator rbegin() const
+    { return const_reverse_iterator(m_vector + m_size - 1); }
 
-    reverse_iterator rend();
-    const_reverse_iterator rend() const;
+    reverse_iterator rend()
+    { return reverse_iterator(m_vector - 1); }
+
+    const_reverse_iterator rend() const
+    { return const_reverse_iterator(m_vector - 1); }
 
     reference at( size_type pos )
     { if (pos >= size())
@@ -283,6 +286,40 @@ public:
         m_size++;
         return pos;
     }
+
+    void insert (iterator pos, size_type n, const value_type& value)
+    {
+        if (m_capacity == m_size)
+        {
+            //size_type old_m_size = m_size;
+            reserve(2 * m_capacity > n ? 2 * m_capacity : n);
+            //m_size = old_m_size;
+        }
+        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
+        {
+            std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
+            m_allocator.construct(m_vector + i + n - 1, m_vector[i - 1]);
+        }
+        for (size_type i = 0; i < n; i++)
+        {
+            m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()) + i, value);
+        }
+        //m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
+        m_size += n;
+    }
+
+    template <class InputIterator>
+    void insert (iterator position, InputIterator first, typename ft::enable_if<
+                    !std::numeric_limits<InputIterator>::is_integer,
+                        InputIterator>::type last)
+    {
+        (void)position;
+        (void)first;
+        (void)last;
+    }
+
+    void swap (vector& x)
+    {(void)x;}
 
     explicit vector (const allocator_type& alloc = allocator_type()):
         m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {

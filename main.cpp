@@ -36,6 +36,8 @@ int main()
     print_vector(v);
 	v.insert(v.begin(), 90);
 	print_vector(v);
+	v.insert(v.begin() + 3, 4, 90);
+	print_vector(v);
 	// v.pop_back();
     // print_vector(v);
     // v.push_back(67);
