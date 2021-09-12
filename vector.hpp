@@ -243,13 +243,21 @@ public:
     }
 
 
+    void push_back( const T& value )
+    {
+        if (m_size < m_capacity)
+            reserve(2 * m_capacity);
+        m_allocator.construct(m_vector + m_size, value);
+        m_size++;
+    }
+
     // iterator insert( iterator pos, const T& value )
     // {}
 
     explicit vector (const allocator_type& alloc = allocator_type()):
         m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
-        // m_vector = m_allocator.allocate(1);
-        // m_allocator.construct(m_vector, 1);
+        m_vector = m_allocator.allocate(0);
+        //m_allocator.construct(m_vector, 1);
     }
 
     explicit vector (size_type n, const value_type& val = value_type(),
@@ -264,9 +272,11 @@ public:
         }
     }
 
-    // template <class InputIterator>
-    // vector (InputIterator first, InputIterator last,
-    //  const allocator_type& alloc = allocator_type());
+    template <class InputIterator>
+    vector (InputIterator first, typename ft::enable_if<
+                    !std::numeric_limits<InputIterator>::is_integer,
+                        InputIterator>::type last,
+        const allocator_type& alloc = allocator_type());
 
     ~vector()
     {
