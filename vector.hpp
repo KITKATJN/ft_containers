@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include "iterator.hpp"
+#include "enable_if.hpp"
 
 namespace ft
 {
@@ -133,8 +134,10 @@ public:
         }
     }
 
-    template< class InputIt >
-    void assign( InputIt first, InputIt last )
+    template< class Iter >
+    void assign(Iter first, typename ft::enable_if<
+                    !std::numeric_limits<Iter>::is_integer,
+                        Iter>::type last)
     {
         clear();
         m_allocator.deallocate(m_vector, m_capacity);

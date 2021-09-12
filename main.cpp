@@ -48,8 +48,8 @@ int main()
 	std::cout << std::endl;
 	//v.clear();
 	std::cout << v.empty() << std::endl;
-    //v.assign(5, 5);
-    //print_vector(v);
+    v.assign(5, 5);
+    print_vector(v);
     ft::vector<int> extra(6, 9);
     v.assign(extra.begin(), extra.end());
     print_vector(v);
