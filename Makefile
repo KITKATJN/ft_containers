@@ -13,11 +13,14 @@ $(NAME):	$(OBJ) vector.hpp iterator.hpp
 .cpp.o:
 	$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
 
+check:
+	clang++ check.cpp
+
 clean:
 	rm -rf $(OBJ)
 
 fclean:	clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) a.out
 
 re:	fclean $(NAME)
 

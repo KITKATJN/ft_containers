@@ -31,8 +31,11 @@ int main()
     std::cout << v[9]  << " " << v[8] << std::endl;
     v.resize(20);
     print_vector(v);
-    v.resize(5);
+    v.resize(6);
+	v.pop_back();
     print_vector(v);
+	v.insert(v.begin(), 90);
+	print_vector(v);
 	// v.pop_back();
     // print_vector(v);
     // v.push_back(67);

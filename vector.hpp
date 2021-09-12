@@ -265,8 +265,24 @@ public:
         }
         m_size = count;
     }
-    // iterator insert( iterator pos, const T& value )
-    // {}
+
+    iterator insert( iterator pos, const T& value )
+    {
+        if (m_capacity == m_size)
+        {
+            //size_type old_m_size = m_size;
+            reserve(2 * m_capacity);
+            //m_size = old_m_size;
+        }
+        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
+        {
+            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
+            m_allocator.construct(m_vector + i, m_vector[i - 1]);
+        }
+        m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
+        m_size++;
+        return pos;
+    }
 
     explicit vector (const allocator_type& alloc = allocator_type()):
         m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
