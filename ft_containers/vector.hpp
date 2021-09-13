@@ -41,16 +41,16 @@ public:
     { return const_iterator(m_vector + m_size); }
 
     reverse_iterator rbegin()
-    { return reverse_iterator(m_vector + m_size - 1); }
+    { return reverse_iterator(end() - 1); }
 
     const_reverse_iterator rbegin() const
-    { return const_reverse_iterator(m_vector + m_size - 1); }
+    { return const_reverse_iterator(end() - 1); }
 
     reverse_iterator rend()
-    { return reverse_iterator(m_vector - 1); }
+    { return reverse_iterator(begin()); }
 
     const_reverse_iterator rend() const
-    { return const_reverse_iterator(m_vector - 1); }
+    { return const_reverse_iterator(begin()); }
 
     reference at( size_type pos )
     { if (pos >= size())
@@ -365,7 +365,7 @@ public:
     vector (InputIterator first, typename ft::enable_if<
                     !std::numeric_limits<InputIterator>::is_integer,
                         InputIterator>::type last,
-        const allocator_type& alloc = allocator_type()):m_vector(0), m_size(0), m_allocator(0), m_allocator(alloc)
+        const allocator_type& alloc = allocator_type()):m_vector(0), m_size(0), m_capacity(0), m_allocator(alloc)
         {
             m_size = static_cast<size_type>(last - first);
             m_capacity = m_size;
@@ -379,7 +379,7 @@ public:
     ~vector()
     {
         clear();
-        std::cout << "-*--*--*-destructor call\n";
+        //std::cout << "-*--*--*-destructor call\n";
         m_allocator.deallocate(m_vector, m_capacity);
     }
 
