@@ -249,7 +249,9 @@ public:
 
     void push_back( const T& value )
     {
-        if (m_size < m_capacity)
+        if (m_capacity == 0)
+            reserve(4);
+        else if (m_size < m_capacity)
             reserve(2 * m_capacity);
         m_allocator.construct(m_vector + m_size, value);
         m_size++;
@@ -257,17 +259,21 @@ public:
 
     void resize( size_type count, T value = T() )
     {
+        //std::cout << "value = " << value << std::endl;
         if (count == m_capacity)
             return ;
-        reserve(count);
         if (count > m_capacity)
         {
+            reserve(count);
             for (size_type i = m_size; i < m_capacity; i++)
             {
                 //::new((void*)(m_vector + i)) T();
+                //std::cout << "value = " << value << std::endl;
                 m_allocator.construct(m_vector + i, value);
             }
         }
+        else
+            reserve(count);
         m_size = count;
     }
 

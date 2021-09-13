@@ -6,7 +6,7 @@
 /*   By: cmarguer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 20:34:52 by charles           #+#    #+#             */
-/*   Updated: 2021/09/13 23:14:43 by cmarguer         ###   ########.fr       */
+/*   Updated: 2021/09/14 00:00:55 by cmarguer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,14 +393,19 @@ static void testResize()
         ASSERT(v1[i] == int());
 
     v1.resize(10, 42);
+    for (size_t i = 0; i < v1.size(); i++){
+        std::cout<< i << " = " << v1[i] << std::endl;
+    }
     ASSERT(v1.size() == 10);
     ASSERT(v1.capacity() >= 10);
     for (size_t i = 0; i < 5; i++)
         ASSERT(v1[i] == arr1[i]);
     for (size_t i = 5; i < 7; i++)
         ASSERT(v1[i] == int());
-    for (size_t i = 7; i < v1.size(); i++)
+    for (size_t i = 7; i < v1.size(); i++){
         ASSERT(v1[i] == 42);
+        //std::cout<< i << " = " << v1[i] << std::endl;
+    }
 
     size_t prev_capacity = v1.capacity();
     v1.resize(10);
@@ -884,23 +889,23 @@ void vectorTest()
     //не все тесты прошли
     //testRbegin();
     //testRend();
-    //testResize();
-    //testPushBack();
 
     //pass all tests
-    testConstructorRange();
-    testReserve();
-    testOperatorBracket();
-    testAt();
-    testFront();
-    testBack();
-    testConstructorDefault();
-    testConstructorFill();
-    testOperatorCompar();
-    testPopBack();
-    testErase();
-    testSwap();
-    testClear();
-    testAssign();
+    // testConstructorRange();
+    // testReserve();
+    // testOperatorBracket();
+    // testAt();
+    // testFront();
+    // testBack();
+    // testConstructorDefault();
+    // testConstructorFill();
+    // testOperatorCompar();
+    // testPopBack();
+    // testErase();
+    // testSwap();
+    // testClear();
+    // testAssign();
+    // testPushBack();
+    // testResize();
 
 }
