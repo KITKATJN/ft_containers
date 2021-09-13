@@ -1,5 +1,5 @@
-#ifndef BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834
-#define BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834
+#ifndef VECTOR
+#define VECTOR
 
 #include <memory>
 #include <limits>
@@ -313,13 +313,32 @@ public:
                     !std::numeric_limits<InputIterator>::is_integer,
                         InputIterator>::type last)
     {
-        (void)position;
-        (void)first;
-        (void)last;
+        m_size = static_cast<size_type>(last - first);
+        m_capacity = m_size;
+        m_vector = m_allocator.allocate(m_capacity);
+        for (size_t i = 0; i < m_size; i++)
+        {
+            m_allocator.construct(m_vector + i, *(first + i));
+        }
+
     }
 
     void swap (vector& x)
-    {(void)x;}
+    {
+        pointer m_vector_swap = x.m_vector;
+        size_type m_size_swap = x.m_size;
+        size_type m_capacity_swap = x.m_capacity;
+        std::allocator<T> m_allocator_swap = x.m_allocator;
+
+        x.m_allocator = this->m_allocator;
+        x.m_capacity = this->m_capacity;
+        x.m_size = this->m_size;
+        x.m_vector = this->m_vector;
+        this->m_vector = m_vector_swap;
+        this->m_size = m_size_swap;
+        this->m_capacity = m_capacity_swap;
+        this->m_allocator = m_allocator_swap;
+    }
 
     explicit vector (const allocator_type& alloc = allocator_type()):
         m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
@@ -353,11 +372,47 @@ public:
     }
 
 private:
-    pointer m_vector;
-    size_type m_size;
-    size_type m_capacity;
-    std::allocator<T> m_allocator; //typedef for allocator_type
+    pointer             m_vector;
+    size_type           m_size;
+    size_type           m_capacity;
+    std::allocator<T>   m_allocator; //typedef for allocator_type
 };
+
+template< class T, class Alloc >
+bool operator==( const ft::vector<T,Alloc>& lhs,
+                const ft::vector<T,Alloc>& rhs )
+{ return (lhs.size() == rhs.size()) }
+
+template< class T, class Alloc >
+bool operator!=( const std::vector<T,Alloc>& lhs,
+                const std::vector<T,Alloc>& rhs )
+{ return (lhs.size() != rhs.size()) }
+
+template< class T, class Alloc >
+bool operator<( const std::vector<T,Alloc>& lhs,
+                const std::vector<T,Alloc>& rhs )
+{ return (lhs.size() < rhs.size()) }
+
+template< class T, class Alloc >
+bool operator<=( const std::vector<T,Alloc>& lhs,
+                const std::vector<T,Alloc>& rhs )
+{ return (lhs.size() <= rhs.size()) }
+
+template< class T, class Alloc >
+bool operator>( const std::vector<T,Alloc>& lhs,
+                const std::vector<T,Alloc>& rhs )
+{ return (lhs.size() > rhs.size()) }
+
+template< class T, class Alloc >
+bool operator>=( const std::vector<T,Alloc>& lhs,
+                const std::vector<T,Alloc>& rhs )
+{ return (lhs.size() >= rhs.size()) }
+
+template< class T, class Alloc >
+void swap( std::vector<T,Alloc>& lhs,
+                std::vector<T,Alloc>& rhs )
+{ lhs.swap(rhs); }
+
 };
-#endif /* BDEA1AEC_42FD_4D5D_A47C_A249D0BB0834 */
+#endif /* VECTOR */
 
