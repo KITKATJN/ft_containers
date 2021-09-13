@@ -299,7 +299,7 @@ public:
         }
         for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
         {
-            std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
+            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
             m_allocator.construct(m_vector + i + n - 1, m_vector[i - 1]);
         }
         for (size_type i = 0; i < n; i++)
