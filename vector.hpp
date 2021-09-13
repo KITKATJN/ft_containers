@@ -7,6 +7,8 @@
 #include <iostream>
 #include "iterator.hpp"
 #include "enable_if.hpp"
+#include "lexicographical_compare.hpp"
+#include "equal.hpp"
 
 namespace ft
 {
@@ -381,32 +383,32 @@ private:
 template< class T, class Alloc >
 bool operator==( const ft::vector<T,Alloc>& lhs,
                 const ft::vector<T,Alloc>& rhs )
-{ return (lhs.size() == rhs.size()) }
+{ return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin())); }
 
 template< class T, class Alloc >
 bool operator!=( const std::vector<T,Alloc>& lhs,
                 const std::vector<T,Alloc>& rhs )
-{ return (lhs.size() != rhs.size()) }
+{ return !(lhs == rhs); }
 
 template< class T, class Alloc >
 bool operator<( const std::vector<T,Alloc>& lhs,
                 const std::vector<T,Alloc>& rhs )
-{ return (lhs.size() < rhs.size()) }
+{ return ( ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhd.end())); }
 
 template< class T, class Alloc >
 bool operator<=( const std::vector<T,Alloc>& lhs,
                 const std::vector<T,Alloc>& rhs )
-{ return (lhs.size() <= rhs.size()) }
+{ return !( rhs < lhs); }
 
 template< class T, class Alloc >
 bool operator>( const std::vector<T,Alloc>& lhs,
                 const std::vector<T,Alloc>& rhs )
-{ return (lhs.size() > rhs.size()) }
+{ return rhs < lhs; }
 
 template< class T, class Alloc >
 bool operator>=( const std::vector<T,Alloc>& lhs,
                 const std::vector<T,Alloc>& rhs )
-{ return (lhs.size() >= rhs.size()) }
+{ return !(lhs < rhs); }
 
 template< class T, class Alloc >
 void swap( std::vector<T,Alloc>& lhs,
