@@ -82,13 +82,13 @@ public:
 
     T* data()
     {if (size() == 0)
-        return nullptr;
+        return 0;
     else
         return begin();}
 
     const T* data() const
     {if (size() == 0)
-        return nullptr;
+        return 0;
     else
         return begin();}
 
@@ -344,7 +344,7 @@ public:
     }
 
     explicit vector (const allocator_type& alloc = allocator_type()):
-        m_vector(nullptr), m_size(0), m_capacity(0), m_allocator(alloc) {
+        m_vector(0), m_size(0), m_capacity(0), m_allocator(alloc) {
         m_vector = m_allocator.allocate(0);
         //m_allocator.construct(m_vector, 1);
     }
