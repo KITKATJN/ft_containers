@@ -342,6 +342,12 @@ static void testRbegin()
     ft::vector<int> v1(arr1, arr1 + 5);
 
     ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
+    //std::cout << v1_it[0] << " " << v1_it[-1] << " " << v1_it[-2] << " " << v1_it[-3] << " " << v1_it[-4] << " `!**!!!!!\n";
+
+    // ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
+    // for (; v1_it != v1.rend(); v1_it++)
+
+
     ASSERT(v1_it[0] == 5);
     ASSERT(v1_it[1] == 4);
     ASSERT(v1_it[2] == 3);
@@ -367,6 +373,7 @@ static void testRbegin()
 
     for (size_t i = 0; i < v1.size(); i++)
         ASSERT(*v1_it++ == arr1[4 - i]);
+    //std::cout << "v1_it " << *v1_it << " -> " << *(v1.rend() + 1)  << std::endl;
     ASSERT(v1_it == v1.rend());
 }
 
@@ -910,27 +917,27 @@ void vectorTest()
     //std::cout << "-=-=-=-=-=--=-=-=-=-=-=-=55\n";
 
     //не все тесты прошли
-    //testRbegin();
-    //testRend();
+    testRbegin();
+    testRend();
 
     //pass all tests
-    // testBegin();
-    // testEnd();
-    // testConstructorRange();
-    // testReserve();
-    // testOperatorBracket();
-    // testAt();
-    // testFront();
-    // testBack();
-    // testConstructorDefault();
-    // testConstructorFill();
-    // testOperatorCompar();
-    // testPopBack();
-    // testErase();
-    // testSwap();
-    // testClear();
-    // testAssign();
-    // testPushBack();
-    // testResize();
+    testBegin();
+    testEnd();
+    testConstructorRange();
+    testReserve();
+    testOperatorBracket();
+    testAt();
+    testFront();
+    testBack();
+    testConstructorDefault();
+    testConstructorFill();
+    testOperatorCompar();
+    testPopBack();
+    testErase();
+    testSwap();
+    testClear();
+    testAssign();
+    testPushBack();
+    testResize();
 
 }
