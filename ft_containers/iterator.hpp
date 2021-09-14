@@ -230,140 +230,190 @@ reverse_iterator<Iter> operator-( typename reverse_iterator<Iter>::difference_ty
     return reverse_iterator<Iter>(it + n);
 }
 
-template<class T, class D, class Pt, class Rt>
-    class Ptrit : public iterator<ft::random_access_iterator_tag,
-        T, D, Pt, Rt> {
-public:
-    typedef Ptrit<T, D, Pt, Rt> Myt;
-    Ptrit () {}
-    explicit Ptrit(Pt P) : current(P) {}
-    Ptrit(const Ptrit<T, D, Pt, Rt>& X)
-    : current(X.base ()) {}
+// template<class T, class D, class Pt, class Rt>
+//     class Ptrit : public iterator<ft::random_access_iterator_tag,
+//         T, D, Pt, Rt> {
+// public:
+//     typedef Ptrit<T, D, Pt, Rt> Myt;
+//     Ptrit () {}
+//     explicit Ptrit(Pt P) : current(P) {}
+//     Ptrit(const Ptrit<T, D, Pt, Rt>& X)
+//     : current(X.base ()) {}
 
-    Pt base() const
-    { return (current); }
+//     Pt base() const
+//     { return (current); }
 
-    Rt operator*() const
-    { return (*current); }
+//     Rt operator*() const
+//     { return (*current); }
 
-    Pt operator->() const
-    { return (&**this); }
+//     Pt operator->() const
+//     { return (&**this); }
 
-    Myt& operator++()
-    { ++current;
-    return (*this); }
+//     Myt& operator++()
+//     { ++current;
+//     return (*this); }
 
-    Myt operator++(int)
-    { Myt Tmp = *this;
-    ++current;
-    return (Tmp); }
+//     Myt operator++(int)
+//     { //Myt tmp = *this;
+//     Myt tmp(*this);
+//     ++current;
+//     return (tmp); }
 
-    Myt& operator--()
-    { --current;
-    return (*this); }
+//     Myt& operator--()
+//     { --current;
+//     return (*this); }
 
-    Myt& operator--(int)
-    {Myt tmp = *this;
-    current--;
-    return (tmp);} // хрень, надо менять
+//     Myt& operator--(int)
+//     {//Myt tmp = *this;
+//     Myt tmp(*this);
+//     //current--;
+//     --this->current;
+//     return (tmp);} // хрень, надо менять
 
-    bool operator==(int Y) const
-    {return (current == (Pt)Y);}
+//     bool operator==(int Y) const
+//     {return (current == (Pt)Y);}
 
-    bool operator==(const Myt& Y)const
-    {return (current == Y.current);}
+//     bool operator==(const Myt& Y)const
+//     {return (current == Y.current);}
 
-    bool operator!=(const Myt& Y) const
-    {return (!(*this == Y));}
+//     bool operator!=(const Myt& Y) const
+//     {return (!(*this == Y));}
 
-    Myt& operator+(D n)
-    {
-    current += n;
-    return *this;
-    }
+//     Myt& operator+(D n)
+//     {
+//     current += n;
+//     return *this;
+//     }
 
-    Myt operator+(D n) const
-    {return (Myt(current + n));}
+//     Myt operator+(D n) const
+//     {return (Myt(current + n));}
 
-    Myt& operator-(D n)
-    {
-    current -= n;
-    return *this;
-    }
-    Myt operator-(D n) const
-    {return (Myt(current - n));}
+//     Myt& operator-(D n)
+//     {
+//     current -= n;
+//     return *this;
+//     }
+//     Myt operator-(D n) const
+//     {return (Myt(current - n));}
 
-    D operator-(const Myt& x) const
-    {return (current - x.current);}
+//     D operator-(const Myt& x) const
+//     {return (current - x.current);}
 
-    Rt operator[](D n) const
-    {return (*(current + n));}
+//     Rt operator[](D n) const
+//     {return (*(current + n));}
 
-    bool operator<(const Myt& x) const
-    {return ((current < x.current));}
+//     bool operator<(const Myt& x) const
+//     {return ((current < x.current));}
 
-    bool operator>(const Myt& x) const
-    {return ((x.current < current));}
+//     bool operator>(const Myt& x) const
+//     {return ((x.current < current));}
 
-    bool operator<=(const Myt& x) const
-    {return (!(x.current < current));}
+//     bool operator<=(const Myt& x) const
+//     {return (!(x.current < current));}
 
-    bool operator>=(const Myt& x) const
-    {return (!(current < x.current));}
+//     bool operator>=(const Myt& x) const
+//     {return (!(current < x.current));}
 
-    Ptrit &operator=(const Ptrit& op)
-    {
-        if (this == &op)
-        return (*this);
-        this->current = op.current;
-        return (*this);
-    }
+//     Ptrit &operator=(const Ptrit& op)
+//     {
+//         if (this == &op)
+//         return (*this);
+//         this->current = op.current;
+//         return (*this);
+//     }
 
-protected:
-    Pt current;
-};
+// protected:
+//     Pt current;
+// };
 
-// template <class T, class P, class R>
-// random_access_iterator<T, P, R>operator+
-// (typename random_access_iterator<T, P, R>::difference_type n, random_access_iterator<T, P, R> &rhs) {
-//     return (rhs + n);
-// }
+template <class T, class P, class R>
+	class random_access_iterator : public std::iterator<std::random_access_iterator_tag, T> {
+	public:
+		typedef T															value_type;
+		typedef P															pointer;
+		typedef R															reference;
+		typedef random_access_iterator<T, P, R>								It;
+		typedef std::ptrdiff_t												difference_type;
+		typedef typename std::random_access_iterator_tag					iterator_category;
 
-// template <class T, class P, class R>
-// typename random_access_iterator<T, P, R>::difference_type operator-(const random_access_iterator<T, P, R> &lhs,
-//     const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs.getPointer() - rhs.getPointer());
-// }
+		random_access_iterator() : _ptr(0) {}
 
-// template <class T, class P, class R>
-// booloperator==(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs.getPointer() == rhs.getPointer());
-// }
+		random_access_iterator(pointer ptr) : _ptr(ptr) {}
 
-// template <class T, class P, class R>
-// booloperator!=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (!(lhs == rhs));
-// }
+		random_access_iterator(random_access_iterator<T, T*, T&> const &rhs) : _ptr( rhs.getPointer() ) {}
 
-// template <class T, class P, class R>
-// booloperator>(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs.getPointer() > rhs.getPointer());
-// }
+		virtual ~random_access_iterator() {}
 
-// template <class T, class P, class R>
-// booloperator<(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs.getPointer() <rhs.getPointer());
-// }
+		It				&operator=(const It &rhs) {
+			if (this == &rhs)
+				return *this;
+			this->_ptr = rhs._ptr;
+			return *this;
+		}
 
-// template <class T, class P, class R>
-// booloperator>=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs > rhs || lhs == rhs);
-// }
+		reference		operator*() { return *this->_ptr; }
+	
+		pointer			operator->() { return this->_ptr; }
 
-// template <class T, class P, class R>
-// booloperator<=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
-//     return (lhs < rhs || lhs == rhs);
-// }
+		reference		operator[](difference_type index) { return this->_ptr[index]; }
+        reference		operator[](difference_type index) const { return this->_ptr[index]; }
+
+		It&				operator++() { ++this->_ptr; return *this; } 
+		It&				operator--() { --this->_ptr; return *this; }
+		It				operator++(int) { It it(*this); ++this->_ptr; return it; }
+		It				operator--(int) { It it(*this); --this->_ptr; return it; }
+		It				operator+(difference_type n) const { return random_access_iterator(this->_ptr + n); }
+		It				operator-(difference_type n) const { return random_access_iterator(this->_ptr - n); }
+		It&				operator+=(difference_type n) const { return random_access_iterator(this->_ptr += n); }
+		It&				operator-=(difference_type n) const { return random_access_iterator(this->_ptr -= n); }
+
+		pointer getPointer() const { return this->_ptr; }
+
+	private:
+		pointer		_ptr;
+	};
+
+template <class T, class P, class R>
+random_access_iterator<T, P, R>operator+
+(typename random_access_iterator<T, P, R>::difference_type n, random_access_iterator<T, P, R> &rhs) {
+    return (rhs + n);
+}
+
+template <class T, class P, class R>
+typename random_access_iterator<T, P, R>::difference_type operator-(const random_access_iterator<T, P, R> &lhs,
+    const random_access_iterator<T, P, R> &rhs) {
+    return (lhs.getPointer() - rhs.getPointer());
+}
+
+template <class T, class P, class R>
+bool operator==(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (lhs.getPointer() == rhs.getPointer());
+}
+
+template <class T, class P, class R>
+bool operator!=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (!(lhs == rhs));
+}
+
+template <class T, class P, class R>
+bool operator>(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (lhs.getPointer() > rhs.getPointer());
+}
+
+template <class T, class P, class R>
+bool operator<(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (lhs.getPointer() <rhs.getPointer());
+}
+
+template <class T, class P, class R>
+bool operator>=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (lhs > rhs || lhs == rhs);
+}
+
+template <class T, class P, class R>
+bool operator<=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
+    return (lhs < rhs || lhs == rhs);
+}
 
 };
 
