@@ -113,8 +113,8 @@ public:
             return ;
         pointer new_arr = m_allocator.allocate(new_cap);
         std::uninitialized_copy(begin(), end(), new_arr);
-        for (size_type i = 0; i < m_size; i++)
-        { m_allocator.destroy(m_vector + i); }
+        for (size_type dist = 0; dist < m_size; dist++)
+        { m_allocator.destroy(m_vector + dist); }
         m_allocator.deallocate(m_vector, m_capacity);
         m_vector = new_arr;
         m_capacity = new_cap;
@@ -133,9 +133,9 @@ public:
         m_vector = m_allocator.allocate(count);
         m_capacity = count;
         m_size = count;
-        for (size_type i = 0; i < count; i++)
+        for (size_type dist = 0; dist < count; dist++)
         {
-            m_allocator.construct(m_vector + i, value);
+            m_allocator.construct(m_vector + dist, value);
         }
     }
 
@@ -151,11 +151,11 @@ public:
         m_capacity = count;
         m_size = count;
         //std::uninitialized_copy(first, last, m_vector);
-        size_type i = 0;
+        size_type dist = 0;
         for (; first != last; first++)
         {
-            m_allocator.construct(m_vector + i, *first);// std::iterator_traits<InputIt>::value_type);
-            i++;
+            m_allocator.construct(m_vector + dist, *first);// std::iterator_traits<InputIt>::value_type);
+            dist++;
         }
     }
 
@@ -164,8 +164,8 @@ public:
         difference_type pos = position - begin();
         //std::cout << *(m_vector + pos) << "<--------------------\n";
         m_allocator.destroy(m_vector + pos);
-        for (size_type i = static_cast<size_type>(pos); i < m_size - 1; i++){
-            m_allocator.construct(m_vector + i, m_vector[i + 1]);
+        for (size_type dist = static_cast<size_type>(pos); dist < m_size - 1; dist++){
+            m_allocator.construct(m_vector + dist, m_vector[dist + 1]);
         }
         //std::copy(position + 1, end(), position - 1);
         m_size--;
@@ -179,14 +179,14 @@ public:
             return first;
         if (first != last){
             size_type destr = last - begin();
-            for (size_type i = static_cast<size_type>(first - begin()); i < destr; i++){
-                m_allocator.destroy(m_vector + i);
-                //std::cout << " d-> " << m_vector[i];
+            for (size_type dist = static_cast<size_type>(first - begin()); dist < destr; dist++){
+                m_allocator.destroy(m_vector + dist);
+                //std::cout << " d-> " << m_vector[dist];
             }
             //std::cout << std::endl;
-            for (size_type i = static_cast<size_type>(first - begin()); i < m_size - (last - first); i++){
-                m_allocator.construct(m_vector + i, m_vector[i + (last - first)]);
-                //std::cout << " c-> " << m_vector[i + (last - first)];
+            for (size_type dist = static_cast<size_type>(first - begin()); dist < m_size - (last - first); dist++){
+                m_allocator.construct(m_vector + dist, m_vector[dist + (last - first)]);
+                //std::cout << " c-> " << m_vector[dist + (last - first)];
             }
             //std::cout << std::endl;
         m_size -= (last - first);
@@ -196,10 +196,10 @@ public:
         //  //   ret = erase(first);
         //  // }
         //  // return ret;
-        //  // for (size_type i = 0; i < static_cast<size_type>(last - first); i++){
+        //  // for (size_type dist = 0; dist < static_cast<size_type>(last - first); dist++){
         //  //   ret = erase(first++);
         //      //first = begin() + fir;
-        //      //std::cout << "d " << m_vector[i] << i;
+        //      //std::cout << "d " << m_vector[dist] << dist;
         //  //}
         //  //return ret;
         }
@@ -213,11 +213,11 @@ public:
         // {
         //  m_allocator.destroy(&(*first));
         // }
-        // for (int i = 0; i < (last - ret); i++)
+        // for (int dist = 0; dist < (last - ret); dist++)
         // {
         //  //m_allocator.construct()
-        //  m_allocator.construct(first + i, last + i);
-        //  m_allocator.destroy(&(*last) + i);
+        //  m_allocator.construct(first + dist, last + dist);
+        //  m_allocator.destroy(&(*last) + dist);
         // }
         // m_size -= (last - ret);
         // return (iterator(ret));
@@ -265,11 +265,11 @@ public:
         if (count > m_capacity)
         {
             reserve(count);
-            for (size_type i = m_size; i < m_capacity; i++)
+            for (size_type dist = m_size; dist < m_capacity; dist++)
             {
-                //::new((void*)(m_vector + i)) T();
+                //::new((void*)(m_vector + dist)) T();
                 //std::cout << "value = " << value << std::endl;
-                m_allocator.construct(m_vector + i, value);
+                m_allocator.construct(m_vector + dist, value);
             }
         }
         else
@@ -290,9 +290,9 @@ public:
         {
             reserve(2 * m_capacity);
         }
-        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
+        for (size_type dist = m_size; dist != static_cast<size_type>(pos - begin()); dist--)
         {
-            m_allocator.construct(m_vector + i, m_vector[i - 1]);
+            m_allocator.construct(m_vector + dist, m_vector[dist - 1]);
         }
         m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
         m_size++;
@@ -301,46 +301,38 @@ public:
 
     void insert (iterator pos, size_type n, const value_type& value)
     {
-        reserve(m_capacity + n);
-        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
-        {
-            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
-            m_allocator.construct(m_vector + i + n - 1, m_vector[i - 1]);
-        }
-        for (size_type i = 0; i < n; i++)
-        {
-            m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()) + i, value);
-        }
-        //m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
-        m_size += n;
+        size_type	dist = static_cast<size_type>(pos - this->begin());
+		if (dist > m_size)
+			return ;
+		if (m_size + n >= m_capacity)
+			this->reserve(m_size * 2 + n);
+		std::memmove(m_vector + dist + n, m_vector + dist, (size_t)(m_size - dist) * sizeof(value_type));
+		for (size_type j = 0; j < n; ++j)
+			m_allocator.construct(m_vector + dist + j, value);
+		m_size += n;
     }
 
     template <class InputIterator>
     void insert (iterator pos, InputIterator first, typename ft::enable_if<
                     !std::numeric_limits<InputIterator>::is_integer,
                         InputIterator>::type last)
-    {
-        reserve(m_capacity + static_cast<size_type>(last - first));
-        // if (m_capacity <= m_size)
-        // {
-        //     //size_type old_m_size = m_size;
-        //     if (n > 2 * m_capacity)
-        //         reserve(n);
-        //     else
-        //         reserve(2 * m_capacity);
-        //     //m_size = old_m_size;
-        // }
-        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
-        {
-            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
-            m_allocator.construct(m_vector + i + 10 - 1, m_vector[i - 1]);
-        }
-        for (size_type i = 0; i < 5; i++)
-        {
-            m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()) + i, *m_vector);
-        }
-        //m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
-        m_size += 10;
+    {     
+        size_type	dist = static_cast<size_type>(pos - this->begin());
+		size_type iterDistance = static_cast<size_type>(last - first);
+		//iterator	res = this->begin();
+		if (dist > m_size)
+			return ;
+		if (m_size + iterDistance >= m_capacity)
+			this->reserve(m_size * 2 + iterDistance);
+        //size_type i = static_cast<size_type>(dist);
+		// pos = res + dist;
+		// unsigned	i = 0;
+		// while (res++ < pos)
+		// 	i++;
+		std::memmove(m_vector + dist + iterDistance, m_vector + dist, (size_t)(m_size - dist) * sizeof(value_type));
+		for (size_type j = 0; j < iterDistance; ++j)
+			m_allocator.construct(m_vector + dist + j, *(first + j));
+		m_size += iterDistance;
     }
 
     void swap (vector& x)
@@ -376,9 +368,9 @@ public:
     {
         (void)alloc;
         m_vector = m_allocator.allocate(n);
-        for (size_type i = 0; i < n; i++)
+        for (size_type dist = 0; dist < n; dist++)
         {
-            m_allocator.construct(m_vector + i, val);
+            m_allocator.construct(m_vector + dist, val);
         }
     }
 
@@ -391,18 +383,18 @@ public:
             m_size = static_cast<size_type>(last - first);
             m_capacity = m_size;
             m_vector = m_allocator.allocate(m_capacity);
-            for (size_type i = 0; i < m_size; i++)
+            for (size_type dist = 0; dist < m_size; dist++)
             {
-                m_allocator.construct(m_vector + i, *(first + i));
+                m_allocator.construct(m_vector + dist, *(first + dist));
             }
         }
 
     vector (const vector &x): m_size(x.m_size), m_capacity(x.m_capacity), m_allocator(x.m_allocator)
     {
         m_vector = m_allocator.allocate(m_capacity);
-        for (size_type i = 0; i < m_size; i++)
+        for (size_type dist = 0; dist < m_size; dist++)
         {
-           m_allocator.construct(m_vector + i, *(x.m_vector + i));
+           m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
         }
     }
 
@@ -415,9 +407,9 @@ public:
         m_vector = m_allocator.allocate(x.m_capacity);
         m_size = x.m_size;
         m_capacity = x.m_capacity;
-        for (size_type i = 0; i < m_size; i++)
+        for (size_type dist = 0; dist < m_size; dist++)
         {
-           m_allocator.construct(m_vector + i, *(x.m_vector + i));
+           m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
         }
         return *this;
     }

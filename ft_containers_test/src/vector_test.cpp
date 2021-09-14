@@ -708,28 +708,46 @@ static void testInsert()
     ASSERT(v1[2] == 2);
     ASSERT(*it == 0);
 
+    for (size_t i = 0; i < v1.size(); i++)
+    {
+        std::cout << v1[i];
+        /* code */
+    }
+    std::cout << std::endl;
     v1.insert(v1.begin() + 1, arr1 + 1, arr1 + 4);
+    for (size_t i = 0; i < v1.size(); i++)
+    {
+        std::cout << v1[i];
+        /* code */
+    }
+    std::cout << std::endl;
     ASSERT(v1.size() == 6);
     ASSERT(v1.capacity() >= 6);
     ASSERT(v1[0] == 0);
+   // std::cout << v1[0] << " <-v1 0\n";
     ASSERT(v1[1] == 2);
+   // std::cout << v1[1] << " <-v1 1\n";
     ASSERT(v1[2] == 3);
+    //std::cout << v1[2] << " <-v1 2\n";
     ASSERT(v1[3] == 4);
+    //std::cout << v1[3] << " <-v1 3\n";
     ASSERT(v1[4] == 1);
+   // std::cout << v1[4] << " <-v1 4\n";
     ASSERT(v1[5] == 2);
+    //std::cout << v1[5] << " <-v1 5\n";
 
-    // v1.insert(v1.begin() + 2, (size_t)3, (int)-1);
-    // ASSERT(v1.size() == 9);
-    // ASSERT(v1.capacity() >= 9);
-    // ASSERT(v1[0] == 0);
-    // ASSERT(v1[1] == 2);
-    // ASSERT(v1[2] == -1);
-    // ASSERT(v1[3] == -1);
-    // ASSERT(v1[4] == -1);
-    // ASSERT(v1[5] == 3);
-    // ASSERT(v1[6] == 4);
-    // ASSERT(v1[7] == 1);
-    // ASSERT(v1[8] == 2);
+    v1.insert(v1.begin() + 2, (size_t)3, (int)-1);
+    ASSERT(v1.size() == 9);
+    ASSERT(v1.capacity() >= 9);
+    ASSERT(v1[0] == 0);
+    ASSERT(v1[1] == 2);
+    ASSERT(v1[2] == -1);
+    ASSERT(v1[3] == -1);
+    ASSERT(v1[4] == -1);
+    ASSERT(v1[5] == 3);
+    ASSERT(v1[6] == 4);
+    ASSERT(v1[7] == 1);
+    ASSERT(v1[8] == 2);
 }
 
 static void testErase()
@@ -951,29 +969,29 @@ void vectorTest()
     // Aborted (core dumped)
 
     // //pass all tests
-    // testOperatorAssign();
-    // testSwapFunc();
-    // testOperatorEqual();
-    // testConstructorCopy();
-    // testRbegin();
-    // testRend();
-    // testBegin();
-    // testEnd();
-    // testConstructorRange();
-    // testReserve();
-    // testOperatorBracket();
-    // testAt();
-    // testFront();
-    // testBack();
-    // testConstructorDefault();
-    // testConstructorFill();
-    // testOperatorCompar();
-    // testPopBack();
-    // testErase();
-    // testSwap();
-    // testClear();
-    // testAssign();
-    // testPushBack();
-    // testResize();
+    testOperatorAssign();
+    testSwapFunc();
+    testOperatorEqual();
+    testConstructorCopy();
+    testRbegin();
+    testRend();
+    testBegin();
+    testEnd();
+    testConstructorRange();
+    testReserve();
+    testOperatorBracket();
+    testAt();
+    testFront();
+    testBack();
+    testConstructorDefault();
+    testConstructorFill();
+    testOperatorCompar();
+    testPopBack();
+    testErase();
+    testSwap();
+    testClear();
+    testAssign();
+    testPushBack();
+    testResize();
 
 }
