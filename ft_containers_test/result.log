@@ -1,0 +1,23 @@
+[FAIL SEGV] src/vector_test.cpp:712
+    v1.size() == 6
+
+[FAIL SEGV] src/vector_test.cpp:713
+    v1.capacity() >= 6
+
+[FAIL SEGV] src/vector_test.cpp:714
+    v1[0] == 0
+
+[FAIL SEGV] src/vector_test.cpp:715
+    v1[1] == 2
+
+[FAIL SEGV] src/vector_test.cpp:716
+    v1[2] == 3
+
+[FAIL SEGV] src/vector_test.cpp:717
+    v1[3] == 4
+
+[FAIL SEGV] src/vector_test.cpp:718
+    v1[4] == 1
+
+[FAIL SEGV] src/vector_test.cpp:719
+    v1[5] == 2

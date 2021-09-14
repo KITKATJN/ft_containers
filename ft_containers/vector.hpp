@@ -279,15 +279,19 @@ public:
 
     iterator insert( iterator pos, const T& value )
     {
+        if (m_capacity == 0)
+        {
+            reserve(4);
+            m_allocator.construct(m_vector + 0, value);
+            m_size++;
+            return begin();
+        }
         if (m_capacity == m_size)
         {
-            //size_type old_m_size = m_size;
             reserve(2 * m_capacity);
-            //m_size = old_m_size;
         }
         for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
         {
-            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
             m_allocator.construct(m_vector + i, m_vector[i - 1]);
         }
         m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
@@ -297,12 +301,7 @@ public:
 
     void insert (iterator pos, size_type n, const value_type& value)
     {
-        if (m_capacity == m_size)
-        {
-            //size_type old_m_size = m_size;
-            reserve(2 * m_capacity > n ? 2 * m_capacity : n);
-            //m_size = old_m_size;
-        }
+        reserve(m_capacity + n);
         for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
         {
             //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
@@ -317,19 +316,31 @@ public:
     }
 
     template <class InputIterator>
-    void insert (iterator position, InputIterator first, typename ft::enable_if<
+    void insert (iterator pos, InputIterator first, typename ft::enable_if<
                     !std::numeric_limits<InputIterator>::is_integer,
                         InputIterator>::type last)
     {
-        (void)position;
-        m_size = static_cast<size_type>(last - first);
-        m_capacity = m_size;
-        m_vector = m_allocator.allocate(m_capacity);
-        for (size_t i = 0; i < m_size; i++)
+        reserve(m_capacity + static_cast<size_type>(last - first));
+        // if (m_capacity <= m_size)
+        // {
+        //     //size_type old_m_size = m_size;
+        //     if (n > 2 * m_capacity)
+        //         reserve(n);
+        //     else
+        //         reserve(2 * m_capacity);
+        //     //m_size = old_m_size;
+        // }
+        for (size_type i = m_size; i != static_cast<size_type>(pos - begin()); i--)
         {
-            m_allocator.construct(m_vector + i, *(first + i));
+            //std::cout << " f->" << m_vector[i] << " s->" << m_vector[i - 1] << std::endl;
+            m_allocator.construct(m_vector + i + 10 - 1, m_vector[i - 1]);
         }
-
+        for (size_type i = 0; i < 5; i++)
+        {
+            m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()) + i, *m_vector);
+        }
+        //m_allocator.construct(m_vector + static_cast<size_type>(pos - begin()), value);
+        m_size += 10;
     }
 
     void swap (vector& x)
