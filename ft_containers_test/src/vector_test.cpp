@@ -949,31 +949,31 @@ void vectorTest()
 
     // free(): double free detected in tcache 2
     // Aborted (core dumped)
-    //testOperatorAssign();
-    //testSwapFunc();
 
     // //pass all tests
-    testOperatorEqual();
-    testConstructorCopy();
-    testRbegin();
-    testRend();
-    testBegin();
-    testEnd();
-    testConstructorRange();
-    testReserve();
-    testOperatorBracket();
-    testAt();
-    testFront();
-    testBack();
-    testConstructorDefault();
-    testConstructorFill();
-    testOperatorCompar();
-    testPopBack();
-    testErase();
-    testSwap();
-    testClear();
-    testAssign();
-    testPushBack();
-    testResize();
+    // testOperatorAssign();
+    // testSwapFunc();
+    // testOperatorEqual();
+    // testConstructorCopy();
+    // testRbegin();
+    // testRend();
+    // testBegin();
+    // testEnd();
+    // testConstructorRange();
+    // testReserve();
+    // testOperatorBracket();
+    // testAt();
+    // testFront();
+    // testBack();
+    // testConstructorDefault();
+    // testConstructorFill();
+    // testOperatorCompar();
+    // testPopBack();
+    // testErase();
+    // testSwap();
+    // testClear();
+    // testAssign();
+    // testPushBack();
+    // testResize();
 
 }

@@ -395,6 +395,22 @@ public:
         }
     }
 
+    vector& operator= ( const vector &x )
+    {
+        if (*this == x)
+            return *this;
+        //m_allocator.deallocate(m_capacity);
+        this->~vector();
+        m_vector = m_allocator.allocate(x.m_capacity);
+        m_size = x.m_size;
+        m_capacity = x.m_capacity;
+        for (size_type i = 0; i < m_size; i++)
+        {
+           m_allocator.construct(m_vector + i, *(x.m_vector + i));
+        }
+        return *this;
+    }
+
     ~vector()
     {
         clear();
