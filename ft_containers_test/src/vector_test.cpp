@@ -877,9 +877,27 @@ static void testSwapFunc()
 
     int             arr1[5] = {1, 2, 3, 4, 5};
     ft::vector<int> v1(arr1, arr1 + 5);
+    // for (size_t i = 0; i < v1.size(); i++){
+    //     std::cout<< v1[i] << " ";
+    // }
+    // std::cout << std::endl;
     ft::vector<int> v2(arr1 + 1, arr1 + 4);
+    // for (size_t i = 0; i < v2.size(); i++){
+    //     std::cout<< v2[i] << " ";
+    // }
+    // std::cout << std::endl;
 
     std::swap(v1, v2);
+
+    // for (size_t i = 0; i < v1.size(); i++){
+    //     std::cout<< v1[i] << " ";
+    // }
+    // std::cout << std::endl;
+    // for (size_t i = 0; i < v2.size(); i++){
+    //     std::cout<< v2[i] << " ";
+    // }
+    // std::cout << std::endl;
+
     ASSERT(v1.size() == 3);
     ASSERT(v1.capacity() >= 3);
     for (size_t i = 0; i < 3; i++)
@@ -889,15 +907,38 @@ static void testSwapFunc()
     for (size_t i = 0; i < 5; i++)
         ASSERT(v2[i] == arr1[i]);
 
+    //std::cout << "+++++++++++++third\n";
+    // for (size_t i = 0; i < v1.size(); i++){
+    //     std::cout<< v1[i] << " ! ";
+    // }
+    // std::cout << std::endl;
+    // for (size_t i = 0; i < v2.size(); i++){
+    //     std::cout<< v2[i] << " ! ";
+    // }
+    // std::cout << std::endl;
+
     std::swap(v1, v2);
+
+    std::cout << "---------third\n";
+    for (size_t i = 0; i < v1.size(); i++){
+        std::cout<< v1[i] << " ! ";
+    }
+    std::cout << std::endl;
+    for (size_t i = 0; i < v2.size(); i++){
+        std::cout<< v2[i] << " ! ";
+    }
+    std::cout << std::endl;
+
     ASSERT(v2.size() == 3);
     ASSERT(v2.capacity() >= 3);
     for (size_t i = 0; i < 3; i++)
         ASSERT(v2[i] == arr1[i + 1]);
     ASSERT(v1.size() == 5);
     ASSERT(v1.capacity() >= 3);
-    for (size_t i = 0; i < 5; i++)
+    for (size_t i = 0; i < 5; i++){
         ASSERT(v1[i] == arr1[i]);
+        //std::cout<< arr1[i] << " = " << v1[i] << std::endl;
+    }
 }
 
 void vectorTest()
@@ -908,19 +949,14 @@ void vectorTest()
 
     // free(): double free detected in tcache 2
     // Aborted (core dumped)
-    //testConstructorCopy();
     //testOperatorAssign();
-    //testOperatorEqual();
     //testSwapFunc();
 
-    // здесь все плохо
-    //std::cout << "-=-=-=-=-=--=-=-=-=-=-=-=55\n";
-
-    //не все тесты прошли
+    // //pass all tests
+    testOperatorEqual();
+    testConstructorCopy();
     testRbegin();
     testRend();
-
-    //pass all tests
     testBegin();
     testEnd();
     testConstructorRange();

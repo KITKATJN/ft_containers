@@ -334,19 +334,23 @@ public:
 
     void swap (vector& x)
     {
-        pointer m_vector_swap = x.m_vector;
-        size_type m_size_swap = x.m_size;
-        size_type m_capacity_swap = x.m_capacity;
-        std::allocator<T> m_allocator_swap = x.m_allocator;
+        // pointer m_vector_swap = x.m_vector;
+        // size_type m_size_swap = x.m_size;
+        // size_type m_capacity_swap = x.m_capacity;
+        // std::allocator<T> m_allocator_swap = x.m_allocator;
 
-        x.m_allocator = this->m_allocator;
-        x.m_capacity = this->m_capacity;
-        x.m_size = this->m_size;
-        x.m_vector = this->m_vector;
-        this->m_vector = m_vector_swap;
-        this->m_size = m_size_swap;
-        this->m_capacity = m_capacity_swap;
-        this->m_allocator = m_allocator_swap;
+        // x.m_allocator = this->m_allocator;
+        // x.m_capacity = this->m_capacity;
+        // x.m_size = this->m_size;
+        // x.m_vector = this->m_vector;
+        // this->m_vector = m_vector_swap;
+        // this->m_size = m_size_swap;
+        // this->m_capacity = m_capacity_swap;
+        // this->m_allocator = m_allocator_swap;
+
+        std::swap(m_size, x.m_size);
+        std::swap(m_capacity, x.m_capacity);
+        std::swap(m_vector, x.m_vector);
     }
 
     explicit vector (const allocator_type& alloc = allocator_type()):
@@ -381,6 +385,15 @@ public:
                 m_allocator.construct(m_vector + i, *(first + i));
             }
         }
+
+    vector (const vector &x): m_size(x.m_size), m_capacity(x.m_capacity), m_allocator(x.m_allocator)
+    {
+        m_vector = m_allocator.allocate(m_capacity);
+        for (size_type i = 0; i < m_size; i++)
+        {
+           m_allocator.construct(m_vector + i, *(x.m_vector + i));
+        }
+    }
 
     ~vector()
     {
