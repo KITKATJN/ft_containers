@@ -19,10 +19,13 @@ int main(int argc, char **argv)
         std::string option(argv[1]);
         if (option == "vector")
             vectorTest();
+        if (option == "stack")
+            stackTest();
     }
     else
     {
         vectorTest();
+        stackTest();
     }
     return 0;
 }

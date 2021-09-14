@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmarguer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: charles <charles.cabergs@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 20:34:52 by charles           #+#    #+#             */
-/*   Updated: 2021/09/14 00:00:55 by cmarguer         ###   ########.fr       */
+/*   Updated: 2020/04/26 12:08:35 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,16 +221,7 @@ static void testBegin()
     int             arr1[5] = {1, 2, 3, 4, 5};
     ft::vector<int> v1(arr1, arr1 + 5);
 
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout << v1[i] << " <01- ";
-    }
-    std::cout << std::endl;
-
     ft::vector<int>::iterator v1_it = v1.begin();
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout << *(v1_it + i) << " <0- ";
-    }
-    std::cout << std::endl;
     ASSERT(*v1_it == 1);
     ASSERT(*(int*)(v1_it.operator->()) == 1);
     ASSERT(v1_it[0] == 1);
@@ -239,52 +230,38 @@ static void testBegin()
     ASSERT(v1_it[3] == 4);
     ASSERT(v1_it[4] == 5);
 
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout << *(v1_it + i) << " <1- ";
-    }
-    std::cout << std::endl;
-
     ASSERT(v1_it == v1.begin());
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout << *(v1_it + i) << " <2- ";
-    }
-    std::cout << std::endl;
     // ASSERT(v1_it != v1.rbegin());
     ASSERT(v1_it != v1.end());
     // ASSERT(v1_it != v1.rend());
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout << *(v1_it + i) << " <3- ";
-    }
-    std::cout << std::endl;
 
     ASSERT(v1_it <= v1.begin());
     ASSERT(v1_it >= v1.begin());
     ASSERT(v1_it < v1.end());
     ASSERT(v1.end() > v1_it);
 
-    for (size_t i = 0; i < v1.size(); i++){
+    for (size_t i = 0; i < v1.size(); i++)
         ASSERT(*(v1_it + i) == arr1[i]);
-    }
 
-    // for (size_t i = 0; v1_it != v1.end(); ++v1_it, i++)
-    //     ASSERT(*v1_it == arr1[i]);
-    // ASSERT(v1_it == v1.end());
+    for (size_t i = 0; v1_it != v1.end(); ++v1_it, i++)
+        ASSERT(*v1_it == arr1[i]);
+    ASSERT(v1_it == v1.end());
 
-    // for (size_t i = 0; i < v1.size(); i++)
-    //     ASSERT(*(v1_it - 1 - i) == arr1[4 - i]);
+    for (size_t i = 0; i < v1.size(); i++)
+        ASSERT(*(v1_it - 1 - i) == arr1[4 - i]);
 
-    // --v1_it;
-    // for (size_t i = 0; v1_it != v1.begin(); --v1_it, i++)
-    //     ASSERT(*v1_it == arr1[4 - i]);
-    // ASSERT(*v1_it == arr1[0]);
+    --v1_it;
+    for (size_t i = 0; v1_it != v1.begin(); --v1_it, i++)
+        ASSERT(*v1_it == arr1[4 - i]);
+    ASSERT(*v1_it == arr1[0]);
 
-    // for (size_t i = 0; i < v1.size(); i++)
-    //     ASSERT(*v1_it++ == arr1[i]);
-    // ASSERT(v1_it == v1.end());
+    for (size_t i = 0; i < v1.size(); i++)
+        ASSERT(*v1_it++ == arr1[i]);
+    ASSERT(v1_it == v1.end());
 
-    // v1_it--;
-    // for (size_t i = 0; i < v1.size(); i++)
-    //     ASSERT(*v1_it-- == arr1[4 - i]);
+    v1_it--;
+    for (size_t i = 0; i < v1.size(); i++)
+        ASSERT(*v1_it-- == arr1[4 - i]);
 }
 
 static void testEnd()
@@ -342,12 +319,6 @@ static void testRbegin()
     ft::vector<int> v1(arr1, arr1 + 5);
 
     ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
-    //std::cout << v1_it[0] << " " << v1_it[-1] << " " << v1_it[-2] << " " << v1_it[-3] << " " << v1_it[-4] << " `!**!!!!!\n";
-
-    // ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
-    // for (; v1_it != v1.rend(); v1_it++)
-
-
     ASSERT(v1_it[0] == 5);
     ASSERT(v1_it[1] == 4);
     ASSERT(v1_it[2] == 3);
@@ -373,7 +344,6 @@ static void testRbegin()
 
     for (size_t i = 0; i < v1.size(); i++)
         ASSERT(*v1_it++ == arr1[4 - i]);
-    //std::cout << "v1_it " << *v1_it << " -> " << *(v1.rend() + 1)  << std::endl;
     ASSERT(v1_it == v1.rend());
 }
 
@@ -385,7 +355,6 @@ static void testRend()
     ft::vector<int> v1(arr1, arr1 + 5);
 
     ft::vector<int>::reverse_iterator v1_it = v1.rend();
-    std::cout << v1_it[-1] << " " << v1_it[-2] << " " << v1_it[-3] << " " << v1_it[-4] << " " << v1_it[-5] << " `!!!!!!\n";
     ASSERT(v1_it[-1] == 1);
     ASSERT(v1_it[-2] == 2);
     ASSERT(v1_it[-3] == 3);
@@ -424,19 +393,14 @@ static void testResize()
         ASSERT(v1[i] == int());
 
     v1.resize(10, 42);
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout<< i << " = " << v1[i] << std::endl;
-    }
     ASSERT(v1.size() == 10);
     ASSERT(v1.capacity() >= 10);
     for (size_t i = 0; i < 5; i++)
         ASSERT(v1[i] == arr1[i]);
     for (size_t i = 5; i < 7; i++)
         ASSERT(v1[i] == int());
-    for (size_t i = 7; i < v1.size(); i++){
+    for (size_t i = 7; i < v1.size(); i++)
         ASSERT(v1[i] == 42);
-        //std::cout<< i << " = " << v1[i] << std::endl;
-    }
 
     size_t prev_capacity = v1.capacity();
     v1.resize(10);
@@ -708,33 +672,15 @@ static void testInsert()
     ASSERT(v1[2] == 2);
     ASSERT(*it == 0);
 
-    for (size_t i = 0; i < v1.size(); i++)
-    {
-        std::cout << v1[i];
-        /* code */
-    }
-    std::cout << std::endl;
     v1.insert(v1.begin() + 1, arr1 + 1, arr1 + 4);
-    for (size_t i = 0; i < v1.size(); i++)
-    {
-        std::cout << v1[i];
-        /* code */
-    }
-    std::cout << std::endl;
     ASSERT(v1.size() == 6);
     ASSERT(v1.capacity() >= 6);
     ASSERT(v1[0] == 0);
-   // std::cout << v1[0] << " <-v1 0\n";
     ASSERT(v1[1] == 2);
-   // std::cout << v1[1] << " <-v1 1\n";
     ASSERT(v1[2] == 3);
-    //std::cout << v1[2] << " <-v1 2\n";
     ASSERT(v1[3] == 4);
-    //std::cout << v1[3] << " <-v1 3\n";
     ASSERT(v1[4] == 1);
-   // std::cout << v1[4] << " <-v1 4\n";
     ASSERT(v1[5] == 2);
-    //std::cout << v1[5] << " <-v1 5\n";
 
     v1.insert(v1.begin() + 2, (size_t)3, (int)-1);
     ASSERT(v1.size() == 9);
@@ -895,27 +841,9 @@ static void testSwapFunc()
 
     int             arr1[5] = {1, 2, 3, 4, 5};
     ft::vector<int> v1(arr1, arr1 + 5);
-    // for (size_t i = 0; i < v1.size(); i++){
-    //     std::cout<< v1[i] << " ";
-    // }
-    // std::cout << std::endl;
     ft::vector<int> v2(arr1 + 1, arr1 + 4);
-    // for (size_t i = 0; i < v2.size(); i++){
-    //     std::cout<< v2[i] << " ";
-    // }
-    // std::cout << std::endl;
 
     std::swap(v1, v2);
-
-    // for (size_t i = 0; i < v1.size(); i++){
-    //     std::cout<< v1[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < v2.size(); i++){
-    //     std::cout<< v2[i] << " ";
-    // }
-    // std::cout << std::endl;
-
     ASSERT(v1.size() == 3);
     ASSERT(v1.capacity() >= 3);
     for (size_t i = 0; i < 3; i++)
@@ -925,73 +853,49 @@ static void testSwapFunc()
     for (size_t i = 0; i < 5; i++)
         ASSERT(v2[i] == arr1[i]);
 
-    //std::cout << "+++++++++++++third\n";
-    // for (size_t i = 0; i < v1.size(); i++){
-    //     std::cout<< v1[i] << " ! ";
-    // }
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < v2.size(); i++){
-    //     std::cout<< v2[i] << " ! ";
-    // }
-    // std::cout << std::endl;
-
     std::swap(v1, v2);
-
-    std::cout << "---------third\n";
-    for (size_t i = 0; i < v1.size(); i++){
-        std::cout<< v1[i] << " ! ";
-    }
-    std::cout << std::endl;
-    for (size_t i = 0; i < v2.size(); i++){
-        std::cout<< v2[i] << " ! ";
-    }
-    std::cout << std::endl;
-
     ASSERT(v2.size() == 3);
     ASSERT(v2.capacity() >= 3);
     for (size_t i = 0; i < 3; i++)
         ASSERT(v2[i] == arr1[i + 1]);
     ASSERT(v1.size() == 5);
     ASSERT(v1.capacity() >= 3);
-    for (size_t i = 0; i < 5; i++){
+    for (size_t i = 0; i < 5; i++)
         ASSERT(v1[i] == arr1[i]);
-        //std::cout<< arr1[i] << " = " << v1[i] << std::endl;
-    }
 }
 
 void vectorTest()
 {
     testContainer = "vector";
 
-    testInsert();
-
-    // free(): double free detected in tcache 2
-    // Aborted (core dumped)
-
-    // //pass all tests
-    testOperatorAssign();
-    testSwapFunc();
-    testOperatorEqual();
+    testConstructorDefault();
+    testConstructorFill();
+    testConstructorRange();
     testConstructorCopy();
-    testRbegin();
-    testRend();
+    testOperatorAssign();
+
     testBegin();
     testEnd();
-    testConstructorRange();
+    testRbegin();
+    testRend();
+
+    testResize();
     testReserve();
+
     testOperatorBracket();
     testAt();
     testFront();
     testBack();
-    testConstructorDefault();
-    testConstructorFill();
-    testOperatorCompar();
+
+    testAssign();
+    testPushBack();
     testPopBack();
+    testInsert();
     testErase();
     testSwap();
     testClear();
-    testAssign();
-    testPushBack();
-    testResize();
 
+    testOperatorEqual();
+    testOperatorCompar();
+    testSwapFunc();
 }

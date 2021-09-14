@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 
 # include "vector.hpp"
+# include "stack.hpp"
 
 static pid_t testSegvPid;
 extern std::string testName;
@@ -69,6 +70,8 @@ void vectorTest();
 /*
 ** list_test.cpp
 */
+
+void stackTest();
 
 
 #endif
