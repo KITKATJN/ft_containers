@@ -206,7 +206,7 @@ private:
                     rightRotate(x->parent);
                     s = x->parent->left;
                 }
-                if (s->right->color == false && s->right->color == false) //  одинаковое условие
+                if (s->right->color == false && s->left->color == false)
                 {
                     s->color = true;
                     x = x->parent;
@@ -293,12 +293,10 @@ private:
         delete z;
         if (y_orig_color == false)
             fixDelete(x);
-        std::cout << "33333\n";
     }
 
     void fixInsert(NodePtr k)
     {
-        std::cout << "1111\n";
         NodePtr u;
         while (k->parent->color == true)
         {
@@ -350,7 +348,6 @@ private:
                 break ;
         }
         m_root->color = false;
-        std::cout << "1111222222\n";
     }
 
 };
