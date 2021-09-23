@@ -7,13 +7,59 @@ struct Node
     Node *parent;
     Node *left;
     Node *right;
-    bool color;
+    bool color; //true = red false = black
 };
 
 class rbtree
 {
 public:
     typedef Node *NodePtr;
+
+    void delete(int data)
+    {
+        deleteNode(this->m_root, data);
+    }
+
+    void insert(int key)
+    {
+        NodePtr node = new Node;
+        node->parent = nullptr;
+        node->data = key;
+        node->left = m_NodeNULL;
+        node->right = m_NodeNULL;
+        node->color = true;
+
+        NodePtr y = nullptr;
+        NodePtr x = this->m_root;
+
+        while (x != m_NodeNULL)
+        {
+            y = x;
+            if (node->data < x->data)
+                x = x->left;
+            else
+                x = x->right;
+        }
+
+        // y now parent of x
+        if (y == nullptr)
+            m_root = node;
+        else if (node->data < y->data)
+            y->left = node;
+        else
+            y->right = node;
+
+        if (node->parent == nullptr)
+        {
+            node->color = false;
+            return ;
+        }
+
+        if (node->parent->parent == nullptr)
+            return ;
+        
+        fixInsert(node);
+    }
 
     void rightRotate(NodePtr y)
     {
@@ -81,6 +127,62 @@ private:
     NodePtr m_root;
     NodePtr m_NodeNULL;
 
+    void deleteNode(NodePtr node, int key);
+
+    void fixInsert(NodePtr k)
+    {
+        NodePtr u;
+        while (k->parent->color == true)
+        {
+            if (k->parent->parent->right == k->parent)
+            {
+                u = k->parent->parent->left;
+                if (u->color)
+                {
+                    u->color = false;
+                    k->parent->color = false;
+                    k->parent->parent->color = true;
+                    k = k->parent->parent;
+                }
+                else
+                {
+                    if (k == k->parent->left)
+                    {
+                        k = k->parent;
+                        rightRotate(k);
+                    }
+                    k->parent->color = false;
+                    k->parent->parent->color = true;
+                    leftRotate(k->parent->parent);
+                }
+            }
+            else
+            {
+                u = k->parent->parent->right;
+                if (u->color)
+                {
+                    u->color = false;
+                    k->parent->color = false;
+                    k->parent->parent->color = true;
+                    k = k->parent->parent;
+                }
+                else
+                {
+                    if (k == k->parent->right)
+                    {
+                        k = k->parent;
+                        leftRotate(k);
+                    }
+                    k->parent->color = false;
+                    k->parent->parent->color = 1;
+                    rightRotate(k->parent->parent);
+                }
+            }
+            if ( k == m_root)
+                break;
+        }
+        m_root->color = false;
+    }
 
 };
 
