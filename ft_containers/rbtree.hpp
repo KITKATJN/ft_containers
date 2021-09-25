@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 
+namespace ft
+{
 struct Node
 {
     int data;
@@ -62,7 +64,7 @@ public:
 
         if (node->parent->parent == nullptr)
             return ;
-        
+
         fixInsert(node);
     }
 
@@ -141,7 +143,7 @@ public:
               std::cout<<"L----";
               indent += "|    ";
            }
-            
+
            std::string sColor = root->color?"RED":"BLACK";
            std::cout<<root->data<<"("<<sColor<<")"<<std::endl;
            printHelper(root->left, indent, false);
@@ -367,7 +369,6 @@ int main() {
     bst.prettyPrint();
     return 0;
 }
-
-
+}
 
 #endif /* RBTREE */
