@@ -353,7 +353,7 @@ public:
         // this->m_allocator = m_allocator_swap;
 
         std::swap(m_size, x.m_size);
-        std::swap(m_capacity, x.m_capacity);
+        std::swap(m_capacity, x.m_capacity); // change to ft::swap
         std::swap(m_vector, x.m_vector);
     }
 

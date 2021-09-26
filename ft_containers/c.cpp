@@ -1,29 +1,16 @@
-#ifndef RBTREE
-#define RBTREE
+#ifndef RBTREE_HPP
+#define RBTREE_HPP
 
 #include "iterator.hpp"
-#include "enable_if.hpp"
 #include <string>
 #include <iostream>
+#include <memory>
+#include <limits>
+#include <algorithm>
 
 namespace ft
 {
 
-template <typename T>
-struct Node
-{
-    T    *data;
-    Node *parent;
-    Node *left;
-    Node *right;
-    bool color; //true = red false = black
-
-    Node(T *data) {
-        this->data = data;
-        left = right = parent = NULL;
-        this->color = true;
-    }
-};
 
 template <typename T, typename Compare = ft::less<T>, typename Alloc = std::allocator<T>, typename NAlloc = std::allocator<Node<T> > >
 class rbtree
@@ -49,11 +36,15 @@ public:
         deleteNode(this->m_root, data);
     }
 
-    void insert(int key)
+    void insert(T key)
     {
-        NodePtr node = new Node;
+        pointer p = m_allocator.allocate(1);
+        m_allocator.construct(p, key);
+
+        NodePtr node  = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(node, NodePtr(p));
         node->parent = NULL;
-        node->data = key;
+        node->data = &key;
         node->left = m_end;
         node->right = m_end;
         node->color = true;
@@ -90,6 +81,8 @@ public:
 
         fixInsert(node);
     }
+
+
 
     void rightRotate(NodePtr x) {
         NodePtr y = x->left;
@@ -141,19 +134,46 @@ public:
         return node;
     }
 
-    rbtree( )
-    {
-        m_end = new Node;
-        m_end->color = false;
-        m_end->left = NULL;
-        m_end->right = NULL;
-        m_root = m_end;
+    explicit rbtree(const compare_type comp = Compare(), const allocator_type &alloc = Alloc(), const nalloc_type &nalloc = NAlloc()) :
+        m_compare(comp), m_allocator(alloc), m_nodeAllocator(nalloc), m_root(NULL), m_size(0) {
+        m_end = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
     }
 
     ~rbtree()
     {
-        //delete m_end;
+        clear();
+        m_nodeAllocator.destroy(m_end);
+        m_nodeAllocator.deallocate(m_end, 1);
     }
+
+    rbtree(const rbtree &c) : m_compare(c.m_compare), m_allocator(c.m_allocator), m_nodeAllocator(c.m_nodeAllocator), m_root(NULL),  m_size(0)
+    {
+        m_end = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
+        insert(c.begin(), c.end());
+    }
+
+    rbtree &operator=(const rbtree &c)
+    {
+        if(this == &c)
+            return (*this);
+        m_compare = c.m_compare;
+        m_allocator = c.m_allocator;
+        m_nodeAllocator = c.m_nodeAllocator;
+        insert(c.begin(), c.end());
+        return(*this);
+    }
+
+    void clear()
+    {
+        if (m_size == 0)
+            return ;
+        m_size = 0;
+        fixClear(m_root);
+        m_root = NULL;
+    }
+
 
     void printHelper(NodePtr root, std::string indent, bool last) {
         // print the tree structure on the screen
@@ -188,6 +208,18 @@ private:
     allocator_type      m_allocator;
     nalloc_type         m_nodeAllocator;
     size_type           m_size;
+
+    void fixClear(NodePtr n)
+    {
+        if (n == NULL)
+            return ;
+        fixClear(n->right);
+        fixClear(n->left);
+        m_allocator.destroy(n->data);
+        m_allocator.deallocate(n->data, 1);
+        m_nodeAllocator.destroy(n);
+        m_nodeAllocator.deallocate(n, 1);
+    }
 
     void fixDelete(NodePtr x)
     {
@@ -271,7 +303,7 @@ private:
         v->parent = u->parent;
     }
 
-    void deleteNode(NodePtr node, int key)
+    void deleteNode(NodePtr node, T key)
     {
         NodePtr z = m_end;
         NodePtr x,y;
@@ -398,4 +430,4 @@ int main() {
 }
 }
 
-#endif /* RBTREE */
+ #endif /* RBTREE */

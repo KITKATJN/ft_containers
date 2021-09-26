@@ -2,7 +2,7 @@
 #define ITERATOR
 
 #include <stddef.h>
-#include "rbtree.hpp"
+#include "enable_if.hpp"
 
 namespace ft {
 
@@ -37,7 +37,7 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 	template <class T>
 	class iterator_traits<const T*> {
 	public:
-		typedef std::ptrdiff_t					difference_type;
+		typedef ptrdiff_t					difference_type;
 		typedef T								value_type;
 		typedef const T*						pointer;
 		typedef const T&						reference;
