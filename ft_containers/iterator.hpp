@@ -2,6 +2,7 @@
 #define ITERATOR
 
 #include <stddef.h>
+#include "rbtree.hpp"
 
 namespace ft {
 
@@ -21,15 +22,6 @@ struct forward_iterator_tag       : public input_iterator_tag         {};
 struct bidirectional_iterator_tag : public forward_iterator_tag       {};
 struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-// template<class T>
-// struct iterator_traits<T*>
-// {
-//     typedef ptrdiff_t difference_type;
-//     typedef T value_type;
-//     typedef T* pointer;
-//     typedef T& reference;
-//     typedef random_access_iterator_tag iterator_category;
-// };
 
 	template <class T>
 	class iterator_traits<T*> {
@@ -63,88 +55,10 @@ struct iterator
     typedef Category  iterator_category;
 };
 
-// template <class RanIt>
-// class reverse_iterator : public iterator <
-//     typename iterator_traits<RanIt>::iterator_category,
-//     typename iterator_traits<RanIt>::value_type,
-//     typename iterator_traits<RanIt>::difference_type,
-//     typename iterator_traits<RanIt>::pointer,
-//     typename iterator_traits<RanIt>::reference>{
-// public:
-//     typedef reverse_iterator<RanIt> Myt;
-//     typedef typename iterator_traits<RanIt>::difference_type D;
-//     typedef typename iterator_traits<RanIt>::pointer Pt;
-//     typedef typename iterator_traits<RanIt>::reference Rt;
-//     typedef RanIt iterator_type;
-
-//     reverse_iterator() {}
-//     explicit reverse_iterator(RanIt X) : current(X){}
-
-//     template<class U>
-//     reverse_iterator(const reverse_iterator<U>& X)
-//     : current(X.base()) {}
-
-//     RanIt base() const { return (current); }
-
-//     Rt operator*() const
-//     { RanIt Tmp = current;
-//     return (*--Tmp); }
-
-//     Pt operator->() const
-//     { return (&**this); }
-
-//     Myt& operator++()
-//     { --current;
-//     return (*this); }
-
-//     Myt operator++(int)
-//     { Myt Tmp = *this;
-//     --current;
-//     return (Tmp); }
-
-//     Myt& operator--()
-//     { ++current;
-//     return (*this); }
-
-//     Myt operator--(int)
-//     { Myt Tmp = *this;
-//     ++current;
-//     return (Tmp); }
-
-//     bool Eq(const Myt& Y) const
-//     { return (current == Y.current); }
-
-//     Myt& operator+=(D N)
-//     { current -= N;
-//     return (*this); }
-
-//     Myt operator*(D N) const
-//     { return (Myt(current - N)); }
-
-//     Myt& operator-=(D N)
-//     { current += N;
-//     return (*this); }
-
-//     Myt operator-(D N) const
-//     { return (Myt(current + N)); }
-
-//     Rt operator [] (D N) const
-//     { return (*(*this + N)); }
-
-//     bool Lt (const Myt& Y) const
-//     { return (Y.current < current); }
-
-//     D Mi (const Myt& Y) const
-//     { return (Y.current - current); }
-
-// protected:
-//     RanIt current;
-// };
-
 template <class Iterator>
 	class reverse_iterator : public ft::iterator<ft::random_access_iterator_tag, Iterator> {
 	public:
-        typedef reverse_iterator<Iterator> Myt; 
+        typedef reverse_iterator<Iterator> Myt;
 		typedef Iterator														iterator_type;
 		typedef typename ft::iterator_traits<Iterator>::iterator_category		iterator_category;
 		typedef typename ft::iterator_traits<Iterator>::value_type				value_type;
@@ -234,111 +148,127 @@ reverse_iterator<Iter> operator-( typename reverse_iterator<Iter>::difference_ty
     return reverse_iterator<Iter>(it + n);
 }
 
-// template<class T, class D, class Pt, class Rt>
-//     class Ptrit : public iterator<ft::random_access_iterator_tag,
-//         T, D, Pt, Rt> {
-// public:
-//     typedef Ptrit<T, D, Pt, Rt> Myt;
-//     Ptrit () {}
-//     explicit Ptrit(Pt P) : current(P) {}
-//     Ptrit(const Ptrit<T, D, Pt, Rt>& X)
-//     : current(X.base ()) {}
+template <class T, class P, class R>
+class bidirectional_iterator {
+public:
+	typedef T															value_type;
+	typedef P															pointer;
+	typedef R															reference;
+	typedef ptrdiff_t													difference_type;
+	typedef ft::bidirectional_iterator_tag								iterator_category;
+	typedef bidirectional_iterator<T, P, R>								It;
+	typedef Node<value_type>											link_type;
 
-//     Pt base() const
-//     { return (current); }
+	bidirectional_iterator() : m_point(NULL) {}
+	bidirectional_iterator(Node<value_type> *p) : m_point(p) {}
+	bidirectional_iterator(It const &rhs) : m_point(rhs.base()) {}
+	Node<value_type> *base() const { return m_point; }
+	virtual ~bidirectional_iterator() {}
 
-//     Rt operator*() const
-//     { return (*current); }
+	bidirectional_iterator &operator=(const It  &rhs) {
+			if (this == &rhs)
+				return *this;
+			this->m_point = rhs.base();
+			return *this;
+		}
 
-//     Pt operator->() const
-//     { return (&**this); }
+	reference operator*() const { return *m_point->data; }
+	pointer operator->() const { return m_point->data; }
 
-//     Myt& operator++()
-//     { ++current;
-//     return (*this); }
+	It&				operator++()
+	{
+		if (m_point->color && m_point->parent == NULL)
+			return *this;
+		if (m_point->right->right == NULL)
+		{
+			link_type node = m_point->parent;
+			while (node->parent != NULL && node->right == m_point)
+			{
+				m_point = node;
+				node = node->parent;
+			}
+			if (m_point->right != node)
+				m_point = node;
+		}
+		else
+		{
+			m_point = m_point->right;
+			while (m_point->left->left != NULL)
+				m_point = m_point->left;
+		}
+		return *this;
+	}
 
-//     Myt operator++(int)
-//     { //Myt tmp = *this;
-//     Myt tmp(*this);
-//     ++current;
-//     return (tmp); }
+	It operator++(int)
+	{
+		It tmp(*this);
 
-//     Myt& operator--()
-//     { --current;
-//     return (*this); }
+		operator++();
+		return tmp;
+	}
 
-//     Myt& operator--(int)
-//     {//Myt tmp = *this;
-//     Myt tmp(*this);
-//     //current--;
-//     --this->current;
-//     return (tmp);} // хрень, надо менять
+	const It operator++(int)
+	{
+		It it(*this);
+		++(*this);
+		return it;
+	}
 
-//     bool operator==(int Y) const
-//     {return (current == (Pt)Y);}
+	It &operator--()
+	{
+		if (m_point->color && m_point->parent == NULL)
+		{
+			m_point = m_point->right;
+		}
+		else if (m_point->left->left != NULL)
+		{
+			m_point = m_point->left;
+			while (m_point->right->right != NULL)
+				m_point = m_point->right;
+		}
+		else
+		{
+			link_type node = m_point->parent;
+			while (m_point == node->left)
+			{
+				m_point = node;
+				node = node->parent;
+			}
+			m_point = node;
+		}
+		return *this;
+	}
 
-//     bool operator==(const Myt& Y)const
-//     {return (current == Y.current);}
+	const It operator--(int)
+	{
+		It it(*this);
+		--(*this);
+		return (it);
+	}
 
-//     bool operator!=(const Myt& Y) const
-//     {return (!(*this == Y));}
+private:
+	link_type *m_point;
+};
 
-//     Myt& operator+(D n)
-//     {
-//     current += n;
-//     return *this;
-//     }
+template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
+	bool operator==(bidirectional_iterator<T, FPointer, FReference> const &first, bidirectional_iterator<T, SPointer, SReference> const &second) {
+		return(first.base() == second.base());
+	}
 
-//     Myt operator+(D n) const
-//     {return (Myt(current + n));}
-
-//     Myt& operator-(D n)
-//     {
-//     current -= n;
-//     return *this;
-//     }
-//     Myt operator-(D n) const
-//     {return (Myt(current - n));}
-
-//     D operator-(const Myt& x) const
-//     {return (current - x.current);}
-
-//     Rt operator[](D n) const
-//     {return (*(current + n));}
-
-//     bool operator<(const Myt& x) const
-//     {return ((current < x.current));}
-
-//     bool operator>(const Myt& x) const
-//     {return ((x.current < current));}
-
-//     bool operator<=(const Myt& x) const
-//     {return (!(x.current < current));}
-
-//     bool operator>=(const Myt& x) const
-//     {return (!(current < x.current));}
-
-//     Ptrit &operator=(const Ptrit& op)
-//     {
-//         if (this == &op)
-//         return (*this);
-//         this->current = op.current;
-//         return (*this);
-//     }
-
-// protected:
-//     Pt current;
-// };
+	template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
+	bool operator!=(bidirectional_iterator<T, FPointer, FReference> const &first, bidirectional_iterator<T, SPointer, SReference> const &second) {
+		return(first.base() != second.base());
+	}
 
 template <class T, class P, class R>
-	class random_access_iterator : public std::iterator<std::random_access_iterator_tag, T> {
+class random_access_iterator : public std::iterator<std::random_access_iterator_tag, T> {
 	public:
 		typedef T															value_type;
 		typedef P															pointer;
 		typedef R															reference;
 		typedef random_access_iterator<T, P, R>								It;
-		typedef std::ptrdiff_t												difference_type;
-		typedef typename std::random_access_iterator_tag					iterator_category;
+		typedef ptrdiff_t													difference_type;
+		typedef typename ft::random_access_iterator_tag						iterator_category;
 
 		random_access_iterator() : _ptr(0) {}
 
@@ -356,13 +286,13 @@ template <class T, class P, class R>
 		}
 
 		reference		operator*() { return *this->_ptr; }
-	
+
 		pointer			operator->() { return this->_ptr; }
 
 		reference		operator[](difference_type index) { return this->_ptr[index]; }
         reference		operator[](difference_type index) const { return this->_ptr[index]; }
 
-		It&				operator++() { ++this->_ptr; return *this; } 
+		It&				operator++() { ++this->_ptr; return *this; }
 		It&				operator--() { --this->_ptr; return *this; }
 		It				operator++(int) { It it(*this); ++this->_ptr; return it; }
 		It				operator--(int) { It it(*this); --this->_ptr; return it; }
