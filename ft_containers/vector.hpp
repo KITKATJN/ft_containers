@@ -5,6 +5,7 @@
 #include <limits>
 #include <algorithm>
 #include <iostream>
+#include <cstring>
 #include "iterator.hpp"
 #include "enable_if.hpp"
 #include "lexicographical_compare.hpp"
@@ -316,7 +317,7 @@ public:
     void insert (iterator pos, InputIterator first, typename ft::enable_if<
                     !std::numeric_limits<InputIterator>::is_integer,
                         InputIterator>::type last)
-    {     
+    {
         size_type	dist = static_cast<size_type>(pos - this->begin());
 		size_type iterDistance = static_cast<size_type>(last - first);
 		//iterator	res = this->begin();

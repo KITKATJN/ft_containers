@@ -26,7 +26,7 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 	template <class T>
 	class iterator_traits<T*> {
 	public:
-		typedef std::ptrdiff_t					difference_type;
+		typedef ptrdiff_t					difference_type;
 		typedef T								value_type;
 		typedef T*								pointer;
 		typedef T&								reference;
@@ -199,13 +199,13 @@ public:
 		return *this;
 	}
 
-	It operator++(int)
-	{
-		It tmp(*this);
+	// It operator++(int)
+	// {
+	// 	It tmp(*this);
 
-		operator++();
-		return tmp;
-	}
+	// 	operator++();
+	// 	return tmp;
+	// }
 
 	const It operator++(int)
 	{
@@ -261,7 +261,7 @@ template<typename T, typename FPointer, typename FReference, typename SPointer, 
 	}
 
 template <class T, class P, class R>
-class random_access_iterator : public std::iterator<std::random_access_iterator_tag, T> {
+class random_access_iterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 	public:
 		typedef T															value_type;
 		typedef P															pointer;
