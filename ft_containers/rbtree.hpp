@@ -8,11 +8,12 @@
 #include <memory>
 #include <limits>
 #include <algorithm>
+#include <functional>
 
 namespace ft
 {
 
-template <typename T, typename Compare = ft::less<T>, typename Alloc = std::allocator<T>, typename NAlloc = std::allocator<Node<T> > >
+template <typename T, typename Compare = std::less<T>, typename Alloc = std::allocator<T>, typename NAlloc = std::allocator<Node<T> > >
 class rbtree
 {
 public:
@@ -31,54 +32,89 @@ public:
     typedef size_t                                                      size_type;
     typedef Node<value_type>                                            *NodePtr;
 
-    void delete_(int data)
+    void delete_(T data)
     {
         deleteNode(this->m_root, data);
     }
 
-    void insert(T key)
+    Node<value_type> *_move(const_reference val) const
+		{
+			Node<value_type> *x = m_root;
+			Node<value_type> *y = NULL;
+
+			while(x)
+			{
+				y = x;
+				if(m_compare(*x->data, val))
+					x = y->right;
+				else if (m_compare(val, *x->data))
+					x = y->left;
+				else
+					return (y);
+			}
+			return (y);
+		}
+
+    ft::pair<iterator, bool> insert( const value_type& val )
     {
-        NodePtr node = new Node;
-        node->parent = NULL;
-        node->data = key;
-        node->left = m_end;
-        node->right = m_end;
-        node->color = true;
+        if(m_root)
+            m_root->parent = NULL;
 
-        NodePtr y = NULL;
-        NodePtr x = this->m_root;
-
-        while (x != m_end)
-        {
-            y = x;
-            if (node->data < x->data)
-                x = x->left;
-            else
-                x = x->right;
+        pointer p = m_allocator.allocate(1);
+        m_allocator.construct(p, val);
+        //std::cout << "111111111113\n";
+        NodePtr no = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(no, Node<value_type>(p));
+        //std::cout << "111111111114\n";
+        if(!m_root) {
+            m_size++;
+            m_root = no;
+            m_root->color = false;
+            return (ft::make_pair(iterator(m_root), true));
         }
 
-        // y now parent of x
-        node->parent = y;
-        if (y == NULL)
-            m_root = node;
-        else if (node->data < y->data)
-            y->left = node;
+        // Node<value_type> *res = _move(val);
+
+        // Node<value_type> *x = _root;
+        // Node<value_type> *y = NULL;
+
+        // while(x)
+        // {
+        //     y = x;
+        //     if(m_compare(*x->value, val))
+        //         x = y->right;
+        // 	else if (m_compare(val, *x->value))
+        //         x = y->left;
+        //     else
+        //         return (y);
+        // }
+        // return (y);
+        //std::cout << "111111111115\n";
+        NodePtr res = _move(val);
+
+        //std::cout << "11111111111\n";
+        if(!m_compare(*res->data, val) && !m_compare(val, *res->data)) {
+            fixClear(no);
+            m_root->parent = m_end;
+            m_end->left = m_root;
+            return (ft::make_pair(iterator(res), false));
+        }
+        m_size++;
+        if(m_compare(*res->data, val))
+            res->right = no;
         else
-            y->right = node;
+            res->left = no;
+        no->parent = res;
+        //std::cout << "11111111111\n";
+        fixInsert(no);
 
-        if (node->parent == NULL)
-        {
-            node->color = false;
-            return ;
-        }
+        m_root->parent = m_end;
+        m_end->left = m_root;
 
-        if (node->parent->parent == NULL)
-            return ;
-
-        fixInsert(node);
+        return (ft::make_pair(iterator(no), true));
     }
 
-    
+
 
     void rightRotate(NodePtr x) {
         NodePtr y = x->left;
@@ -139,8 +175,8 @@ public:
     ~rbtree()
     {
         clear();
-        m_nodeAllocator.destroy(_end);
-        m_nodeAllocator.deallocate(_end, 1);
+        m_nodeAllocator.destroy(m_end);
+        m_nodeAllocator.deallocate(m_end, 1);
     }
 
     rbtree(const rbtree &c) : m_compare(c.m_compare), m_allocator(c.m_allocator), m_nodeAllocator(c.m_nodeAllocator), m_root(NULL),  m_size(0)
@@ -173,8 +209,10 @@ public:
 
     void printHelper(NodePtr root, std::string indent, bool last) {
         // print the tree structure on the screen
-        if (root != m_end) {
+        //std::cout << "22222222222\n";
+        if (root != NULL) {
            std::cout<<indent;
+           //std::cout << "222222222225\n";
            if (last) {
               std::cout<<"R----";
               indent += "     ";
@@ -182,28 +220,25 @@ public:
               std::cout<<"L----";
               indent += "|    ";
            }
-
+            //std::cout << root<< "222222222226\n";
            std::string sColor = root->color?"RED":"BLACK";
-           std::cout<<root->data<<"("<<sColor<<")"<<std::endl;
+           //std::cout << "222222222228\n";
+           std::cout<<*root->data<<"("<<sColor<<")"<<std::endl;
            printHelper(root->left, indent, false);
+           //std::cout << "222222222227\n";
            printHelper(root->right, indent, true);
         }
         // cout<<root->left->data<<endl;
     }
 
     void prettyPrint() {
+        //std::cout << "11111111111\n";
         if (m_root) {
             printHelper(this->m_root, "", true);
         }
     }
 
 private:
-    NodePtr             m_root;
-    NodePtr             m_end;
-    compare_type        m_compare;
-    allocator_type      m_allocator;
-    nalloc_type         m_nodeAllocator;
-    size_type           m_size;
 
     void fixClear(NodePtr n)
     {
@@ -407,23 +442,15 @@ private:
         m_root->color = false;
     }
 
+    NodePtr             m_root;
+    NodePtr             m_end;
+    Compare             m_compare;
+    allocator_type      m_allocator;
+    nalloc_type         m_nodeAllocator;
+    size_type           m_size;
+
 };
 
-
-int main() {
-    rbtree<int, int> bst;
-    bst.insert(8);
-    bst.insert(18);
-    bst.insert(5);
-    bst.insert(15);
-    bst.insert(17);
-    bst.insert(25);
-    bst.insert(40);
-    bst.insert(80);
-    //bst.delete_(25);
-    bst.prettyPrint();
-    return 0;
-}
 }
 
  #endif /* RBTREE */
