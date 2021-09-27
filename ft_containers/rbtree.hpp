@@ -171,7 +171,7 @@ public:
         // }
         // return (y);
         //std::cout << "111111111115\n";
-        NodePtr res = findToWhereInsert(val);
+        NodePtr res = findNode(val);
 
         //std::cout << "11111111111\n";
         if(!m_compare(*res->data, val) && !m_compare(val, *res->data)) {
@@ -232,31 +232,113 @@ public:
 
     size_type erase( const value_type& key )
     {
-        if(!m_root)
-				return(0);
-			iterator it = find(key);
-			if (it == end())
-				return (0);
-			if(*it == key)
-			{
-				erase(it);
-				return(1);
-			}
-			return (0);
-        // if (m_root == NULL || find(key) == end())
-        //     return 0;
-        // erase(find(key));
-        // return 1;
+        // if(!m_root)
+		// 		return(0);
+		// 	iterator it = find(key);
+		// 	if (it == end())
+        //     {
+        //         std::cout << "d\n";
+        //         return (0);
+        //     }
+		// 	if(*it == key)
+		// 	{
+		// 		erase(it);
+		// 		return(1);
+		// 	}
+		// 	return (0);
+        if (m_root == NULL || find(key) == end())
+            return 0;
+        erase(find(key));
+        return 1;
+    }
+
+    void swap( rbtree& other )
+    {
+        ft::swap(m_compare, other.m_compare);
+        ft::swap(m_allocator, other.m_allocator);
+        ft::swap(m_nodeAllocator, other.m_nodeAllocator);
+        ft::swap(m_end, other.m_end);
+        ft::swap(m_root, other.m_root);
+        ft::swap(m_size, other.m_size);
     }
 
 //////////////////////////////*********Modifiers*********//////////////////////////////
+
+
+
+//////////////////////////////*********Lookup*********//////////////////////////////
+
+    size_type count( const value_type& key ) const
+    { return find(key) == end() ? 0 : 1; }
+
+
+    iterator find( const value_type& value )
+    {
+        NodePtr tmp = findNode(value);
+
+        if(!m_compare(*tmp->data, value) && !m_compare(value,*tmp->data))
+            return(iterator(tmp));
+        return(end());
+    }
+
+    const_iterator find( const value_type& value ) const
+    {
+        NodePtr tmp = findNode(value);
+
+        if(!m_compare(*tmp->data, value) && !m_compare(value,*tmp->data))
+            return(iterator(tmp));
+        return(end());
+    }
+
+    ft::pair<iterator,iterator> equal_range( const value_type& key )
+    { return make_pair<iterator,iterator>(lower_bound(), upper_bound()); }
+
+    ft::pair<const_iterator,const_iterator> equal_range( const value_type& key ) const;
+
+    iterator lower_bound( const value_type& key )
+    {
+        iterator start = begin();
+        for (; start != end(); start++)
+        {
+            if ((!m_compare(*start, key) && !m_compare(key, start)) || m_compare(key, *start))
+                return start;
+        }
+        return end();
+    }
+
+    const_iterator lower_bound( const value_type& key ) const;
+
+    iterator upper_bound( const value_type& key )
+    {
+        iterator start = begin();
+        for (; start != end(); start++)
+        {
+            if (m_compare(key, *start))
+                return start;
+        }
+        return end();
+    }
+
+    const_iterator upper_bound( const value_type& key ) const;
+
+//////////////////////////////*********Lookup*********//////////////////////////////
+
+
+//////////////////////////////*********Observers*********//////////////////////////////
+
+    compare_type value_comp() const
+    { return m_compare; }
+
+
+//////////////////////////////*********Observers*********//////////////////////////////
+
 
     void delete_(T data)
     {
         deleteNode(this->m_root, data);
     }
 
-    NodePtr findToWhereInsert(const_reference val) const
+    NodePtr findNode(const_reference val) const
     {
         NodePtr x = m_root;
         NodePtr y = NULL;
@@ -322,50 +404,6 @@ public:
     //     return *f->m_point->data;
     // }
 
-    iterator find( const value_type& value )
-    {
-        // NodePtr x = m_root;
-        // NodePtr y = NULL;
-
-        // while(x)
-        // {
-        //     y = x;
-        //     if (m_compare(*x->data, val))
-        //         x = y->right;
-        //     else if (!m_compare(*x->data, val)) //why it.s not work/
-        //         x = y->left;
-        //     else
-        //     {
-        //         return (y);
-        //     }
-        // }
-        // return (end());
-        Node<value_type> *tmp = findToWhereInsert(value);
-
-			if(!m_compare(*tmp->data, value) && !m_compare(value, *tmp->data))
-				return(iterator(tmp));
-			return(end());
-    }
-
-    const_iterator find( const value_type& val ) const
-    {
-        NodePtr x = m_root;
-        NodePtr y = NULL;
-
-        while(x)
-        {
-            y = x;
-            if (m_compare(*x->data, val))
-                x = y->right;
-            else if (!m_compare(*x->data, val))
-                x = y->left;
-            else
-            {
-                return (y);
-            }
-        }
-        return (end());
-    }
 
 
 
