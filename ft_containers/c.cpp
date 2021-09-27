@@ -8,7 +8,11 @@ int main() {
     bst.insert(15);
     bst.insert(17);
     bst.insert(25);
+    //std::cout << "111111111111\n";
+    bst.erase(bst.begin());
+    //std::cout << "1111111111112\n";
     bst.insert(40);
+    std::cout << bst.erase(40) << std::endl;
     bst.insert(80);
     // //bst.delete_(25);
     bst.prettyPrint();

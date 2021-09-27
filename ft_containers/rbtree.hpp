@@ -123,32 +123,17 @@ public:
 
 //////////////////////////////*********Capacity*********//////////////////////////////
 
+
+
 //////////////////////////////*********Modifiers*********//////////////////////////////
 
-    void delete_(T data)
+    void clear()
     {
-        deleteNode(this->m_root, data);
-    }
-
-    NodePtr findToWhereInsert(const_reference val) const
-    {
-        NodePtr x = m_root;
-        NodePtr y = NULL;
-
-        while(x)
-        {
-            y = x;
-            if (m_compare(*x->data, val))
-                x = y->right;
-            else if (!m_compare(*x->data, val))
-                x = y->left;
-            else
-            {
-                std::cout << "need to delete me!\n";
-                return (y);
-            }
-        }
-        return (y);
+        if (m_size == 0)
+            return ;
+        m_size = 0;
+        fixClear(m_root);
+        m_root = NULL;
     }
 
     ft::pair<iterator, bool> insert( const value_type& val )
@@ -202,7 +187,7 @@ public:
             res->left = no;
         no->parent = res;
         //std::cout << "11111111111\n";
-        fixInsert(no);
+        fixTree(no);
         //std::cout << "111111111eee11\n";
         m_root->parent = m_end;
         m_end->left = m_root;
@@ -225,6 +210,74 @@ public:
             first++;
         }
     }
+
+    void erase( iterator pos )
+    {
+        m_size--;
+        m_root->parent = NULL;
+        //NodePtr node = fixErase(pos.base());
+        fixTree(fixErase(pos.base()));
+        if (m_root != NULL)
+        {
+            m_root->parent = m_end;
+            m_end->left = m_root;
+        }
+    }
+
+    void erase( iterator first, iterator last )
+    {
+        for (; first != last; ++first)
+            erase(*first);
+    }
+
+    size_type erase( const value_type& key )
+    {
+        if(!m_root)
+				return(0);
+			iterator it = find(key);
+			if (it == end())
+				return (0);
+			if(*it == key)
+			{
+				erase(it);
+				return(1);
+			}
+			return (0);
+        // if (m_root == NULL || find(key) == end())
+        //     return 0;
+        // erase(find(key));
+        // return 1;
+    }
+
+//////////////////////////////*********Modifiers*********//////////////////////////////
+
+    void delete_(T data)
+    {
+        deleteNode(this->m_root, data);
+    }
+
+    NodePtr findToWhereInsert(const_reference val) const
+    {
+        NodePtr x = m_root;
+        NodePtr y = NULL;
+
+        while(x)
+        {
+            y = x;
+            if (m_compare(*x->data, val))
+                x = y->right;
+            else if (!m_compare(*x->data, val))
+                x = y->left;
+            else
+            {
+                std::cout << "need to delete me!\n";
+                return (y);
+            }
+        }
+        return (y);
+    }
+
+
 
     void rightRotate(NodePtr node) {
 
@@ -269,24 +322,29 @@ public:
     //     return *f->m_point->data;
     // }
 
-    iterator find( const value_type& val )
+    iterator find( const value_type& value )
     {
-        NodePtr x = m_root;
-        NodePtr y = NULL;
+        // NodePtr x = m_root;
+        // NodePtr y = NULL;
 
-        while(x)
-        {
-            y = x;
-            if (m_compare(*x->data, val))
-                x = y->right;
-            else if (!m_compare(*x->data, val))
-                x = y->left;
-            else
-            {
-                return (y);
-            }
-        }
-        return (end());
+        // while(x)
+        // {
+        //     y = x;
+        //     if (m_compare(*x->data, val))
+        //         x = y->right;
+        //     else if (!m_compare(*x->data, val)) //why it.s not work/
+        //         x = y->left;
+        //     else
+        //     {
+        //         return (y);
+        //     }
+        // }
+        // return (end());
+        Node<value_type> *tmp = findToWhereInsert(value);
+
+			if(!m_compare(*tmp->data, value) && !m_compare(value, *tmp->data))
+				return(iterator(tmp));
+			return(end());
     }
 
     const_iterator find( const value_type& val ) const
@@ -310,14 +368,6 @@ public:
     }
 
 
-    void clear()
-    {
-        if (m_size == 0)
-            return ;
-        m_size = 0;
-        fixClear(m_root);
-        m_root = NULL;
-    }
 
 
     void printHelper(NodePtr root, std::string indent, bool last) {
@@ -362,6 +412,82 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
+
+///////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        NodePtr fixErase(NodePtr node)
+		{
+			if(!node)
+				return(NULL);
+
+			NodePtr tmp = NULL;
+
+			if(!node->left || !node->right)
+			{
+				if(!node->left && !node->right)
+				{
+					tmp = node->parent;
+					if(tmp == NULL)
+                    {
+                        m_root = NULL;
+                    }
+					else if (tmp->left == node)
+                    {
+                        tmp->left = NULL;
+                    }
+					else
+                    {
+                        tmp->right = NULL;
+                    }
+				}
+				else
+				{
+					tmp = !node->right ? node->left : node->right;
+					if(node->parent == NULL)
+					{
+						m_root = tmp;
+						tmp->parent = NULL;
+					}
+					else if(node->parent->left == node)
+					{
+						node->parent->left = tmp;
+						tmp->parent = node->parent;
+					}
+					else
+					{
+						node->parent->right = tmp;
+						tmp->parent = node->parent;
+					}
+				}
+                _clear_forfixErase(node);
+				// if (node != NULL)
+                // {
+                //     m_allocator.destroy(node->data);
+                //     m_allocator.deallocate(node->data, 1);
+                //     m_nodeAllocator.destroy(node);
+                //     m_nodeAllocator.deallocate(node, 1);
+                // }
+				return (tmp);
+			}
+
+			tmp = node->left;
+			while(tmp->right)
+				tmp = tmp->right;
+
+			m_allocator.destroy(node->data);
+			m_allocator.construct(node->data, *tmp->data);
+			return(fixErase(tmp));
+		}
+
+		void _clear_forfixErase(Node<value_type> *node)
+		{
+			if (!node)
+				return;
+
+			m_allocator.destroy(node->data);
+			m_allocator.deallocate(node->data, 1);
+			m_nodeAllocator.destroy(node);
+			m_nodeAllocator.deallocate(node, 1);
+		}
 
     void fixClear(NodePtr n)
     {
@@ -511,7 +637,7 @@ private:
     }
 
 
-        void fixInsert(Node<value_type> *node)
+        void fixTree(Node<value_type> *node)
 		{
 			if(!node)
 				return;

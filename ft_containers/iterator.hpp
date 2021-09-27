@@ -181,7 +181,7 @@ public:
 			return *this;
 		if (m_point->right->right == NULL)
 		{
-			link_type node = m_point->parent;
+			link_type *node = m_point->parent;
 			while (node->parent != NULL && node->right == m_point)
 			{
 				m_point = node;
