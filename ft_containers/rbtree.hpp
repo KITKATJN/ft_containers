@@ -32,28 +32,124 @@ public:
     typedef size_t                                                      size_type;
     typedef Node<value_type>                                            *NodePtr;
 
+
+//////////////////////////////*********Member functions*********//////////////////////////////
+
+    explicit rbtree(const compare_type comp = Compare(), const allocator_type &alloc = Alloc(), const nalloc_type &nalloc = NAlloc()) :
+        m_compare(comp), m_allocator(alloc), m_nodeAllocator(nalloc), m_root(NULL), m_size(0) {
+        m_end = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
+    }
+
+    ~rbtree()
+    {
+        clear();
+        m_nodeAllocator.destroy(m_end);
+        m_nodeAllocator.deallocate(m_end, 1);
+    }
+
+    rbtree(const rbtree &c) : m_compare(c.m_compare), m_allocator(c.m_allocator), m_nodeAllocator(c.m_nodeAllocator), m_root(NULL),  m_size(0)
+    {
+        m_end = m_nodeAllocator.allocate(1);
+        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
+        insert(c.begin(), c.end());
+    }
+
+    rbtree &operator=(const rbtree &c)
+    {
+        if(this == &c)
+            return (*this);
+        m_compare = c.m_compare;
+        m_allocator = c.m_allocator;
+        m_nodeAllocator = c.m_nodeAllocator;
+        insert(c.begin(), c.end());
+        return(*this);
+    }
+
+    allocator_type get_allocator() const
+    { return m_allocator; }
+
+//////////////////////////////*********Member functions*********//////////////////////////////
+
+
+//////////////////////////////*********Iterators*********//////////////////////////////
+
+    iterator begin()
+    {
+        if (m_root == NULL || m_size == 0)
+            return end();
+
+        NodePtr node = m_root;
+        while (node->left != NULL)
+            node = node->left;
+        return iterator(node);
+    }
+
+    const_iterator begin() const
+    {
+        if (m_root == NULL || m_size == 0)
+            return end();
+
+        NodePtr node = m_root;
+        while (node->left != NULL)
+            node = node->left;
+        return const_iterator(node);
+    }
+
+    iterator end()  { return iterator(m_end); }
+    const_iterator end() const  { return const_iterator(m_end); }
+
+    reverse_iterator rbegin() { return(reverse_iterator(end())); }
+    const_reverse_iterator rbegin() const {	return(const_reverse_iterator(end())); }
+
+    reverse_iterator rend() { return(reverse_iterator(begin())); }
+    const_reverse_iterator rend() const { return(const_reverse_iterator(begin())); }
+
+//////////////////////////////*********Iterators*********//////////////////////////////
+
+
+
+//////////////////////////////*********Capacity*********//////////////////////////////
+
+    bool empty() const
+    { return m_size == 0; }
+
+    size_type size() const
+    { return m_size; }
+
+    size_type max_size() const
+    { return m_allocator.max_size() > m_nodeAllocator.max_size() ?
+            m_nodeAllocator.max_size() : m_allocator.max_size(); }
+
+//////////////////////////////*********Capacity*********//////////////////////////////
+
+//////////////////////////////*********Modifiers*********//////////////////////////////
+
     void delete_(T data)
     {
         deleteNode(this->m_root, data);
     }
 
-    Node<value_type> *_move(const_reference val) const
-		{
-			Node<value_type> *x = m_root;
-			Node<value_type> *y = NULL;
+    NodePtr findToWhereInsert(const_reference val) const
+    {
+        NodePtr x = m_root;
+        NodePtr y = NULL;
 
-			while(x)
-			{
-				y = x;
-				if(m_compare(*x->data, val))
-					x = y->right;
-				else if (m_compare(val, *x->data))
-					x = y->left;
-				else
-					return (y);
-			}
-			return (y);
-		}
+        while(x)
+        {
+            y = x;
+            if (m_compare(*x->data, val))
+                x = y->right;
+            else if (!m_compare(*x->data, val))
+                x = y->left;
+            else
+            {
+                std::cout << "need to delete me!\n";
+                return (y);
+            }
+        }
+        return (y);
+    }
 
     ft::pair<iterator, bool> insert( const value_type& val )
     {
@@ -90,7 +186,7 @@ public:
         // }
         // return (y);
         //std::cout << "111111111115\n";
-        NodePtr res = _move(val);
+        NodePtr res = findToWhereInsert(val);
 
         //std::cout << "11111111111\n";
         if(!m_compare(*res->data, val) && !m_compare(val, *res->data)) {
@@ -107,95 +203,112 @@ public:
         no->parent = res;
         //std::cout << "11111111111\n";
         fixInsert(no);
-
+        //std::cout << "111111111eee11\n";
         m_root->parent = m_end;
         m_end->left = m_root;
-
+        //std::cout << "111111111118888\n";
         return (ft::make_pair(iterator(no), true));
     }
 
-
-
-    void rightRotate(NodePtr x) {
-        NodePtr y = x->left;
-        x->left = y->right;
-        if (y->right != m_end) {
-            y->right->parent = x;
-        }
-        y->parent = x->parent;
-        if (x->parent == NULL) {
-            this->m_root = y;
-        } else if (x == x->parent->right) {
-            x->parent->right = y;
-        } else {
-            x->parent->left = y;
-        }
-        y->right = x;
-        x->parent = y;
+    iterator insert( iterator hint, const value_type& value )
+    {
+        hint = insert(value).first;
+        return hint;
     }
 
-
-    void leftRotate(NodePtr x)
+    template< class InputIt >
+    void insert( InputIt first, InputIt last )
     {
-        NodePtr y = x->right;
-        x->right = y->left;
-        if (y->left != m_end)
-            y->left->parent = x;
-        y->parent = x->parent;
-        if (x->parent == NULL)
-            m_root = y;
-        else if (x == x->parent->left)
-            x->parent->left = y;
+        while(first != last)
+        {
+            insert(*first);
+            first++;
+        }
+    }
+
+    void rightRotate(NodePtr node) {
+
+        NodePtr left = node->left;
+        node->left = left->right;
+        if (node->left)
+            node->left->parent = node;
+        left->parent = node->parent;
+        if (!node->parent)
+            m_root = left;
+        else if (node == node->parent->left)
+            node->parent->left = left;
         else
-            x->parent->right = y;
-        y->left = x;
-        x->parent = y;
+            node->parent->right = left;
+        left->right = node;
+        node->parent = left;
     }
 
-    NodePtr maximum(NodePtr node)
+
+    void leftRotate(NodePtr node)
     {
-        while (node->right != m_end)
-            node = node->right;
-        return node;
+        NodePtr right = node->right;
+        node->right = right->left;
+        if (node->right)
+            node->right->parent = node;
+        right->parent = node->parent;
+        if (!node->parent)
+            m_root = right;
+        else if (node == node->parent->left)
+            node->parent->left = right;
+        else
+            node->parent->right = right;
+        right->left = node;
+        node->parent = right;
     }
 
-    NodePtr minimum(NodePtr node)
+    // T& at( const value_type& key )
+    // {
+    //     const iterator f = find(key);
+    //     if (f == end())
+    //         throw std::out_of_range("out of range\n");
+    //     return *f->m_point->data;
+    // }
+
+    iterator find( const value_type& val )
     {
-        while (node->left != m_end)
-            node = node->left;
-        return node;
+        NodePtr x = m_root;
+        NodePtr y = NULL;
+
+        while(x)
+        {
+            y = x;
+            if (m_compare(*x->data, val))
+                x = y->right;
+            else if (!m_compare(*x->data, val))
+                x = y->left;
+            else
+            {
+                return (y);
+            }
+        }
+        return (end());
     }
 
-    explicit rbtree(const compare_type comp = Compare(), const allocator_type &alloc = Alloc(), const nalloc_type &nalloc = NAlloc()) :
-        m_compare(comp), m_allocator(alloc), m_nodeAllocator(nalloc), m_root(NULL), m_size(0) {
-        m_end = m_nodeAllocator.allocate(1);
-        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
-    }
-
-    ~rbtree()
+    const_iterator find( const value_type& val ) const
     {
-        clear();
-        m_nodeAllocator.destroy(m_end);
-        m_nodeAllocator.deallocate(m_end, 1);
+        NodePtr x = m_root;
+        NodePtr y = NULL;
+
+        while(x)
+        {
+            y = x;
+            if (m_compare(*x->data, val))
+                x = y->right;
+            else if (!m_compare(*x->data, val))
+                x = y->left;
+            else
+            {
+                return (y);
+            }
+        }
+        return (end());
     }
 
-    rbtree(const rbtree &c) : m_compare(c.m_compare), m_allocator(c.m_allocator), m_nodeAllocator(c.m_nodeAllocator), m_root(NULL),  m_size(0)
-    {
-        m_end = m_nodeAllocator.allocate(1);
-        m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
-        insert(c.begin(), c.end());
-    }
-
-    rbtree &operator=(const rbtree &c)
-    {
-        if(this == &c)
-            return (*this);
-        m_compare = c.m_compare;
-        m_allocator = c.m_allocator;
-        m_nodeAllocator = c.m_nodeAllocator;
-        insert(c.begin(), c.end());
-        return(*this);
-    }
 
     void clear()
     {
@@ -238,6 +351,16 @@ public:
         }
     }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
 
     void fixClear(NodePtr n)
@@ -387,60 +510,63 @@ private:
             fixDelete(x);
     }
 
-    void fixInsert(NodePtr k)
-    {
-        NodePtr u;
-        while (k->parent->color == true)
-        {
-            if (k->parent == k->parent->parent->right)
-            {
-                u = k->parent->parent->left;
-                if (u->color)
-                {
-                    u->color = false;
-                    k->parent->color = false;
-                    k->parent->parent->color = true;
-                    k = k->parent->parent;
-                }
-                else
-                {
-                    if (k == k->parent->left)
-                    {
-                        k = k->parent;
-                        rightRotate(k);
-                    }
-                    k->parent->color = false;
-                    k->parent->parent->color = true;
-                    leftRotate(k->parent->parent);
-                }
-            }
-            else
-            {
-                u = k->parent->parent->right;
-                if (u->color)
-                {
-                    u->color = false;
-                    k->parent->color = false;
-                    k->parent->parent->color = true;
-                    k = k->parent->parent;
-                }
-                else
-                {
-                    if (k == k->parent->right)
-                    {
-                        k = k->parent;
-                        leftRotate(k);
-                    }
-                    k->parent->color = false;
-                    k->parent->parent->color = true;
-                    rightRotate(k->parent->parent);
-                }
-            }
-            if (k == m_root)
-                break ;
-        }
-        m_root->color = false;
-    }
+
+        void fixInsert(Node<value_type> *node)
+		{
+			if(!node)
+				return;
+			Node<value_type> *parent = NULL;
+			Node<value_type> *grandpa = NULL;
+			Node<value_type> *uncle = NULL;
+
+			while ((node != m_root) && (node->color != false) &&
+				(node->parent->color == true)) {
+				parent = node->parent;
+				grandpa = node->parent->parent;
+
+				if (parent == grandpa->left) {
+					uncle = grandpa->right;
+
+					if (uncle && uncle->color == true) {
+						grandpa->color = true;
+						parent->color = false;
+						uncle->color = false;
+						node = grandpa;
+					}
+					else {
+						if (node == parent->right) {
+							leftRotate(parent);
+							node = parent;
+							parent = node->parent;
+						}
+						rightRotate(grandpa);
+						std::swap(parent->color, grandpa->color);
+						node = parent;
+					}
+				}
+				else {
+					uncle = grandpa->left;
+
+					if (uncle && uncle->color == true) {
+						grandpa->color = true;
+						parent->color = false;
+						uncle->color = false;
+						node = grandpa;
+					}
+					else {
+						if (node == parent->left) {
+							rightRotate(parent);
+							node = parent;
+							parent = node->parent;
+						}
+						leftRotate(grandpa);
+						std::swap(parent->color, grandpa->color);
+						node = parent;
+					}
+				}
+			}
+			m_root->color = false;
+		}
 
     NodePtr             m_root;
     NodePtr             m_end;
