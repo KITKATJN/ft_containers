@@ -6,6 +6,8 @@
 
 namespace ft {
 
+
+
 template<class Iterator>
 struct iterator_traits
 {
@@ -157,7 +159,7 @@ public:
 	typedef ptrdiff_t													difference_type;
 	typedef ft::bidirectional_iterator_tag								iterator_category;
 	typedef bidirectional_iterator<T, P, R>								It;
-	typedef Node<value_type>											link_type;
+	typedef Node<value_type>											*link_type;
 
 	bidirectional_iterator() : m_point(NULL) {}
 	bidirectional_iterator(Node<value_type> *p) : m_point(p) {}
@@ -181,7 +183,7 @@ public:
 			return *this;
 		if (m_point->right->right == NULL)
 		{
-			link_type *node = m_point->parent;
+			link_type node = m_point->parent;
 			while (node->parent != NULL && node->right == m_point)
 			{
 				m_point = node;
@@ -247,7 +249,7 @@ public:
 	}
 
 private:
-	link_type *m_point;
+	link_type m_point;
 };
 
 template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
@@ -348,6 +350,7 @@ template <class T, class P, class R>
 bool operator<=(const random_access_iterator<T, P, R> &lhs, const random_access_iterator<T, P, R> &rhs) {
     return (lhs < rhs || lhs == rhs);
 }
+
 
 };
 

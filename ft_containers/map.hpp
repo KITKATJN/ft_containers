@@ -3,6 +3,8 @@
 
 #include "enable_if.hpp"
 #include "rbtree.hpp"
+#include "lexicographical_compare.hpp"
+#include "equal.hpp"
 #include <memory>
 
 namespace ft
@@ -17,12 +19,10 @@ template<
 public:
     typedef std::ptrdiff_t                                  difference_type;
     typedef size_t                                          size_type;
-    typedef K                                               key_type;
+    typedef Key                                               key_type;
     typedef T                                               mapped_type;
     typedef Compare                                         key_compare;
     typedef Allocator                                       allocator_type;
-    typedef Allocator::pointer                              pointer;
-    typedef Allocator::const_pointer                        const_pointer;
     typedef typename ft::pair<const key_type, mapped_type>  value_type;
     typedef typename allocator_type::reference														reference;
     typedef typename allocator_type::const_reference												const_reference;
@@ -33,17 +33,37 @@ public:
     typedef typename ft::reverse_iterator<iterator>													reverse_iterator;
     typedef typename ft::reverse_iterator<const_iterator>											const_reverse_iterator;
 
+    class value_compare : ft::binary_function<value_type, value_type, bool>
+    {
+        friend class map;
+        private:
+            bool result_type;
+            Compare comp;
+            value_type first_argument_type;
+            value_type second_argument_type;
+        
+        protected:
+            value_compare( Compare c ):comp(c) {}
+
+        public:
+            bool operator()( const value_type& lhs, const value_type& rhs ) const
+            { return comp(lhs.first, rhs.first); }
+    };
+
+    map() : m_tree(rbtree<value_type, value_compare, allocator_type>()) {}
+
     explicit map( const Compare& comp, const Allocator& alloc = Allocator() )
         :  m_tree(rbtree<value_type, value_compare, allocator_type>(value_compare(comp), alloc)) {}
 
     template< class InputIt >
-    map( InputIt first, InputIt last, const Compare& comp = Compare(),
-        const Allocator& alloc = Allocator(),
-        typename ft::enable_if<ft::is_input_iterator_tag<typename InputIterator::iterator_category>::value>::type* = NULL)
+    map( InputIt first, typename ft::enable_if<
+                    !std::numeric_limits<InputIt>::is_integer,
+                        InputIt>::type last, const Compare& comp = Compare(),
+        const Allocator& alloc = Allocator()) // ft::
         : m_tree(rbtree<value_type, value_compare, allocator_type>(value_compare(comp), alloc)) 
         { insert(first, last); }
 
-    map( const map& other ) : m_tree(rbtree<value_type, value_compare, allocator_type>(value_compare(comp), alloc))
+    map( const map& other ) : m_tree(other.m_tree)
         { m_tree.insert(other.m_tree.begin(), other.m_tree.end()); }
 
     ~map(){ }
@@ -117,8 +137,9 @@ public:
     { return m_tree.insert(hint, value); }
 
     template< class InputIt >
-    void insert( InputIt first, InputIt last,
-        typename ft::enable_if<ft::is_input_iterator_tag<typename InputIterator::iterator_category>::value>::type* = NULL)
+    void insert( InputIt first, typename ft::enable_if<
+                    !std::numeric_limits<InputIt>::is_integer,
+                        InputIt>::type last) // ft::
     { m_tree.insert(first, last); }
 
     void erase( iterator pos )
@@ -159,26 +180,13 @@ public:
     { return key_compare(); }
 
     value_compare value_comp() const
-    { value_compare(); }
+    { return (value_compare(key_compare())); }
 private:
+    
     rbtree<value_type, value_compare, allocator_type> m_tree;
+    //rbtree<value_type, value_compare, allocator_type> m_tree;
 
-    class value_compare
-    {
-        private:
-            bool result_type;
-            Compare comp;
-            value_type first_argument_type;
-            value_type second_argument_type;
-        
-        protected:
-            value_compare( Compare c ):comp(c) {}
-
-        public:
-            bool operator()( const value_type& lhs, const value_type& rhs ) const
-            { return comp(lhs.first, rhs.first); }
-    };
-}
+};
 
 template<class K, class T, class C, class A >
 bool operator==( const ft::map<K, T, C, A>& lhs,

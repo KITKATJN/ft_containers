@@ -1,7 +1,7 @@
 #include "rbtree.hpp"
 
 int main() {
-    ft::rbtree<int, ft::less<int>> bst;
+    ft::rbtree<int, ft::less<int> > bst;
     //bst.insert(ft::pair<int,int>(1, 5));
     bst.insert(1);
     bst.insert(5);

@@ -35,6 +35,7 @@ public:
 
 //////////////////////////////*********Member functions*********//////////////////////////////
 
+
     explicit rbtree(const compare_type comp = Compare(), const allocator_type &alloc = Alloc(), const nalloc_type &nalloc = NAlloc()) :
         m_compare(comp), m_allocator(alloc), m_nodeAllocator(nalloc), m_root(NULL), m_size(0) {
         m_end = m_nodeAllocator.allocate(1);
