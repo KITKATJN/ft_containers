@@ -1,27 +1,22 @@
-NAME = vector
+NAME = test
 
-SRCS = main.cpp
-OBJ 	=	$(SRCS:.cpp=.o)
-CC = clang++
+SRCS = main.cpp ft_containers/mapTest.cpp #testContainers/setTest.cpp #testContainers/vectorTest.cpp testContainers/stackTest.cpp
 
-CFLAGS  = -Wall -Wextra -Werror
-all:	$(NAME)
+OBJS = $(SRCS:.cpp=.o)
 
-$(NAME):	$(OBJ) vector.hpp iterator.hpp
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+CLANG = clang++ -g -Wall -Werror -Wextra
+all: $(NAME)
 
-.cpp.o:
-	$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
+$(NAME): $(OBJS)
+	$(CLANG) $(OBJS) -o $(NAME)
 
-check:
-	clang++ check.cpp
+$(OBJS): %.o : %.cpp
+	$(CLANG) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJS)
 
-fclean:	clean
-	rm -rf $(NAME) a.out
+fclean: clean
+	rm -rf $(NAME)
 
-re:	fclean $(NAME)
-
-.PHONY:	all clean fclean re
+re: fclean all

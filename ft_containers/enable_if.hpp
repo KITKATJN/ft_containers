@@ -63,14 +63,14 @@ public :
         second(b)
     {}
 
-    pair& operator= (const pair& pr)
-    {
-        if (*this == pr)
-            return (*this);
-        this->first = pr.first;
-        this->second = pr.second;
-        return (*this);
-    }
+    // pair& operator= (const pair& pr)
+    // {
+    //     if (*this == pr)
+    //         return (*this);
+    //     this->first = pr.first;
+    //     this->second = pr.second;
+    //     return (*this);
+    // }
 };
 
 template <class T1, class T2>

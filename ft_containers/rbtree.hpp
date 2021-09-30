@@ -291,10 +291,19 @@ public:
         return(end());
     }
 
-    ft::pair<iterator,iterator> equal_range( const value_type& key )
-    { return make_pair<iterator,iterator>(lower_bound(), upper_bound()); }
+    pair<const_iterator,const_iterator> equal_range(const value_type &value) const
+		{
+			if (this->lower_bound(value) == this->end() && this->upper_bound(value) == this->end())
+				return (ft::make_pair<const_iterator, const_iterator>(this->begin(), this->begin()));
+			return (ft::make_pair<const_iterator, const_iterator>(this->lower_bound(value), this->upper_bound(value)));
+		}
 
-    ft::pair<const_iterator,const_iterator> equal_range( const value_type& key ) const;
+		pair<iterator,iterator>             equal_range(const value_type &value)
+		{
+			if (this->lower_bound(value) == this->end() && this->upper_bound(value) == this->end())
+				return (ft::make_pair<iterator, iterator>(this->begin(), this->begin()));
+			return (ft::make_pair<iterator, iterator>(this->lower_bound(value), this->upper_bound(value)));
+		}
 
     iterator lower_bound( const value_type& key )
     {
@@ -535,7 +544,7 @@ private:
         fixClear(n->right);
         fixClear(n->left);
         m_allocator.destroy(n->data);
-        m_allocator.deallocate(n->data, 1);
+        //m_allocator.deallocate(n->data, 1);
         m_nodeAllocator.destroy(n);
         m_nodeAllocator.deallocate(n, 1);
     }

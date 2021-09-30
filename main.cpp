@@ -1,85 +1,142 @@
-#include "vector.hpp"
-#include <iostream>
-#include <iostream>
-#include <string>
-#include <type_traits>
 
-template <typename T>
-void print_vector(ft::vector<T> &v)
+#include <iostream>
+#include <iomanip>
+#include <string.h>
+
+// #include "ft_containers/vector.hpp"
+// #include "testContainers/vectorTest.hpp"
+
+// #include "stack/stack.hpp"
+// #include "testContainers/stackTest.hpp"
+
+#include "ft_containers/map.hpp"
+#include "ft_containers/mapTest.hpp"
+
+// #include "set/set.hpp"
+// #include "testContainers/setTest.hpp"
+
+// void vectorTest()
+// {
+// 	std::cout << MAGENTA << "[VECTOR TEST]" << RESET << std::endl;
+// 	std::cout << MAGENTA << LINE  << std::endl;
+
+// 	std::cout << RED << "<Iterator Test>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testVectorIterator();
+
+// 	std::cout << RED << "<Capacity Test>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testVectorCapacity();
+
+// 	std::cout << RED << "<Element Access>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testVectorElementAccess();
+
+// 	std::cout << RED << "<Modifiers>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testVectorModifiers();
+
+// 	std::cout << RED << "<Speed>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testVectorSpeed();
+// }
+
+// void stackTest()
+// {
+// 	std::cout << MAGENTA << "[STACK TEST]" << RESET << std::endl;
+// 	std::cout << MAGENTA << LINE  << std::endl;
+// 	std::cout << RED << "<Member Function Test>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testMemberFunction();
+// }
+
+void mapTest()
 {
-    for (size_t i = 0; i < v.size()+1; i++)
-	{
-		std::cout << v[i] << " ";
-	}
-	std::cout << std::endl;
+	std::cout << MAGENTA << "[MAP TEST]" << RESET << std::endl;
+	std::cout << MAGENTA << LINE  << std::endl;
+
+	std::cout << RED << "<Iterator Test>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMapIterator();
+
+	std::cout << RED << "<Capacity Test>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMapCapacity();
+
+	std::cout << RED << "<Element Access>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMapElementAccess();
+
+	std::cout << RED << "<Modifiers>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMapModifiers();
+
+	std::cout << RED << "<Observers>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testObserversModifiers();
+
+	std::cout << RED << "<Operations>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testOperationsModifiers();
+
+	std::cout << RED << "<Speed>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMapSpeed();
 }
+
+// void setTest()
+// {
+// 	std::cout << MAGENTA << "[SET TEST]" << RESET << std::endl;
+// 	std::cout << MAGENTA << LINE  << std::endl;
+
+// 	std::cout << RED << "<Iterator Test>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetIterator();
+
+// 	std::cout << RED << "<Capacity Test>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetCapacity();
+
+// 	std::cout << RED << "<Element Access>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetElementAccess();
+
+// 	std::cout << RED << "<Modifiers>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetModifiers();
+
+// 	std::cout << RED << "<Observers>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetObserversModifiers();
+
+// 	std::cout << RED << "<Operations>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetOperationsModifiers();
+
+// 	std::cout << RED << "<Speed>" << RESET << std::endl;
+// 	std::cout << RED << LINE << RESET << std::endl;
+// 	testSetSpeed();
+// }
 
 int main()
 {
-	ft::vector<std::string> v;
-	v.push_back("ffff");
-    print_vector(v);
-    ft::vector<std::string> v5(2, "bonjour");
-    print_vector(v5);
-	// v[1] = 5;
-	// std::cout << v[1] << std::endl;
-	// std::cout << v.size() << std::endl;
-	// std::cout << v.size() << std::endl;
-	// for (size_t i = 0; i < v.size(); i++)
-	// {
-	// 	v[i] = i;
-	// }
-	// print_vector(v);
-	// std::cout << std::endl;
-	// v.erase(v.begin() + 2);
-    // print_vector(v);
-    // std::cout << v[9]  << " " << v[8] << std::endl;
-    // v.resize(20);
-    // print_vector(v);
-    // v.resize(6);
-	// v.pop_back();
-    // print_vector(v);
-	// v.insert(v.begin(), 90);
-	// print_vector(v);
-	// v.insert(v.begin() + 3, 4, 90);
-	// print_vector(v);
-	// v.pop_back();
-    // print_vector(v);
-    // v.push_back(67);
-    // print_vector(v);
-    // v.push_back(67);
-    // print_vector(v);
-    // std::cout << "cap = "<< v.capacity() << std::endl;
-    // v.push_back(68);
-    // print_vector(v);
-    // std::cout << "cap = "<< v.capacity() << std::endl;
-    // v.push_back(69);
-    // print_vector(v);
-    // v.push_back(70);
-    // print_vector(v);
-    // v.push_back(75);
-    // print_vector(v);
-	// v.reserve(20);
-	// std::cout << "!!!!!!!!!!!!!" << v.capacity() << std::endl;
-	// for (size_t i = 0; i < v.size(); i++)
-	// {
-	// 	std::cout << v[i] << " ";
-	// }
-	// std::cout << std::endl;
-	// std::cout << "!!!!!" << std::endl;
-	// v.erase(v.begin(), v.end() - 2);
-	// for (size_t i = 0; i < v.size(); i++)
-	// {
-	// 	std::cout << v[i] << " ";
-	// }
-    // // std::cout << v[2] << " ";
-	// std::cout << std::endl;
-	// //v.clear();
-	// std::cout << v.empty() << std::endl;
-    // v.assign(5, 5);
-    // print_vector(v);
-    // ft::vector<int> extra(6, 9);
-    // v.assign(extra.begin(), extra.end());
-    // print_vector(v);
+	srand(time(NULL));
+	std::string cont;
+
+	while (1) {
+		std::cout << MAGENTA << "Input Containers for testing [vector, stack, map, set]: " << RESET;
+		std::getline(std::cin, cont);
+		// if (cont == "vector")
+		// 	vectorTest();
+		// else if (cont == "stack")
+		// 	stackTest();
+		// else
+		if (cont == "map")
+			mapTest();
+		// else if (cont == "set")
+		// 	setTest();
+		else
+			std::cout << "Wrong Input" << std::endl;
+	}
 	return 0;
 }
