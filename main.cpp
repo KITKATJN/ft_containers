@@ -4,13 +4,13 @@
 #include <string.h>
 
 #include "ft_containers/vector.hpp"
-#include "ft_containers/vectorTest.hpp"
+#include "ft_containers/tests/vectorTest.hpp"
 
-// #include "stack/stack.hpp"
-// #include "testContainers/stackTest.hpp"
+#include "ft_containers/stack.hpp"
+#include "ft_containers/tests/stackTest.hpp"
 
 #include "ft_containers/map.hpp"
-#include "ft_containers/mapTest.hpp"
+#include "ft_containers/tests/mapTest.hpp"
 
 // #include "set/set.hpp"
 // #include "testContainers/setTest.hpp"
@@ -41,14 +41,14 @@ void vectorTest()
 	testVectorSpeed();
 }
 
-// void stackTest()
-// {
-// 	std::cout << MAGENTA << "[STACK TEST]" << RESET << std::endl;
-// 	std::cout << MAGENTA << LINE  << std::endl;
-// 	std::cout << RED << "<Member Function Test>" << RESET << std::endl;
-// 	std::cout << RED << LINE << RESET << std::endl;
-// 	testMemberFunction();
-// }
+void stackTest()
+{
+	std::cout << MAGENTA << "[STACK TEST]" << RESET << std::endl;
+	std::cout << MAGENTA << LINE  << std::endl;
+	std::cout << RED << "<Member Function Test>" << RESET << std::endl;
+	std::cout << RED << LINE << RESET << std::endl;
+	testMemberFunction();
+}
 
 void mapTest()
 {
@@ -128,8 +128,8 @@ int main()
 		std::getline(std::cin, cont);
 		if (cont == "vector")
 			vectorTest();
-		// else if (cont == "stack")
-		// 	stackTest();
+		else if (cont == "stack")
+			stackTest();
 		else if (cont == "map")
 			mapTest();
 		// else if (cont == "set")

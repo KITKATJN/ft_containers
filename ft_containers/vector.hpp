@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstring>
+#include <iostream> // delete
 #include "iterator.hpp"
 #include "enable_if.hpp"
 #include "lexicographical_compare.hpp"
@@ -42,16 +43,16 @@ public:
     { return const_iterator(m_vector + m_size); }
 
     reverse_iterator rbegin()
-    { return reverse_iterator(end() - 1); }
+    { return reverse_iterator(end()); }
 
     const_reverse_iterator rbegin() const
-    { return const_reverse_iterator(end() - 1); }
+    { return const_reverse_iterator(end()); }
 
     reverse_iterator rend()
-    { return reverse_iterator(begin()) + 1; }
+    { return reverse_iterator(begin()); }
 
     const_reverse_iterator rend() const
-    { return const_reverse_iterator(begin()) + 1; }
+    { return const_reverse_iterator(begin()); }
 
     reference at( size_type pos )
     { if (pos >= size())
@@ -390,19 +391,39 @@ public:
             }
         }
 
-    vector (const vector &x): m_size(x.m_size), m_capacity(x.m_capacity), m_allocator(x.m_allocator)
-    {
-        m_vector = m_allocator.allocate(m_capacity);
-        for (size_type dist = 0; dist < m_size; dist++)
+        vector (const vector &copy): m_vector(0), m_size(0), m_capacity(0), m_allocator(copy.m_allocator)
         {
-           m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
+            m_vector = m_allocator.allocate(0);
+            reserve(copy.capacity());
+            try
+            {
+                for (size_type i = 0; i < copy.size(); i++)
+                    push_back(copy[i]);
+            }
+            catch(...)
+            {
+                clear();
+                m_allocator.deallocate(m_vector, m_capacity);
+                //std::cerr << e.what() << '\n';
+            }
+
         }
-    }
+
+    // vector (const vector &x): m_size(x.m_size), m_capacity(x.m_capacity), m_allocator(x.m_allocator)
+    // {
+    //     m_vector = m_allocator.allocate(m_capacity);
+    //     //std::cout << "gg!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1gg!!!\n";
+    //     for (size_type dist = 0; dist < m_size; dist++)
+    //     {
+    //        m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
+    //     }
+    // }
 
     vector& operator= ( const vector &x )
     {
-        if (*this == x)
+        if (this == &x)
             return *this;
+        //std::cout << "gg!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1gg!!!\n";
         //m_allocator.deallocate(m_capacity);
         this->~vector();
         m_vector = m_allocator.allocate(x.m_capacity);
@@ -410,7 +431,8 @@ public:
         m_capacity = x.m_capacity;
         for (size_type dist = 0; dist < m_size; dist++)
         {
-           m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
+            m_allocator.construct(m_vector + dist, *(x.m_vector + dist));
+            //std::cout << (m_vector[dist]) << "<---------elem\n";
         }
         return *this;
     }

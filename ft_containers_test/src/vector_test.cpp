@@ -6,7 +6,7 @@
 /*   By: cmarguer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 20:34:52 by charles           #+#    #+#             */
-/*   Updated: 2021/09/30 11:09:40 by cmarguer         ###   ########.fr       */
+/*   Updated: 2021/09/30 17:21:55 by cmarguer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,10 +320,15 @@ static void testRbegin()
 
     ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
     ASSERT(v1_it[0] == 5);
+    //std::cout << "f-> " << v1_it[0] << " s-> " << *v1.rbegin() << std::endl;
     ASSERT(v1_it[1] == 4);
+    //std::cout << "f-> " << v1_it[1] << " s-> " << 4 << std::endl;
     ASSERT(v1_it[2] == 3);
+    //std::cout << "f-> " << v1_it[2] << " s-> " << 3 << std::endl;
     ASSERT(v1_it[3] == 2);
+    //std::cout << "f-> " << v1_it[3] << " s-> " << 2 << std::endl;
     ASSERT(v1_it[4] == 1);
+    //std::cout << "f-> " << v1_it[4] << " s-> " << 1 << std::endl;
 
     ASSERT(v1_it == v1.rbegin());
     ASSERT(v1_it != v1.rend());
@@ -870,34 +875,34 @@ void vectorTest()
 {
     testContainer = "vector";
 
-    testConstructorDefault();
-    testConstructorFill();
-    testConstructorRange();
-    testConstructorCopy();
-    testOperatorAssign();
+    // testConstructorDefault();
+    // testConstructorFill();
+    // testConstructorRange();
+    // testConstructorCopy();
+    // testOperatorAssign();
 
-    testBegin();
-    testEnd();
+    //testBegin();
+    //testEnd();
     testRbegin();
-    testRend();
+    //testRend();
 
-    testResize();
-    testReserve();
+//     testResize();
+//     testReserve();
 
-    testOperatorBracket();
-    testAt();
-    testFront();
-    testBack();
+//     testOperatorBracket();
+//     testAt();
+//     testFront();
+//     testBack();
 
-    testAssign();
-    testPushBack();
-    testPopBack();
-    testInsert();
-    testErase();
-    testSwap();
-    testClear();
+//     testAssign();
+//     testPushBack();
+//     testPopBack();
+//     testInsert();
+//     testErase();
+//     testSwap();
+//     testClear();
 
-    testOperatorEqual();
-    testOperatorCompar();
-    testSwapFunc();
+//     testOperatorEqual();
+//     testOperatorCompar();
+//     testSwapFunc();
 }

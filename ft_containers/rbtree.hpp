@@ -356,17 +356,29 @@ public:
         while(x)
         {
             y = x;
-            if (m_compare(*x->data, val))
+            if(m_compare(*x->data, val))
                 x = y->right;
-            else if (!m_compare(*x->data, val))
+            else if (m_compare(val, *x->data))
                 x = y->left;
             else
-            {
-                std::cout << "need to delete me!\n";
                 return (y);
-            }
         }
         return (y);
+
+        // while(x)
+        // {
+        //     y = x;
+        //     if (m_compare(*x->data, val))
+        //         x = y->right;
+        //     else if (!m_compare(*x->data, val)) // not right!
+        //         x = y->left;
+        //     else
+        //     {
+        //         std::cout << "need to delete me!\n";
+        //         return (y);
+        //     }
+        // }
+        // return (y);
     }
 
 

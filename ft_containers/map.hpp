@@ -254,6 +254,7 @@ namespace ft
 
 		map& operator=(const map& x)
 		{
+			//std::cout << "*************************\n";
 			_tree.clear();
 			_tree.insert(x._tree.begin(), x._tree.end());
 			return(*this);
@@ -290,7 +291,24 @@ namespace ft
 		///////////////////////ELEMENT ACCESS////////////////////////
 
 		mapped_type& operator[] (const key_type& k) {
-			return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+			//value_type  tmp_pair = ft::make_pair(k, mapped_type());
+
+            //ft::rbtree<value_type, value_compare, allocator_type>  searched =this->_tree.findNode(tmp_pair);
+           // if (!_tree.findNode())
+            //    return insert(tmp_pair).first->second;
+            //return _tree.findNode()->data;
+			//std::cout << "dsssssssssssssssssssss\n";
+			// if (find(k) == end())
+			// 	return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+			// std::cout<<"hu[[[[[!\n";
+			// iterator tmp = this->find(k);
+			// return (*tmp).second;
+			iterator tmp = this->find(k);
+
+				if (tmp == this->end())
+					this->insert(ft::make_pair(k, mapped_type()));
+				tmp = this->find(k);
+				return ((*tmp).second);
 		}
 
 		/////////////////////////////////////////////////////////////

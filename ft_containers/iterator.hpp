@@ -75,12 +75,14 @@ template <class Iterator>
 		typedef typename ft::iterator_traits<Iterator>::pointer					pointer;
 		typedef typename ft::iterator_traits<Iterator>::reference				reference;
 
-		reverse_iterator() { this->current = 0; }
+		reverse_iterator() : current(){ }//this->current = 0; }
 
-		explicit reverse_iterator (iterator_type it) { this->current = it; }
+		explicit reverse_iterator (iterator_type it) : current(it) { }//this->current = it; }
+
+		reverse_iterator(const reverse_iterator<Iterator>& iter) : current(iter.base()){ }//this->current = 0; }
 
 		template <class Iter>
-		reverse_iterator(const reverse_iterator<Iter>& rev_it) { this->current = rev_it; }
+		reverse_iterator(const reverse_iterator<Iter>& iter) : current(iter.base()){ }//{ this->current = iter; }
 
 		template< class U >
 		reverse_iterator& operator=( const reverse_iterator<U>& other ) {
@@ -92,7 +94,7 @@ template <class Iterator>
 		iterator_type		base() const { return (current); }
 
 		reference 			operator*() const {
-			Iterator tmp = current;return *tmp; }
+			Iterator tmp = current;tmp--;return *tmp; }
 			//return *this->current; }
 		pointer 			operator->() {
 			//return this->current;}
