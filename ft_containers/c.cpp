@@ -22,16 +22,37 @@ int main() {
     // std::cout << bst.erase(40) << std::endl;
     // bst.insert(80);
 
-    //ft::map<std::string, int> m ;//{ {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
-        int val;
+    // //ft::map<std::string, int> m ;//{ {"CPU", 10}, {"GPU", 15}, {"RAM", 20}, };
+    //     int val;
+    // std::map<int, int> std_map;
+    // ft::map<int, int> ft_map;
+
+    // std::cout << GREEN << "FT  map empty: " << RESET << ft_map.empty() << std::endl;
+	// std::cout << GREEN << "STD map empty: " << RESET << std_map.empty() << std::endl << std::endl;
+
+	// std::cout << GREEN << "FT  map size: " << RESET << ft_map.size() << std::endl;
+	// std::cout << GREEN << "STD map size: " << RESET << std_map.size() << std::endl << std::endl;
+
+    // std::cout << GREEN << "Map elem: " << RESET;
+    // for (int i = 0; i <= 10; i++) {
+    //     val = rand() % 10;
+    //     std_map[i] = val;
+    //     ft_map[i] = val;
+    //     std::cout << val << " ";
+    // }
+    // std::cout << std::endl << std::endl;
+
+    // std::cout << GREEN << "FT  map size: " << RESET << ft_map.size() << std::endl;
+	// std::cout << GREEN << "STD map size: " << RESET << std_map.size() << std::endl << std::endl;
+
+    // //std::cout << GREEN << "FT  map max size: " << RESET << ft_map.max_size() << std::endl;
+	// //std::cout << GREEN << "STD map max size: " << RESET << ft_map.max_size() << std::endl;
+
+	// std::cout << RED << LINE << RESET << std::endl << std::endl;
+
+    int val;
     std::map<int, int> std_map;
     ft::map<int, int> ft_map;
-
-    std::cout << GREEN << "FT  map empty: " << RESET << ft_map.empty() << std::endl;
-	std::cout << GREEN << "STD map empty: " << RESET << std_map.empty() << std::endl << std::endl;
-
-	std::cout << GREEN << "FT  map size: " << RESET << ft_map.size() << std::endl;
-	std::cout << GREEN << "STD map size: " << RESET << std_map.size() << std::endl << std::endl;
 
     std::cout << GREEN << "Map elem: " << RESET;
     for (int i = 0; i <= 10; i++) {
@@ -41,14 +62,32 @@ int main() {
         std::cout << val << " ";
     }
     std::cout << std::endl << std::endl;
-
-    std::cout << GREEN << "FT  map size: " << RESET << ft_map.size() << std::endl;
-	std::cout << GREEN << "STD map size: " << RESET << std_map.size() << std::endl << std::endl;
-
-    //std::cout << GREEN << "FT  map max size: " << RESET << ft_map.max_size() << std::endl;
-	//std::cout << GREEN << "STD map max size: " << RESET << ft_map.max_size() << std::endl;
-
-	std::cout << RED << LINE << RESET << std::endl << std::endl;
+	/////////////////////////////////////////////////////////////////////////
+    std::cout << GREEN << "FT  iterator: " << RESET;
+	ft::map<int, int>::iterator ft_it = ft_map.begin();
+	for (;ft_it != ft_map.end(); ++ft_it) {
+		std::cout << "[" << ft_it->first << "]" << " " << ft_it->second << " | ";
+	}
+	std::cout << GREEN << "\nSTD iterator: " << RESET;
+	std::map<int, int>::iterator std_it = std_map.begin();
+	for (;std_it != std_map.end(); ++std_it) {
+		std::cout << "[" << std_it->first << "]" << " " << std_it->second << " | ";
+	}
+	std::cout << std::endl << std::endl;
+	/////////////////////////////////////////////////////////////////////////
+    std::cout << GREEN << "FT  reverse iterator: " << RESET;
+	ft::map<int, int>::reverse_iterator ft_rit = ft_map.rbegin();
+	for (;ft_rit != ft_map.rend(); ++ft_rit) {
+		std::cout << "[" << ft_rit->first << "]" << " " << ft_rit->second << " | ";
+	}
+	std::cout << GREEN << "\nSTD reverse iterator: " << RESET;
+	std::map<int, int>::reverse_iterator std_rit = std_map.rbegin();
+	for (;std_rit != std_map.rend(); ++std_rit) {
+		std::cout << "[" << std_rit->first << "]" << " " << std_rit->second << " | ";
+	}
+	/////////////////////////////////////////////////////////////////////////
+	std::cout << std::endl << RED << LINE << RESET << std::endl;
+	std::cout << std::endl;
     // //bst.delete_(25);
     //bst.prettyPrint();
     return 0;

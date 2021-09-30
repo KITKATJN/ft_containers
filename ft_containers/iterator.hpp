@@ -2,11 +2,16 @@
 #define ITERATOR
 
 #include <stddef.h>
+#include <memory>
 #include "enable_if.hpp"
 
 namespace ft {
 
-
+struct input_iterator_tag  {};
+struct output_iterator_tag {};
+struct forward_iterator_tag       : public input_iterator_tag         {};
+struct bidirectional_iterator_tag : public forward_iterator_tag       {};
+struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 template<class Iterator>
 struct iterator_traits
@@ -17,13 +22,6 @@ struct iterator_traits
     typedef typename Iterator::reference reference;
     typedef typename Iterator::iterator_category iterator_category;
 };
-
-struct input_iterator_tag  {};
-struct output_iterator_tag {};
-struct forward_iterator_tag       : public input_iterator_tag         {};
-struct bidirectional_iterator_tag : public forward_iterator_tag       {};
-struct random_access_iterator_tag : public bidirectional_iterator_tag {};
-
 
 	template <class T>
 	class iterator_traits<T*> {
@@ -58,12 +56,21 @@ struct iterator
 };
 
 template <class Iterator>
-	class reverse_iterator : public ft::iterator<ft::random_access_iterator_tag, Iterator> {
+	class reverse_iterator : public ft::iterator<
+	typename iterator_traits<Iterator>::iterator_category,
+	typename iterator_traits<Iterator>::value_type,
+	typename iterator_traits<Iterator>::difference_type,
+	typename iterator_traits<Iterator>::pointer,
+	typename iterator_traits<Iterator>::reference
+	>
+
+	// ft::random_access_iterator_tag, Iterator> , public ft::iterator<ft::bidirectional_iterator_tag, Iterator>
+{
 	public:
         typedef reverse_iterator<Iterator> Myt;
 		typedef Iterator														iterator_type;
-		typedef typename ft::iterator_traits<Iterator>::iterator_category		iterator_category;
-		typedef typename ft::iterator_traits<Iterator>::value_type				value_type;
+		// typedef typename ft::iterator_traits<Iterator>::iterator_category		iterator_category;
+		// typedef typename ft::iterator_traits<Iterator>::value_type				value_type;
 		typedef typename ft::iterator_traits<Iterator>::difference_type			difference_type;
 		typedef typename ft::iterator_traits<Iterator>::pointer					pointer;
 		typedef typename ft::iterator_traits<Iterator>::reference				reference;
@@ -84,8 +91,10 @@ template <class Iterator>
 
 		iterator_type		base() const { return (current); }
 
-		reference 			operator*() { return *this->current; }
-		pointer 			operator->() { return this->current; }
+		reference 			operator*() const { Iterator tmp = current; tmp--; return *tmp; }//return *this->current; }
+		pointer 			operator->() {
+			//return this->current;}
+			return std::__addressof(operator*()); }
 
 		reference 			operator[]( difference_type n ) const { return this->current[-n]; };
 
@@ -150,107 +159,97 @@ reverse_iterator<Iter> operator-( typename reverse_iterator<Iter>::difference_ty
     return reverse_iterator<Iter>(it + n);
 }
 
-template <class T, class P, class R>
-class bidirectional_iterator {
-public:
-	typedef T															value_type;
-	typedef P															pointer;
-	typedef R															reference;
-	typedef ptrdiff_t													difference_type;
-	typedef ft::bidirectional_iterator_tag								iterator_category;
-	typedef bidirectional_iterator<T, P, R>								It;
-	typedef Node<value_type>											*link_type;
+template<typename T, typename Pointer, typename Reference>
+	class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>{
+	public:
 
-	bidirectional_iterator() : m_point(NULL) {}
-	bidirectional_iterator(Node<value_type> *p) : m_point(p) {}
-	bidirectional_iterator(It const &rhs) : m_point(rhs.base()) {}
-	Node<value_type> *base() const { return m_point; }
-	virtual ~bidirectional_iterator() {}
+		typedef ft::bidirectional_iterator_tag	iterator_category;
+		typedef T								value_type;
+		typedef ptrdiff_t						difference_type;
+		typedef Pointer							pointer;
+		typedef Reference						reference;
 
-	bidirectional_iterator &operator=(const It  &rhs) {
-			if (this == &rhs)
-				return *this;
-			this->m_point = rhs.base();
+	private:
+		Node<value_type> *current;
+
+	public:
+
+		bidirectional_iterator() : current(NULL) {}
+
+		~bidirectional_iterator() {}
+
+		explicit bidirectional_iterator(Node<value_type> *point) : current(point) {}
+
+		bidirectional_iterator(bidirectional_iterator<T, Pointer, Reference> const &c) : current(c.base()) {}
+
+		Node<value_type> *base() const { return current; }
+
+		bidirectional_iterator &operator=(bidirectional_iterator<T, Pointer, Reference> const &c) {
+			current = c.base();
 			return *this;
 		}
 
-	reference operator*() const { return *m_point->data; }
-	pointer operator->() const { return m_point->data; }
+		reference operator*() const { return *current->data; }
 
-	It&				operator++()
-	{
-		if (m_point->color && m_point->parent == NULL)
-			return *this;
-		if (m_point->right->right == NULL)
-		{
-			link_type node = m_point->parent;
-			while (node->parent != NULL && node->right == m_point)
+		pointer operator->() const { return current->data; }
+
+		bidirectional_iterator operator++() {
+			Node<value_type> *p;
+
+			if(current->right)
 			{
-				m_point = node;
-				node = node->parent;
+				current = current->right;
+				while(current->left)
+					current = current->left;
 			}
-			if (m_point->right != node)
-				m_point = node;
-		}
-		else
-		{
-			m_point = m_point->right;
-			while (m_point->left->left != NULL)
-				m_point = m_point->left;
-		}
-		return *this;
-	}
-
-	// It operator++(int)
-	// {
-	// 	It tmp(*this);
-
-	// 	operator++();
-	// 	return tmp;
-	// }
-
-	const It operator++(int)
-	{
-		It it(*this);
-		++(*this);
-		return it;
-	}
-
-	It &operator--()
-	{
-		if (m_point->color && m_point->parent == NULL)
-		{
-			m_point = m_point->right;
-		}
-		else if (m_point->left->left != NULL)
-		{
-			m_point = m_point->left;
-			while (m_point->right->right != NULL)
-				m_point = m_point->right;
-		}
-		else
-		{
-			link_type node = m_point->parent;
-			while (m_point == node->left)
+			else
 			{
-				m_point = node;
-				node = node->parent;
+				p = current->parent;
+				while(p && current == p->right)
+				{
+					current = p;
+					p = p->parent;
+
+				}
+				current = current->parent;
 			}
-			m_point = node;
+			return(*this);
 		}
-		return *this;
-	}
 
-	const It operator--(int)
-	{
-		It it(*this);
-		--(*this);
-		return (it);
-	}
+		const bidirectional_iterator operator++(int) {
+			bidirectional_iterator it(*this);
+			++(*this);
+			return it;
+		}
 
-private:
-	link_type m_point;
-};
+		bidirectional_iterator operator--() {
+			Node<value_type> *p;
+
+			if(current->left)
+			{
+				current = current->left;
+				while(current->right)
+					current = current->right;
+			}
+			else
+			{
+				p = current->parent;
+				while(p && current == p->left)
+				{
+					current = p;
+					p = p->parent;
+				}
+				current = current->parent;
+			}
+			return(*this);
+		}
+
+		const bidirectional_iterator operator--(int) {
+			bidirectional_iterator it(*this);
+			--(*this);
+			return (it);
+		}
+	};
 
 template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
 	bool operator==(bidirectional_iterator<T, FPointer, FReference> const &first, bidirectional_iterator<T, SPointer, SReference> const &second) {

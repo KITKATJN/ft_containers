@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: charles <charles.cabergs@gmail.com>        +#+  +:+       +#+        */
+/*   By: cmarguer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 20:34:52 by charles           #+#    #+#             */
-/*   Updated: 2020/04/26 12:08:35 by charles          ###   ########.fr       */
+/*   Updated: 2021/09/30 11:09:40 by cmarguer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,8 +339,10 @@ static void testRbegin()
     ASSERT(v1_it < v1.rend());
 
 
-    for (size_t i = 0; i < v1.size(); i++)
+    for (size_t i = 0; i < v1.size(); i++){
         ASSERT(*(v1_it + i) == arr1[4 - i]);
+        std::cout << "f-> " << *(v1_it + i) << " s-> " << arr1[4 - i] << std::endl;
+    }
 
     for (size_t i = 0; i < v1.size(); i++)
         ASSERT(*v1_it++ == arr1[4 - i]);

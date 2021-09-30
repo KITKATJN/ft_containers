@@ -287,7 +287,7 @@ public:
         NodePtr tmp = findNode(value);
 
         if(!m_compare(*tmp->data, value) && !m_compare(value,*tmp->data))
-            return(iterator(tmp));
+            return(const_iterator(tmp));
         return(end());
     }
 
@@ -310,7 +310,7 @@ public:
         iterator start = begin();
         for (; start != end(); start++)
         {
-            if ((!m_compare(*start, key) && !m_compare(key, start)) || m_compare(key, *start))
+            if ((!m_compare(*start, key) && !m_compare(key, *start)) || m_compare(key, *start))
                 return start;
         }
         return end();
@@ -742,11 +742,11 @@ private:
 			m_root->color = false;
 		}
 
-    NodePtr             m_root;
-    NodePtr             m_end;
     Compare             m_compare;
     allocator_type      m_allocator;
     nalloc_type         m_nodeAllocator;
+    NodePtr             m_end;
+    NodePtr             m_root;
     size_type           m_size;
 
 };
