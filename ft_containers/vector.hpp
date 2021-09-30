@@ -252,7 +252,7 @@ public:
     {
         if (m_capacity == 0)
             reserve(4);
-        else if (m_size < m_capacity)
+        else if (m_size >= m_capacity)
             reserve(2 * m_capacity);
         m_allocator.construct(m_vector + m_size, value);
         m_size++;
@@ -358,9 +358,9 @@ public:
     }
 
     explicit vector (const allocator_type& alloc = allocator_type()):
-        m_vector(0), m_size(0), m_capacity(0), m_allocator(alloc) {
-        m_vector = m_allocator.allocate(0);
-        //m_allocator.construct(m_vector, 1);
+        m_vector(NULL), m_size(0), m_capacity(0), m_allocator(alloc) {
+        m_vector = m_allocator.allocate(1);
+        //m_allocator.construct(m_vector, 0);
     }
 
     explicit vector (size_type n, const value_type& val = value_type(),

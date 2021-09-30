@@ -91,7 +91,9 @@ template <class Iterator>
 
 		iterator_type		base() const { return (current); }
 
-		reference 			operator*() const { Iterator tmp = current; tmp--; return *tmp; }//return *this->current; }
+		reference 			operator*() const {
+			Iterator tmp = current;return *tmp; }
+			//return *this->current; }
 		pointer 			operator->() {
 			//return this->current;}
 			return std::__addressof(operator*()); }

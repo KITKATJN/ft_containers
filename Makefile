@@ -1,6 +1,6 @@
 NAME = test
 
-SRCS = main.cpp ft_containers/mapTest.cpp #testContainers/setTest.cpp #testContainers/vectorTest.cpp testContainers/stackTest.cpp
+SRCS = main.cpp ft_containers/mapTest.cpp ft_containers/vectorTest.cpp #testContainers/setTest.cpp  testContainers/stackTest.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

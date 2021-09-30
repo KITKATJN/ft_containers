@@ -231,21 +231,21 @@
 [PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:335 (v1_it <= v1.rbegin())
 [PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:336 (v1_it <= v1.rbegin())
 [PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:339 (v1_it < v1.rend())
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
-f-> 4 s-> 5
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
-f-> 3 s-> 4
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
-f-> 2 s-> 3
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
-f-> 1 s-> 2
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
-f-> 0 s-> 1
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
-[FAIL ASSERT] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
+f-> 5 s-> 5
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
+f-> 4 s-> 4
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
+f-> 3 s-> 3
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
+f-> 2 s-> 2
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:343 (*(v1_it + i) == arr1[4 - i])
+f-> 1 s-> 1
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
+[PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:348 (*v1_it++ == arr1[4 - i])
 [PASS       ] {vector} {vector.rbegin} src/vector_test.cpp:349 (v1_it == v1.rend())
 [PASS       ] {vector} {vector.rend} src/vector_test.cpp:360 (v1_it[-1] == 1)
 [PASS       ] {vector} {vector.rend} src/vector_test.cpp:361 (v1_it[-2] == 2)
@@ -259,11 +259,11 @@ f-> 0 s-> 1
 [PASS       ] {vector} {vector.rend} src/vector_test.cpp:373 (v1_it <= v1.rend())
 [PASS       ] {vector} {vector.rend} src/vector_test.cpp:374 (v1_it <= v1.rend())
 [PASS       ] {vector} {vector.rend} src/vector_test.cpp:375 (v1_it > v1.rbegin())
-[FAIL ASSERT] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
-[FAIL ASSERT] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
-[FAIL ASSERT] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
-[FAIL ASSERT] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
-[FAIL ASSERT] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
+[PASS       ] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
+[PASS       ] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
+[PASS       ] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
+[PASS       ] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
+[PASS       ] {vector} {vector.rend} src/vector_test.cpp:379 (*(v1_it - i) == arr1[i])
 [PASS       ] {vector} {vector.resize} src/vector_test.cpp:390 (v1.size() == 7)
 [PASS       ] {vector} {vector.resize} src/vector_test.cpp:391 (v1.capacity() >= 7)
 [PASS       ] {vector} {vector.resize} src/vector_test.cpp:393 (v1[i] == arr1[i])
