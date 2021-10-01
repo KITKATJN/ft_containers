@@ -299,16 +299,16 @@ namespace ft
             //return _tree.findNode()->data;
 			//std::cout << "dsssssssssssssssssssss\n";
 			// if (find(k) == end())
-			// 	return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+			// return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
 			// std::cout<<"hu[[[[[!\n";
 			// iterator tmp = this->find(k);
 			// return (*tmp).second;
-			iterator tmp = this->find(k);
+			//iterator tmp = this->find(k);
 
-				if (tmp == this->end())
-					this->insert(ft::make_pair(k, mapped_type()));
-				tmp = this->find(k);
-				return ((*tmp).second);
+				//if (find(k) == this->end())
+					return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+				//iterator tmp = this->find(k);
+				//return ((*tmp).second);
 		}
 
 		/////////////////////////////////////////////////////////////

@@ -115,7 +115,7 @@ void testMapElementAccess()
     ft_it = ft_map.begin();
     std_it = std_map.begin();
 	/////////////////////////////////////////////////////////////////////////
-    std::cout << GREEN << "size = " << ft_map.size() <<" FT  map elements: " << RESET;
+    std::cout << GREEN << "\nFT  map elements: " << RESET;
 	for (;ft_it != ft_map.end(); ++ft_it) {
 		std::cout << "[" << ft_it->first << "]" << " " << ft_it->second << " | ";
 	}
@@ -144,7 +144,7 @@ void testMapModifiers()
     }
 	std::cout << std::endl << std::endl;
 	/////////////////////////////////////////////////////////////////////////
-	std::cout << GREEN << "FT  map elements: " << RESET;
+	std::cout << GREEN << "\nFT map elements: " << RESET;
 	ft::map<int, int>::iterator ft_it = ft_map.begin();
 	for (;ft_it != ft_map.end(); ++ft_it) {
 		std::cout << "[" << ft_it->first << "]" << " " << ft_it->second << " | ";
@@ -364,14 +364,14 @@ void testOperationsModifiers()
         std::cout << val << " ";
     }
 	std::cout << std::endl << std::endl;
-	ft::pair<int,int> ft_highest = *ft_map.rbegin();
+	//ft::pair<int,int> ft_highest = *ft_map.rbegin();
 	/////////////////////////////////////////////////////////////////////////
-	std::cout << GREEN << "FT map elements:   " << RESET;
-	ft::map<int,int>::iterator ft_it2 = ft_map.begin();
-	do {
-			std::cout << "[" << ft_it2->first << "*]" << " " << ft_it2->second << " | ";
-	 } while ( ft_map.value_comp()(*ft_it2++, ft_highest) );
-	std::cout << std::endl;
+	// std::cout << GREEN << "FT map elements:   " << RESET;
+	// ft::map<int,int>::iterator ft_it2 = ft_map.begin();
+	// do {
+	// 		std::cout << "[" << ft_it2->first << "*]" << " " << ft_it2->second << " | ";
+	//  } while ( ft_map.value_comp()(*ft_it2++, ft_highest) );
+	// std::cout << std::endl;
 	/////////////////////////////////////////////////////////////////////////
 	std::cout << GREEN << "FT  map find elements: " << RESET;
 	for(int i = 0; i <= 5; i++) {

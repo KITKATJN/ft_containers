@@ -139,6 +139,8 @@ public:
 
     ft::pair<iterator, bool> insert( const value_type& val )
     {
+        if (find(val) != end())
+            return ft::make_pair(find(val), true);
         if(m_root)
             m_root->parent = NULL;
 
@@ -276,6 +278,8 @@ public:
     iterator find( const value_type& value )
     {
         NodePtr tmp = findNode(value);
+        if (tmp == NULL)
+            return end();
 
         if(!m_compare(*tmp->data, value) && !m_compare(value,*tmp->data))
             return(iterator(tmp));
