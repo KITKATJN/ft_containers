@@ -306,9 +306,15 @@ namespace ft
 			//iterator tmp = this->find(k);
 
 				//if (find(k) == this->end())
-					return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
+				//	return((*((this->insert(ft::make_pair(k, mapped_type()))).first)).second);
 				//iterator tmp = this->find(k);
 				//return ((*tmp).second);
+				iterator tmp = this->find(k);
+
+				if (tmp == this->end())
+					this->insert(ft::make_pair(k, mapped_type()));
+				tmp = this->find(k);
+				return ((*tmp).second);
 		}
 
 		/////////////////////////////////////////////////////////////
