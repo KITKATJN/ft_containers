@@ -98,9 +98,9 @@ template <class Iterator>
 			//return *this->current; }
 		pointer 			operator->() {
 			//return this->current;}
-			return std::__addressof(operator*()); }
+			return std::addressof(operator*()); }
 
-		reference 			operator[]( difference_type n ) const { return this->current[-n]; };
+		reference 			operator[]( difference_type n ) const { return *(*this + n);} //this->current[-n - 1]; };
 
 		reverse_iterator&	operator++() { --this->current; return *this; }
 		reverse_iterator&	operator--() { ++this->current; return *this; }

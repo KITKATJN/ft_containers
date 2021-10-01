@@ -1,4 +1,4 @@
-#include "vector.hpp"
+#include "ft_containers/vector.hpp"
 #include <iostream>
 #include <iostream>
 #include <string>
@@ -16,11 +16,29 @@ void print_vector(ft::vector<T> &v)
 
 int main()
 {
-	ft::vector<std::string> v;
-	v.push_back("ffff");
-    print_vector(v);
-    ft::vector<std::string> v5(2, "bonjour");
-    print_vector(v5);
+	ft::vector<int> v;
+
+	for (size_t i = 0; i < 10; i++) {
+		v.push_back(i);
+	}
+
+	ft::vector<int>::reverse_iterator it1 = v.rbegin();
+
+	while (it1 != v.rend()) {
+		std::cout << *it1 << '\n';
+		it1++;
+	}
+
+	ft::vector<int>::iterator it2 = it1.base();
+	while (it2 != v.end())
+	{
+		std::cout << *it2 << '\n';
+		it2++;
+	}
+	
+	
+	
+
 	// v[1] = 5;
 	// std::cout << v[1] << std::endl;
 	// std::cout << v.size() << std::endl;
