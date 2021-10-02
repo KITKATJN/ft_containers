@@ -115,7 +115,7 @@ void test_map_constructor_2_1(void) {
     std::allocator<int> alloc;
 
     std::map<int, long> smap(std::less<int>(), alloc);
-    ft::map<int, long> fmap(std::less<int>(), alloc);
+    ft::map<int, long> fmap(ft::less<int>(), alloc);
 
     compare_maps(smap, fmap);
 }
@@ -128,7 +128,7 @@ void test_map_constructor_2_2(void) {
     std::allocator<int> alloc;
 
     std::map<int, long> smap(std::less<int>(), alloc);
-    ft::map<int, long> fmap(std::less<int>(), alloc);
+    ft::map<int, long> fmap(ft::less<int>(), alloc);
 
     stress_test(smap, fmap);
 
@@ -728,10 +728,10 @@ void test_map_iterators_2_2(void) {
     for (std::map<int, long>::const_iterator i = smap.begin(); i != smap.end();
          ++i)
         *i;
-
-    for (ft::map<int, long>::const_iterator i = fmap.begin(); i != fmap.end();
+for (ft::map<int, long>::const_iterator i = fmap.begin(); i != fmap.end();
          ++i)
         *i;
+
 
     std::map<int, long>::const_iterator s_it = smap.begin();
     s_it++;
@@ -1076,7 +1076,7 @@ void test_map_capacity_3(void) {
     {
         std::allocator<int> alloc;
         std::map<int, long> smap(std::less<int>(), alloc);
-        ft::map<int, long> fmap(std::less<int>(), alloc);
+        ft::map<int, long> fmap(ft::less<int>(), alloc);
 
         if (smap.max_size() == fmap.max_size())
             std::cout << GREEN "SAME" DEFAULT << ' ' << std::flush;
