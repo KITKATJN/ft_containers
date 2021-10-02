@@ -6,7 +6,7 @@
 /*   By: cmarguer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 20:34:52 by charles           #+#    #+#             */
-/*   Updated: 2021/09/30 17:21:55 by cmarguer         ###   ########.fr       */
+/*   Updated: 2021/10/02 22:16:09 by cmarguer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,9 +231,7 @@ static void testBegin()
     ASSERT(v1_it[4] == 5);
 
     ASSERT(v1_it == v1.begin());
-    // ASSERT(v1_it != v1.rbegin());
     ASSERT(v1_it != v1.end());
-    // ASSERT(v1_it != v1.rend());
 
     ASSERT(v1_it <= v1.begin());
     ASSERT(v1_it >= v1.begin());
@@ -280,8 +278,6 @@ static void testEnd()
 
     ASSERT(v1_it == v1.end());
     ASSERT(v1_it != v1.begin());
-    // ASSERT(v1_it != v1.rbegin());
-    // ASSERT(v1_it != v1.rend());
 
     ASSERT(v1_it >= v1.end());
     ASSERT(v1_it >= v1.end());
@@ -320,33 +316,23 @@ static void testRbegin()
 
     ft::vector<int>::reverse_iterator v1_it = v1.rbegin();
     ASSERT(v1_it[0] == 5);
-    std::cout << "f-> " << v1_it[0] << " s-> " << *v1.rbegin() << std::endl;
     ASSERT(v1_it[1] == 4);
-    std::cout << "f-> " << v1_it[1] << " s-> " << 4 << std::endl;
     ASSERT(v1_it[2] == 3);
-    std::cout << "f-> " << v1_it[2] << " s-> " << 3 << std::endl;
     ASSERT(v1_it[3] == 2);
-    std::cout << "f-> " << v1_it[3] << " s-> " << 2 << std::endl;
     ASSERT(v1_it[4] == 1);
-    std::cout << "f-> " << v1_it[4] << " s-> " << 1 << std::endl;
 
     ASSERT(v1_it == v1.rbegin());
     ASSERT(v1_it != v1.rend());
-    // ASSERT(v1_it != v1.begin());
-    // ASSERT(v1_it != v1.end());
 
     ASSERT(v1_it >= v1.rbegin());
     ASSERT(v1_it >= v1.rbegin());
     ASSERT(v1_it <= v1.rbegin());
     ASSERT(v1_it <= v1.rbegin());
-    // ASSERT(v1_it > v1.begin());
-    // ASSERT(v1_it < v1.end());
     ASSERT(v1_it < v1.rend());
 
 
     for (size_t i = 0; i < v1.size(); i++){
         ASSERT(*(v1_it + i) == arr1[4 - i]);
-        //std::cout << "f-> " << *(v1_it + i) << " s-> " << arr1[4 - i] << std::endl;
     }
 
     for (size_t i = 0; i < v1.size(); i++)
@@ -370,8 +356,6 @@ static void testRend()
 
     ASSERT(v1_it == v1.rend());
     ASSERT(v1_it != v1.rbegin());
-    // ASSERT(v1_it != v1.begin());
-    // ASSERT(v1_it != v1.end());
 
     ASSERT(v1_it >= v1.rend());
     ASSERT(v1_it >= v1.rend());

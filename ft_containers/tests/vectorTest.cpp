@@ -260,13 +260,10 @@ void testVectorCapacity()
 void testVectorElementAccess()
 {
 	int val;
-	std::cout << GREEN << "Vector elem: " << std::endl;
 	ft::vector<int> ft_vec;
-	std::cout << GREEN << "Vector elem: " << std::endl;
 	std::vector<int> std_vec;
 
 	std::cout << GREEN << "Vector elem: " << RESET;
-	std::cout  << "zal elem: " << std::endl;
 	for (int i = 0; i < 10; i++) {
 		val = rand() % 10;
 		ft_vec.push_back(val);

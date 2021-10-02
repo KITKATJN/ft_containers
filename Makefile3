@@ -37,11 +37,11 @@ map_h	= map.hpp
 map_o	= $(map_s:$(srcdir)/%.cpp=$(objdir)/%.o)
 map_d	= $(map_o:%.o=%.d)
 
-set_n	= set
-set_s	= $(srcdir)/set_main.cpp $(srcdir)/set_test.cpp $(srcdir)/utils.cpp
-set_h	= set.hpp
-set_o	= $(set_s:$(srcdir)/%.cpp=$(objdir)/%.o)
-set_d	= $(set_o:%.o=%.d)
+# set_n	= set
+# set_s	= $(srcdir)/set_main.cpp $(srcdir)/set_test.cpp $(srcdir)/utils.cpp
+# set_h	= set.hpp
+# set_o	= $(set_s:$(srcdir)/%.cpp=$(objdir)/%.o)
+# set_d	= $(set_o:%.o=%.d)
 
 stack_n	= stack
 stack_s	= $(srcdir)/stack_main.cpp  $(srcdir)/utils.cpp $(srcdir)/stack_test.cpp
@@ -68,15 +68,15 @@ test:	$(name)
 	@echo "${RESET}"
 	@./$(stack_n)
 	@echo "${BGreen}\n"
-	@echo "======================SET======================\n"
-	@echo "${RESET}"
-	@./$(set_n)
-	@echo "${BGreen}\n"
+	# @echo "======================SET======================\n"
+	# @echo "${RESET}"
+	# @./$(set_n)
+	# @echo "${BGreen}\n"
 	@echo "======================MAP======================\n"
 	@echo "${RESET}"
 	@./$(map_n)
 
-$(name):	$(vector_n) $(set_n) $(map_n) $(stack_n)
+$(name):	$(vector_n) $(map_n) $(stack_n) #$(set_n)
 
 # VECTOR
 $(vector_n):	$(vector_o)
@@ -99,9 +99,9 @@ $(objdir)/%.o:	$(srcdir)/%.cpp Makefile
 		@$(linker) $(flags) -MMD -c $< -o $@
 
 # set
-$(set_n):	$(set_o)
-		@$(linker) $(flags) $^ -o $(set_n)
-		@echo "Compiled${Green}["$@"]${RESET}\n"
+# $(set_n):	$(set_o)
+# 		@$(linker) $(flags) $^ -o $(set_n)
+# 		@echo "Compiled${Green}["$@"]${RESET}\n"
 
 -include $(set_d)
 $(objdir)/%.o:	$(srcdir)/%.cpp Makefile
@@ -122,7 +122,7 @@ clean:
 		rm -rf $(objdir)
 
 fclean:	clean
-		rm -f $(vector_n) $(map_n) $(set_n) $(stack_n)
+		rm -f $(vector_n) $(map_n)  $(stack_n) # $(set_n)
 
 re:		fclean all
 

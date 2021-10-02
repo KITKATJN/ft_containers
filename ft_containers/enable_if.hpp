@@ -9,30 +9,23 @@ struct enable_if {};
 template<class T>
 struct enable_if<true, T> { typedef T type; };
 
-// template<typename T>
-// struct less: public std::binary_function<T, T, bool>
-// {
-//     bool operator()(const T& x, const T& y) const {
-//         return (x < y);
-//     }
-// };
 
-	template <class Arg1, class Arg2, class Result>
-  	struct binary_function
-	{
-    	typedef Arg1 	first_argument_type;
-    	typedef Arg2 	second_argument_type;
-    	typedef Result 	result_type;
-  	};
+    template <class Arg1, class Arg2, class Result>
+    struct binary_function
+    {
+        typedef Arg1 	first_argument_type;
+        typedef Arg2 	second_argument_type;
+        typedef Result 	result_type;
+    };
 
-	template <class T>
-	struct less : binary_function <T,T,bool>
-	{
-  		bool operator() (const T& x, const T& y) const
-		{
-			return (x < y);
-		}
-	};
+    template <class T>
+    struct less : binary_function <T,T,bool>
+    {
+        bool operator() (const T& x, const T& y) const
+        {
+            return (x < y);
+        }
+    };
 
 template <class T1, class T2>
 struct pair
@@ -63,14 +56,6 @@ public :
         second(b)
     {}
 
-    // pair& operator= (const pair& pr)
-    // {
-    //     if (*this == pr)
-    //         return (*this);
-    //     this->first = pr.first;
-    //     this->second = pr.second;
-    //     return (*this);
-    // }
 };
 
 template <class T1, class T2>

@@ -81,6 +81,7 @@
         "variant": "cpp",
         "*.ipp": "cpp",
         "__functional_03": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "codecvt": "cpp"
     }
 }
