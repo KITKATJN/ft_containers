@@ -106,6 +106,13 @@ void swap(T &t1, T &t2)
     t2 = tmp;
 }
 
+
+template<bool B, class T, class F>
+struct conditional { typedef T type; };
+ 
+template<class T, class F>
+struct conditional<false, T, F> { typedef F type; };
+
 }
 
 

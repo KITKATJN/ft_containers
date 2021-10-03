@@ -24,8 +24,8 @@ public:
     typedef T                                                           *pointer;
     typedef const T                                                     *const_pointer;
     typedef Compare                                                     compare_type;
-    typedef typename ft::bidirectional_iterator<T, T*, T&>              iterator;
-    typedef typename ft::bidirectional_iterator<T, const T*, const T&>  const_iterator;
+    typedef typename ft::bidirectional_iterator<T, false>              iterator;
+    typedef typename ft::bidirectional_iterator<T, true>  const_iterator;
     typedef typename ft::reverse_iterator<iterator>                     reverse_iterator;
     typedef typename ft::reverse_iterator<const_iterator>               const_reverse_iterator;
     typedef ptrdiff_t                                                   difference_type;

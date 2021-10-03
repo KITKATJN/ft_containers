@@ -97,7 +97,7 @@ public:
     { Iterator tmp = current;tmp--;return *tmp; }
 
     pointer operator->()
-    { return std::__addressof(operator*()); }
+    { return std::addressof(operator*()); }
 
     reference operator[]( difference_type n ) const { return *(*this + n);}
     reverse_iterator&    operator++() { --this->current; return *this; }
@@ -119,174 +119,198 @@ public:
 
     iterator_type getIterator() const { return this->current; }
 
-    bool Eq(const Myt& Y) const
-    { return current == Y.current; }
+    // bool Eq(const Myt& Y) const
+    // { return current == Y.current; }
 
 private:
     iterator_type current;
 
 };
 
-template< class Iterator1, class Iterator2 >
-bool operator==( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return lhs.Eq(rhs);
+template <class Iterator, class Iter>
+bool operator==(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() == rhs.base());
+}
+template <class Iterator, class Iter>
+bool operator!=(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() != rhs.base());
+}
+template <class Iterator, class Iter>
+bool operator<(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() > rhs.base());
+}
+template <class Iterator, class Iter>
+bool operator<=(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() >= rhs.base());
+}
+template <class Iterator, class Iter>
+bool operator>(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() < rhs.base());
+}
+template <class Iterator, class Iter>
+bool operator>=(const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iter>& rhs) {
+    return (lhs.base() <= rhs.base());
 }
 
-template< class Iterator1, class Iterator2 >
-bool operator!=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return !(lhs == rhs);
+template <class Iterator>
+reverse_iterator<Iterator> operator+(
+             typename reverse_iterator<Iterator>::difference_type n,
+             const reverse_iterator<Iterator>& rev_it) {
+    return (rev_it + n);
+}
+template <class Iterator>
+typename reverse_iterator<Iterator>::difference_type operator-(
+    const reverse_iterator<Iterator>& lhs,
+    const reverse_iterator<Iterator>& rhs) {
+    return (rhs.base() - lhs.base());
 }
 
-template< class Iterator1, class Iterator2 >
-bool operator<( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return lhs.base() > rhs.base();
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator==( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return lhs.Eq(rhs);
+// }
 
-template< class Iterator1, class Iterator2 >
-bool operator<=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return lhs.base() >= rhs.base();
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator!=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return !(lhs == rhs);
+// }
 
-template< class Iterator1, class Iterator2 >
-bool operator>( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return lhs.base() < rhs.base();
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator<( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return lhs.base() > rhs.base();
+// }
 
-template< class Iterator1, class Iterator2 >
-bool operator>=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
-    return lhs.base() <= rhs.base();
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator<=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return lhs.base() >= rhs.base();
+// }
 
-template< class Iter >
-reverse_iterator<Iter> operator+( typename reverse_iterator<Iter>::difference_type n,
-                                    const reverse_iterator<Iter>& it ) {
-    return reverse_iterator<Iter>(it - n);
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator>( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return lhs.base() < rhs.base();
+// }
 
-template< class Iter >
-reverse_iterator<Iter> operator-( typename reverse_iterator<Iter>::difference_type n,
-                                    const reverse_iterator<Iter>& it ) {
-    return reverse_iterator<Iter>(it + n);
-}
+// template< class Iterator1, class Iterator2 >
+// bool operator>=( const reverse_iterator<Iterator1>& lhs, const reverse_iterator<Iterator2>& rhs ) {
+//     return lhs.base() <= rhs.base();
+// }
 
-template<typename T, typename Pointer, typename Reference>
-    class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
-{
-public:
+// template< class Iter >
+// reverse_iterator<Iter> operator+( typename reverse_iterator<Iter>::difference_type n,
+//                                     const reverse_iterator<Iter>& it ) {
+//     return reverse_iterator<Iter>(it - n);
+// }
 
-    typedef ft::bidirectional_iterator_tag   iterator_category;
-    typedef T                                value_type;
-    typedef ptrdiff_t                        difference_type;
-    typedef Pointer                          pointer;
-    typedef Reference                        reference;
+// template< class Iter >
+// reverse_iterator<Iter> operator-( typename reverse_iterator<Iter>::difference_type n,
+//                                     const reverse_iterator<Iter>& it ) {
+//     return reverse_iterator<Iter>(it + n);
+// }
 
+template<typename Value, bool IsConst>
+class bidirectional_iterator : public iterator<bidirectional_iterator_tag, Value> {
+ public:
+     typedef typename conditional<IsConst, const Value, Value>::type    value_type;
+     typedef typename conditional<IsConst, const Value*, Value*>::type  pointer;
+     typedef typename conditional<IsConst, const Value&, Value&>::type  reference;
+     typedef random_access_iterator_tag                                 iterator_category;
+     typedef ptrdiff_t                                                  difference_type;
 
-    typedef bidirectional_iterator<T,  const pointer, const reference>           const_iterator_category;
+ protected:
+     typedef Node<Value>* link_type;
+     link_type  _node;
 
-    operator const_iterator_category()
-    { return const_iterator_category(current); }
+ public:
+     // Default things
+     bidirectional_iterator() : _node() { };
+     bidirectional_iterator(link_type type) : _node(type) { };
+     virtual ~bidirectional_iterator() { }
+     bidirectional_iterator(const bidirectional_iterator<Value, IsConst> &copy) : _node(copy._node) { }
 
-    bidirectional_iterator() : current(NULL) {}
+     // operators
+     bidirectional_iterator<Value, IsConst>&    operator=(bidirectional_iterator<Value, IsConst> const & copy) {
+         if (this == &copy)
+             return (*this);
+         _node = copy._node;
+         return (*this);
+     }
+     operator bidirectional_iterator<Value, true>() const {
+         return (bidirectional_iterator<Value, true>(_node));
+     }
 
-    ~bidirectional_iterator() {}
+     // logical
+     bool   operator==(bidirectional_iterator<Value, IsConst> const & other) { return (_node == other._node); }
+     bool   operator!=(bidirectional_iterator<Value, IsConst> const & other) { return (_node != other._node); }
 
-    explicit bidirectional_iterator(Node<value_type> *point) : current(point) {}
+     // arithmetic
+     bidirectional_iterator<Value, IsConst>&   operator++() {
+         if (_node->color == true && _node->parent == NULL)
+             return (*this);
+         if (_node->right->right != NULL) {
+             _node = _node->right;
+             while (_node->left->left != NULL)
+                 _node = _node->left;
+         } else {
+             link_type p_node = _node->parent;
+             while (p_node->parent &&  p_node->right == _node) {
+                 _node = p_node;
+                 p_node = _node->parent;
+             }
+             if (_node->right != p_node)
+                 _node = p_node;
+         }
+         return (*this);
+     }
+     bidirectional_iterator<Value, IsConst>   operator++(int) {
+         bidirectional_iterator<Value, IsConst> tmp(*this);
 
-    bidirectional_iterator(bidirectional_iterator<T, Pointer, Reference> const &c) : current(c.base()) {}
+         operator++();
+         return (tmp);
+     }
+     bidirectional_iterator<Value, IsConst>&   operator--() {
+         if (_node->color == true && _node->parent == NULL) { // only _header has NULL parent
+             _node = _node->right;
+         } else if (_node->left->left != NULL) {
+             _node = _node->left;
+             while (_node->right->right != NULL)
+                 _node = _node->right;
+         } else {
+             link_type p_node = _node->parent;
+             while (_node == p_node->left) {
+                 _node = p_node;
+                 p_node = _node->parent;
+             }
+             _node = p_node;
+         }
+         return (*this);
+     }
+     bidirectional_iterator<Value, IsConst>   operator--(int) {
+         bidirectional_iterator<Value, IsConst> tmp(*this);
 
-    Node<value_type> *base() const
-    { return current; }
+         operator--();
+         return (tmp);
+     }
 
-    bidirectional_iterator<T, Pointer, Reference> &operator=(bidirectional_iterator<T, Pointer, Reference> const &c)
-    {
-        if (this == &c)
-            return *this;
-        current = c.current;
-        return *this;
-    }
-
-    reference operator*()
-    { return *current->data; }
-
-    const reference operator*() const
-    { return *current->data; }
-
-    pointer operator->()
-    { return current->data; }
-
-    // bool   operator==(bidirectional_iterator<T, Pointer, Reference> const & other) { return (current == other.current); }
-    // bool   operator!=(bidirectional_iterator<T, Pointer, Reference> const & other) { return (current != other.current); }
-
-    bidirectional_iterator operator++()
-    {
-       Node<value_type> *p;
-
-        if(current->right)
-        {
-            current = current->right;
-            while(current->left)
-                current = current->left;
-        }
-        else
-        {
-            p = current->parent;
-            while(p && current == p->right)
-            {
-                current = p;
-                p = p->parent;
-            }
-            current = current->parent;
-        }
-        return *this;
-    }
-    const bidirectional_iterator operator++(int)
-    {
-        bidirectional_iterator it(*this);
-        ++(*this);
-        return it;
-    }
-
-    bidirectional_iterator operator--()
-    {
-    Node<value_type> *p;
-
-        if(current->left)
-        {
-            current = current->left;
-            while(current->right)
-                current = current->right;
-        }
-        else
-        {
-            p = current->parent;
-            while(p && current == p->left)
-            {
-                current = p;
-                p = p->parent;
-            }
-            current = current->parent;
-        }
-        return(*this);
-    }
-
-    const bidirectional_iterator operator--(int)
-    {
-        bidirectional_iterator it(*this);
-        --(*this);
-        return (it);
-    }
-
-private:
-    Node<value_type> *current;
+     link_type&     base() { return (_node); }
+     // other
+     Value&         operator*() { return (*_node->data); }
+     const Value&   operator*() const { return (*_node->data); }
+     Value*         operator->() { return (_node->data); }
 };
 
-template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
-    bool operator==(bidirectional_iterator<T, FPointer, FReference> const &first, bidirectional_iterator<T, SPointer, SReference> const &second)
-    { return(first.base() == second.base()); }
+// template<typename T, bool IsConst>
+//     bool operator==(bidirectional_iterator<T, FPointer, FReference, IsConst> const &first, bidirectional_iterator<T, SPointer, SReference, IsConst> const &second)
+//     { return(first.base() == second.base()); }
 
-template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference>
-    bool operator!=(bidirectional_iterator<T, FPointer, FReference> const &first, bidirectional_iterator<T, SPointer, SReference> const &second)
-    { return(first.base() != second.base()); }
+// template<typename T, typename FPointer, typename FReference, typename SPointer, typename SReference, bool IsConst>
+//     bool operator!=(bidirectional_iterator<T, FPointer, FReference, IsConst> const &first, bidirectional_iterator<T, SPointer, SReference, IsConst> const &second)
+//     { return(first.base() != second.base()); }
 
 template <class T, class P, class R>
 class random_access_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
