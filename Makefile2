@@ -4,7 +4,7 @@ SRCS = main.cpp ft_containers/tests/mapTest.cpp ft_containers/tests/vectorTest.c
 
 OBJS = $(SRCS:.cpp=.o)
 
-CLANG = clang++ -std=c++98 -g -Wall -Werror -Wextra #-fsanitize=address
+CLANG = clang++ -std=c++98 -g -Wall -Werror -Wextra -fsanitize=address
 all: $(NAME)
 
 $(NAME): $(OBJS)

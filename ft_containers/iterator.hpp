@@ -224,71 +224,78 @@ class bidirectional_iterator : public iterator<bidirectional_iterator_tag, Value
 
  protected:
      typedef Node<Value>* link_type;
-     link_type  _node;
+     link_type  current;
 
  public:
      // Default things
-     bidirectional_iterator() : _node() { };
-     bidirectional_iterator(link_type type) : _node(type) { };
+     bidirectional_iterator() : current() { };
+     bidirectional_iterator(link_type type) : current(type) { };
      virtual ~bidirectional_iterator() { }
-     bidirectional_iterator(const bidirectional_iterator<Value, IsConst> &copy) : _node(copy._node) { }
+     bidirectional_iterator(const bidirectional_iterator<Value, IsConst> &copy) : current(copy.current) { }
 
      // operators
      bidirectional_iterator<Value, IsConst>&    operator=(bidirectional_iterator<Value, IsConst> const & copy) {
          if (this == &copy)
              return (*this);
-         _node = copy._node;
+         current = copy.current;
          return (*this);
      }
      operator bidirectional_iterator<Value, true>() const {
-         return (bidirectional_iterator<Value, true>(_node));
+         return (bidirectional_iterator<Value, true>(current));
      }
 
      // logical
-     bool   operator==(bidirectional_iterator<Value, IsConst> const & other) { return (_node == other._node); }
-     bool   operator!=(bidirectional_iterator<Value, IsConst> const & other) { return (_node != other._node); }
+     bool   operator==(bidirectional_iterator<Value, IsConst> const & other) { return (current == other.current); }
+     bool   operator!=(bidirectional_iterator<Value, IsConst> const & other) { return (current != other.current); }
 
      // arithmetic
-     bidirectional_iterator<Value, IsConst>&   operator++() {
-         if (_node->color == true && _node->parent == NULL)
-             return (*this);
-         if (_node->right->right != NULL) {
-             _node = _node->right;
-             while (_node->left->left != NULL)
-                 _node = _node->left;
-         } else {
-             link_type p_node = _node->parent;
-             while (p_node->parent &&  p_node->right == _node) {
-                 _node = p_node;
-                 p_node = _node->parent;
-             }
-             if (_node->right != p_node)
-                 _node = p_node;
-         }
-         return (*this);
-     }
-     bidirectional_iterator<Value, IsConst>   operator++(int) {
-         bidirectional_iterator<Value, IsConst> tmp(*this);
+     bidirectional_iterator<Value, IsConst> operator++()
+    {
+       Node<Value> *p;
 
-         operator++();
-         return (tmp);
+        if(current->right)
+        {
+            current = current->right;
+            while(current->left)
+                current = current->left;
+        }
+        else
+        {
+            p = current->parent;
+            while(p && current == p->right)
+            {
+                current = p;
+                p = p->parent;
+            }
+            current = current->parent;
+        }
+        return *this;
+    }
+     bidirectional_iterator<Value, IsConst>   operator++(int) {
+         bidirectional_iterator<Value, IsConst> it(*this);
+        ++(*this);
+        return it;
      }
      bidirectional_iterator<Value, IsConst>&   operator--() {
-         if (_node->color == true && _node->parent == NULL) { // only _header has NULL parent
-             _node = _node->right;
-         } else if (_node->left->left != NULL) {
-             _node = _node->left;
-             while (_node->right->right != NULL)
-                 _node = _node->right;
-         } else {
-             link_type p_node = _node->parent;
-             while (_node == p_node->left) {
-                 _node = p_node;
-                 p_node = _node->parent;
-             }
-             _node = p_node;
-         }
-         return (*this);
+         Node<Value> *p;
+
+        if(current->left)
+        {
+            current = current->left;
+            while(current->right)
+                current = current->right;
+        }
+        else
+        {
+            p = current->parent;
+            while(p && current == p->left)
+            {
+                current = p;
+                p = p->parent;
+            }
+            current = current->parent;
+        }
+        return(*this);
      }
      bidirectional_iterator<Value, IsConst>   operator--(int) {
          bidirectional_iterator<Value, IsConst> tmp(*this);
@@ -297,11 +304,11 @@ class bidirectional_iterator : public iterator<bidirectional_iterator_tag, Value
          return (tmp);
      }
 
-     link_type&     base() { return (_node); }
+     link_type&     base() { return (current); }
      // other
-     Value&         operator*() { return (*_node->data); }
-     const Value&   operator*() const { return (*_node->data); }
-     Value*         operator->() { return (_node->data); }
+     Value&         operator*() { return (*current->data); }
+     const Value&   operator*() const { return (*current->data); }
+     Value*         operator->() { return (current->data); }
 };
 
 // template<typename T, bool IsConst>

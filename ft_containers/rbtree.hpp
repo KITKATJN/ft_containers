@@ -209,11 +209,31 @@ public:
         }
     }
 
-    void erase( iterator first, iterator last )
-    {
-        for (; first != last; ++first)
-            erase(*first);
+    // size_type erase(const value_type& val) {
+    //     if (search(val) == _nil) return (0);
+    //     ft::pair<iterator, iterator> range = equal_range(val);
+    //     erase(range.first, range.second);
+    //     return (1);
+    // }
+    void erase(iterator first, iterator last) {
+        iterator tmp;
+
+        while (first != last) {
+            tmp = first;
+            first++;
+            erase(tmp);
+        }
     }
+
+    // void erase( iterator first, iterator last )
+    // {
+    //     int i = 0;
+    //     for (; first != last; ++first){
+    //         erase(*first);
+    //         i++;
+    //     }
+    //     //std::cout << i << " ,___________________________--\n";
+    // }
 
     size_type erase( const value_type& key )
     {

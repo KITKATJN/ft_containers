@@ -82,6 +82,7 @@
         "*.ipp": "cpp",
         "__functional_03": "cpp",
         "stack": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "__tree": "cpp"
     }
 }

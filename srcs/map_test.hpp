@@ -6,7 +6,7 @@
 #include "../ft_containers/map.hpp"
 #include "utils.hpp"
 
-#define ITER 15000
+#define ITER 150
 
 ft::pair<int, char> ft_rand_pair();
 ft::pair<int, char> ft_pair(int num);

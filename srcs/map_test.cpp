@@ -16,9 +16,9 @@ void show_map(ft::map<Key, T> &map) {
 
     std::cout << "[ " << std::addressof(map) << " ]"
               << "\n";
-    for (; it != map.end(); it++) {
-        std::cout << it->first << " ";
-    }
+    // for (; it != map.end(); it++) {
+    //     std::cout << it->first << " ";
+    // }
     std::cout << "\n";
 }
 
@@ -285,7 +285,7 @@ void erase_test() {
         ft_map.insert(ft_pair(i));
         std_map.insert(std_pair(i));
     }
-
+    std:: cout << "size! = " << ft_map.size() << " " << std_map.size() << std::endl;
     test_title("ERASE SINGLE ELEMENT");
     start = clock();
     std_map.erase(10);
@@ -293,6 +293,7 @@ void erase_test() {
     std::cout << "STD:\t";
     time(start, end);
     std_ticks = end - start;
+    std:: cout << "size! = " << ft_map.size() << " " << std_map.size() << std::endl;
 
     start = clock();
     ft_map.erase(10);
@@ -300,6 +301,7 @@ void erase_test() {
     std::cout << "FT:\t";
     time(start, end);
     ft_ticks = end - start;
+    std:: cout << "size! = " << ft_map.size() << " " << std_map.size() << std::endl;
 
     percentage_compare(std_ticks, ft_ticks);
     compare_maps(std_map, ft_map);
@@ -329,15 +331,20 @@ void erase_test() {
     ft_map.erase(25);
 
     start = clock();
+    
+    std:: cout << "size! = " << ft_map.size() << " lower = " <<  ((*(std_map.upper_bound(25))).second <<  (*(std_map.lower_bound(10))).second) << " " << std_map.size() << std::endl;
     std_map.erase(std_map.lower_bound(10), std_map.upper_bound(25));
     end = clock();
     std::cout << "STD:\t";
     time(start, end);
     std_ticks = end - start;
-
+    
+    std:: cout << "size! = " << ft_map.size() << " lower = " <<  ((*(ft_map.upper_bound(25))).second <<  (*(ft_map.lower_bound(10))).second) << " " << std_map.size() << std::endl;
     start = clock();
     ft_map.erase(ft_map.lower_bound(10), ft_map.upper_bound(25));
     end = clock();
+
+    std:: cout << "size! = " << ft_map.size() << " " << std_map.size() << std::endl;
     std::cout << "FT:\t";
     time(start, end);
     ft_ticks = end - start;
