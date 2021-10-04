@@ -1,9 +1,10 @@
-#ifndef C6211693_4050_4270_B471_19CD1E4B0F1B
-#define C6211693_4050_4270_B471_19CD1E4B0F1B
+#ifndef STACK_HPP
+#define STACK_HPP
 
 #include "vector.hpp"
 
-namespace ft{
+namespace ft
+{
 template <class T, class Container = ft::vector<T> > class stack
 {
 public:
@@ -67,4 +68,4 @@ template <class T, class Container>
   { return !(lhs < rhs); }
 
 }
-#endif /* C6211693_4050_4270_B471_19CD1E4B0F1B */
+#endif

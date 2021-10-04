@@ -53,7 +53,6 @@ public:
     ///////////////////////*************Member functions*************\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
     explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
-    //m_tree((value_compare(comp), alloc)) {}
     m_tree(rbtree<value_type, value_compare, allocator_type>(value_compare(comp), alloc)) {}
 
     template <class InputIterator>

@@ -1,5 +1,5 @@
-#ifndef ITERATOR
-#define ITERATOR
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
 #include <stddef.h>
 #include <memory>

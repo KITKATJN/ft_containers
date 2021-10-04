@@ -234,12 +234,6 @@ public:
         }
     }
 
-    // size_type erase(const value_type& val) {
-    //     if (search(val) == _nil) return (0);
-    //     ft::pair<iterator, iterator> range = equal_range(val);
-    //     erase(range.first, range.second);
-    //     return (1);
-    // }
     void erase(iterator first, iterator last) {
         iterator tmp;
 
@@ -249,16 +243,6 @@ public:
             erase(tmp);
         }
     }
-
-    // void erase( iterator first, iterator last )
-    // {
-    //     int i = 0;
-    //     for (; first != last; ++first){
-    //         erase(*first);
-    //         i++;
-    //     }
-    //     //std::cout << i << " ,___________________________--\n";
-    // }
 
     size_type erase( const value_type& key )
     {
@@ -289,11 +273,8 @@ public:
     iterator find( const value_type& value )
     {
         NodePtr tmp = findNode(value);
-        //if (tmp != 0)
-        //    std::cout << (*tmp->data) << "fff\n";
         if (tmp == NULL)
             return end();
-
         if(!m_compare(*tmp->data, value) && !m_compare(value,*tmp->data))
             return(iterator(tmp));
         return(end());
@@ -389,8 +370,6 @@ public:
         while(x)
         {
             y = x;
-            //if (y != 0)
-            // std::cout  << *y->data << " here1!!!\n";
             if(m_compare(*x->data, val))
                 x = y->right;
             else if (m_compare(val, *x->data))
@@ -398,10 +377,6 @@ public:
             else
                 return (y);
         }
-        //if (y != 0)
-        //    std::cout << (y == 0) << " " << *y->data << " here!!!\n";
-        //if (x == 0 && y != 0 && y->data == 0)
-            //return 0;
         return (y);
     }
 

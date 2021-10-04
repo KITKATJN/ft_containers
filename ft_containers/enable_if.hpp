@@ -43,8 +43,6 @@ public :
         second()
     {}
 
-    //~pair(){}
-
     template<class U, class V>
     pair (const pair<U, V>& pr)
     :
@@ -116,6 +114,5 @@ template<class T, class F>
 struct conditional<false, T, F> { typedef F type; };
 
 }
-
 
 #endif /* ENABLE_IF */

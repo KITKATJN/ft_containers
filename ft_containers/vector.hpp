@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstring>
-#include <iostream> // delete
+#include <iostream>
 #include "iterator.hpp"
 #include "enable_if.hpp"
 #include "lexicographical_compare.hpp"
@@ -29,6 +29,9 @@ public:
     typedef reverse_iterator<iterator> reverse_iterator;
     typedef random_access_iterator<T, true> const_iterator;
     typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+
+
+    ///////////////////////*************Iterators*************\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
     iterator begin()
     { return iterator(m_vector); }
@@ -53,6 +56,11 @@ public:
 
     const_reverse_iterator rend() const
     { return const_reverse_iterator(begin()); }
+
+    ///////////////////////*************Iterators*************\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+
+    ///////////////////////*************Element access*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
     reference at( size_type pos )
     { if (pos >= size())
@@ -94,6 +102,11 @@ public:
     else
         return begin();}
 
+    ///////////////////////*************Element access*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+
+    ///////////////////////*************Capacity*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
     bool empty() const
     { return (m_size == 0); }
 
@@ -106,6 +119,11 @@ public:
     size_type max_size() const
     { return m_allocator.max_size(); }
 
+    ///////////////////////*************Capacity*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+
+    ///////////////////////*************Modifiers*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
     allocator_type get_allocator() const
     { return m_allocator; }
 
@@ -114,7 +132,12 @@ public:
         if (new_cap <= m_capacity)
             return ;
         pointer new_arr = m_allocator.allocate(new_cap);
-        std::uninitialized_copy(begin(), end(), new_arr);
+        try {
+            std::uninitialized_copy(begin(), end(), new_arr);
+        } catch (...) {
+            m_allocator.deallocate(new_arr, new_cap);
+            throw;
+        }
         for (size_type dist = 0; dist < m_size; dist++)
         { m_allocator.destroy(m_vector + dist); }
         m_allocator.deallocate(m_vector, m_capacity);
@@ -278,6 +301,11 @@ public:
         ft::swap(m_vector, x.m_vector);
     }
 
+    ///////////////////////*************Modifiers*************\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+
+    ///////////////////////*************Member functions*************\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
     explicit vector (const allocator_type& alloc = allocator_type()):
         m_vector(NULL), m_size(0), m_capacity(0), m_allocator(alloc) {
         m_vector = m_allocator.allocate(1);
@@ -297,34 +325,34 @@ public:
 
     template <class InputIterator>
     vector (InputIterator first, typename ft::enable_if<
-                    !std::numeric_limits<InputIterator>::is_integer,
-                        InputIterator>::type last,
-        const allocator_type& alloc = allocator_type()):m_vector(0), m_size(0), m_capacity(0), m_allocator(alloc)
+                !std::numeric_limits<InputIterator>::is_integer,
+                    InputIterator>::type last,
+    const allocator_type& alloc = allocator_type()):m_vector(0), m_size(0), m_capacity(0), m_allocator(alloc)
+    {
+        m_size = static_cast<size_type>(last - first);
+        m_capacity = m_size;
+        m_vector = m_allocator.allocate(m_capacity);
+        for (size_type dist = 0; dist < m_size; dist++)
         {
-            m_size = static_cast<size_type>(last - first);
-            m_capacity = m_size;
-            m_vector = m_allocator.allocate(m_capacity);
-            for (size_type dist = 0; dist < m_size; dist++)
-            {
-                m_allocator.construct(m_vector + dist, *(first + dist));
-            }
+            m_allocator.construct(m_vector + dist, *(first + dist));
         }
+    }
 
-        vector (const vector &copy): m_vector(0), m_size(0), m_capacity(0), m_allocator(copy.m_allocator)
+    vector (const vector &copy): m_vector(0), m_size(0), m_capacity(0), m_allocator(copy.m_allocator)
+    {
+        m_vector = m_allocator.allocate(0);
+        reserve(copy.capacity());
+        try
         {
-            m_vector = m_allocator.allocate(0);
-            reserve(copy.capacity());
-            try
-            {
-                for (size_type i = 0; i < copy.size(); i++)
-                    push_back(copy[i]);
-            }
-            catch(...)
-            {
-                clear();
-                m_allocator.deallocate(m_vector, m_capacity);
-            }
+            for (size_type i = 0; i < copy.size(); i++)
+                push_back(copy[i]);
         }
+        catch(...)
+        {
+            clear();
+            m_allocator.deallocate(m_vector, m_capacity);
+        }
+    }
 
     vector& operator= ( const vector &x )
     {
@@ -346,6 +374,8 @@ public:
         clear();
         m_allocator.deallocate(m_vector, m_capacity);
     }
+    ///////////////////////*************Member functions*************\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
 
 private:
     pointer             m_vector;
