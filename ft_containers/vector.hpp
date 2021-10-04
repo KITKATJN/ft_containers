@@ -25,9 +25,9 @@ public:
     typedef typename allocator_type::pointer pointer;
     typedef typename allocator_type::const_pointer const_pointer;
     typedef typename allocator_type::difference_type difference_type;
-    typedef random_access_iterator<T,  pointer, reference> iterator;
+    typedef random_access_iterator<T, false> iterator;
     typedef reverse_iterator<iterator> reverse_iterator;
-    typedef random_access_iterator<T,  const_pointer, const_reference> const_iterator;
+    typedef random_access_iterator<T, true> const_iterator;
     typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
     iterator begin()

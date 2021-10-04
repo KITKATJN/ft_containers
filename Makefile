@@ -76,7 +76,7 @@ test:	$(name)
 	@echo "${RESET}"
 	@./$(map_n)
 
-$(name):	$(vector_n) #$(map_n) # $(stack_n) $(set_n)
+$(name):	$(vector_n) $(map_n)  $(stack_n) $(set_n)
 
 # VECTOR
 $(vector_n):	$(vector_o)
