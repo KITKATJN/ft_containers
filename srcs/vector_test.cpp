@@ -38,14 +38,12 @@ void push_back() {
     checker(ft::equal(std_vec.begin(), std_vec.end(), ft_vec.begin()));
     checker(std_vec.capacity() == ft_vec.capacity());
     checker(*std_vec.begin() == *ft_vec.begin());
-    // checker(*std_vec.end() == *ft_vec.end());
 
     std_vec.push_back(9);
     ft_vec.push_back(9);
     checker(std_vec.size() == ft_vec.size());
     checker(ft::equal(std_vec.begin(), std_vec.end(), ft_vec.begin()));
     checker(*std_vec.begin() == *ft_vec.begin());
-    // checker(*std_vec.end() == *ft_vec.end());
 }
 
 void pop_back() {
@@ -177,29 +175,6 @@ void insert() {
 
     std::cout << "******************2********************\n";
     start = clock();
-    for (size_t i = 0; i < ITERATIONS; i++) {
-        std_vec.insert(++std_vec.begin(), i);
-    }
-    end = clock();
-    time(start, end);
-    std_ticks = end - start;
-
-    start = clock();
-    for (size_t i = 0; i < ITERATIONS; i++) {
-        ft_vec.insert(++ft_vec.begin(), i);
-    }
-    end = clock();
-    time(start, end);
-    ft_ticks = end - start;
-
-    percentage_compare(std_ticks, ft_ticks);
-    checker(std_vec.size() == ft_vec.size());
-    checker(ft::equal(std_vec.begin(), std_vec.end(), ft_vec.begin()));
-    checker(*std_vec.begin() == *ft_vec.begin());
-    checker(*std_vec.rbegin() == *ft_vec.rbegin());
-
-    std::cout << "******************3********************\n";
-    start = clock();
     std_vec.insert(std_vec.begin(), ITERATIONS, 10);
     end = clock();
     time(start, end);
@@ -215,7 +190,7 @@ void insert() {
     checker(std_vec.size() == ft_vec.size());
     checker(ft::equal(std_vec.begin(), std_vec.end(), ft_vec.begin()));
 
-    std::cout << "******************4********************\n";
+    std::cout << "******************3********************\n";
     std::vector<int>::iterator std_it = std_vec.begin();
     ft::vector<int>::iterator ft_it = ft_vec.begin();
 
@@ -242,7 +217,7 @@ void insert() {
     checker(std_vec.size() == ft_vec.size());
     checker(ft::equal(std_vec.begin(), std_vec.end(), ft_vec.begin()));
 
-    std::cout << "******************5********************\n";
+    std::cout << "******************4********************\n";
     std::vector<int> std_vec1;
     ft::vector<int> ft_vec1;
 
@@ -412,12 +387,6 @@ void    compare_vectors(const std::vector<int>& lhs, const ft::vector<int>& rhs)
     else
         std::cout << GREEN "OK" DEFAULT  << ' ' << std::flush;
 
-    // begin-end distance
-    // if (std::distance(lhs.begin(), lhs.end()) != std::distance(rhs.begin(), rhs.end())) // todo change to std::
-    //     std::cout << RED "KO" DEFAULT << ' ' << std::flush;
-    // else
-    //     std::cout << GREEN "OK" DEFAULT << ' ' << std::flush;
-
     std::cout << '\n' << std::endl;
 }
 
@@ -503,8 +472,6 @@ void    test_vector_constructor_3_3(void)
         fvec.pop_back();
     }
     show_ft_vector(fvec);
-    // stress_test(svec, fvec);
-    // compare_vectors(svec, fvec);
 }
 
 void    test_vector_constructor_3_4(void)
@@ -1192,19 +1159,6 @@ void    test_vector_access_4(void)
     }
 }
 
-void    test_vector_access_5(void)
-{
-    // std::cout << YELLOW "5) data [non-empty]:" DEFAULT << std::endl;
-
-    // std::vector<int>    svec(10, 5);
-    // ft::vector<int>     fvec(10, 5);
-
-    // svec.data()[0] = 123;
-
-    // svec.data()[5] = 123;
-
-    // compare_vectors(svec, fvec);
-}
 
 void    test_vector_iterators_1_1(void)
 {
@@ -1590,21 +1544,7 @@ void    test_vector_iterators_2_2(void)
     compare_vectors(svec, fvec);
 }
 
-void    test_vector_iterators_3(void)
-{
-//     std::cout << YELLOW "3) iterators order: " DEFAULT << std::endl;
 
-//     std::vector<int>    svec(10);
-//     ft::vector<int>     fvec(10);
-
-//     for (std::vector<int>::iterator i = svec.begin(); i != svec.end(); ++i)
-//         *i = (int)std::distance(svec.begin(), i);
-
-//     for (ft::vector<int>::iterator i = fvec.begin(); i != fvec.end(); ++i)
-//         *i = (int)std::distance(svec.begin(), i);
-
-//     compare_vectors(svec, fvec);
-}
 
 void    test_vector_rev_iterators_1_1(void)
 {
@@ -1992,21 +1932,6 @@ void    test_vector_rev_iterators_2_2(void)
     compare_vectors(svec, fvec);
 }
 
-void    test_vector_rev_iterators_3(void)
-{
-    // std::cout << YELLOW "3) reverse_iterators order:" DEFAULT << std::endl;
-
-    // std::vector<int>    svec(10);
-    // ft::vector<int>     fvec(10);
-
-    // for (std::vector<int>::reverse_iterator i = svec.rbegin(); i != svec.rend(); ++i)
-    //     *i = (int)std::distance(svec.rbegin(), i);
-
-    // for (ft::vector<int>::reverse_iterator i = fvec.rbegin(); i != fvec.rend(); ++i)
-    //     *i = (int)std::distance(fvec.rbegin(), i);
-
-    // compare_vectors(svec, fvec);
-}
 
 void    test_vector_capacity_1(void)
 {
@@ -3046,21 +2971,18 @@ void    ft_vector_tests()
     test_vector_access_2();
     test_vector_access_3();
     test_vector_access_4();
-    test_vector_access_5();
 
     std::cout << B_CYAN "   Iterators   " DEFAULT << std::endl;
     test_vector_iterators_1_1();
     test_vector_iterators_1_2();
     test_vector_iterators_2_1();
     test_vector_iterators_2_2();
-    test_vector_iterators_3();
 
     std::cout << B_CYAN "   Reverse iterators   " DEFAULT << std::endl;
     test_vector_rev_iterators_1_1();
     test_vector_rev_iterators_1_2();
     test_vector_rev_iterators_2_1();
     test_vector_rev_iterators_2_2();
-    test_vector_rev_iterators_3();
 
     std::cout << B_CYAN "   Capacity   " DEFAULT << std::endl;
     test_vector_capacity_1();
