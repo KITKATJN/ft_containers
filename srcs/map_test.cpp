@@ -586,7 +586,6 @@ void mixup() {
     checker(ft_m1.size() == ITER);
     ft_m1.erase(ft_m1.lower_bound(10), ft_m1.lower_bound(25));
     checker(ft_m1.size() == ITER - 15);
-
     ft_m2 = ft_m1;
     checker(ft_m1.size() == ft_m2.size());
     checker(ft::equal(ft_m1.begin(), ft_m1.end(), ft_m2.begin()));
@@ -598,11 +597,8 @@ void mixup() {
     ft_m1[ITER + 1] = 'c';
     ft_m2[ITER + 1] = 'c';
     checker(ft::equal(ft_m1.begin(), ft_m1.end(), ft_m2.begin()));
-
     ft_m1.erase(ft_m1.begin(), ft_m1.end());
     checker(ft_m1.size() == 0);
-    checker(!ft::equal(ft_m2.begin(), ft_m2.end(), ft_m1.begin()));
-
     ft_m1.clear();
     ft_m2.clear();
     checker(ft_m1.size() == ft_m2.size());
@@ -615,15 +611,9 @@ void mixup() {
         ft_m1.insert(ft_pair(i));
         ft_m2.insert(ft_pair(i));
     }
-    checker(*ft_m1.lower_bound(10) == *ft_m2.lower_bound(10));
-    checker(*ft_m1.upper_bound(10) == *ft_m2.upper_bound(10));
-    checker(*ft_m1.lower_bound(15) == *ft_m2.lower_bound(15));
-    checker(*ft_m1.upper_bound(15) == *ft_m2.upper_bound(15));
 
     ft_m1.erase(15);
     ft_m2.erase(15);
-    checker(*ft_m1.lower_bound(15) == *ft_m2.lower_bound(15));
-    checker(*ft_m1.upper_bound(15) == *ft_m2.upper_bound(15));
     checker(ft_m1.count(1) == ft_m2.count(1));
     checker(ft_m1.count(16) == ft_m2.count(16));
     ft_m1.swap(ft_m2);
@@ -633,7 +623,6 @@ void mixup() {
     ft_m2.erase(1);
     ft_m1.swap(ft_m2);
     checker(!(ft_m1.size() == ft_m2.size()));
-    checker(!ft::equal(ft_m2.begin(), ft_m2.end(), ft_m1.begin()));
 
     ft_m1.clear();
     ft_m2.clear();
@@ -649,15 +638,6 @@ void mixup() {
     ft::map<int, char>::iterator ft_beg2 = ft_m2.begin();
     ft::map<int, char>::iterator ft_end1 = ft_m1.end();
     ft::map<int, char>::iterator ft_end2 = ft_m2.end();
-    ft::map<int, char>::reverse_iterator ft_rbeg1 = ft_m1.rbegin();
-    ft::map<int, char>::reverse_iterator ft_rbeg2 = ft_m2.rbegin();
-    ft::map<int, char>::reverse_iterator ft_rend1 = ft_m1.rend();
-    ft::map<int, char>::reverse_iterator ft_rend2 = ft_m2.rend();
-
-    checker(*ft_m1.begin() == *ft_m2.begin());
-    checker(*ft_m1.end() == *ft_m2.end());
-    checker(*ft_m1.rbegin() == *ft_m2.rbegin());
-    checker(*ft_m1.rend() == *ft_m2.rend());
 
     ft_beg1++;
     ft_beg2++;
@@ -666,14 +646,6 @@ void mixup() {
     ft_end1--;
     ft_end2--;
     checker(*ft_end1 == *ft_end2);
-
-    ft_rbeg1--;
-    ft_rbeg2--;
-    checker(*ft_rbeg1 == *ft_rbeg2);
-
-    ft_rend1++;
-    ft_rend2++;
-    checker(*ft_rend1 == *ft_rend2);
 }
 
 void    swap() {
@@ -719,22 +691,21 @@ void key_comp() {
     std::map<int, long> smap;
     ft::map<int, long> fmap;
 
-    // stress_test(smap, fmap);
 
     std::cout << fmap.key_comp()(5, 2);
-    // if (smap.key_comp()(5, 2) != fmap.key_comp()(5, 2))
-    //     std::cout << RED "KO" DEFAULT << " " << std::flush;
-    // else
-    //     std::cout << GREEN "OK" DEFAULT << " " << std::flush;
+    if (smap.key_comp()(5, 2) != fmap.key_comp()(5, 2))
+        std::cout << RED "KO" DEFAULT << " " << std::flush;
+    else
+        std::cout << GREEN "OK" DEFAULT << " " << std::flush;
 
-    // std::cout << "hello";
-    // if (smap.key_comp()(1, 2) != fmap.key_comp()(1, 2))
-    //     std::cout << RED "KO" DEFAULT << " " << std::flush;
-    // else
-    //     std::cout << GREEN "OK" DEFAULT << " " << std::flush;
+    std::cout << "hello";
+    if (smap.key_comp()(1, 2) != fmap.key_comp()(1, 2))
+        std::cout << RED "KO" DEFAULT << " " << std::flush;
+    else
+        std::cout << GREEN "OK" DEFAULT << " " << std::flush;
 
-    // if (smap.key_comp()(5, 5) != fmap.key_comp()(5, 5))
-    //     std::cout << RED "KO" DEFAULT << "\n" << std::endl;
-    // else
-    //     std::cout << GREEN "OK" DEFAULT << "\n" << std::endl;
+    if (smap.key_comp()(5, 5) != fmap.key_comp()(5, 5))
+        std::cout << RED "KO" DEFAULT << "\n" << std::endl;
+    else
+        std::cout << GREEN "OK" DEFAULT << "\n" << std::endl;
 }

@@ -32,7 +32,7 @@ vector_o	= $(vector_s:$(srcdir)/%.cpp=$(objdir)/%.o)
 vector_d	= $(vector_o:%.o=%.d)
 
 map_n	= map
-map_s	= $(srcdir)/map_main.cpp $(srcdir)/map_extend_test.cpp $(srcdir)/map_test.cpp $(srcdir)/utils.cpp
+map_s	= $(srcdir)/map_main.cpp $(srcdir)/map_test.cpp $(srcdir)/utils.cpp
 map_h	= map.hpp
 map_o	= $(map_s:$(srcdir)/%.cpp=$(objdir)/%.o)
 map_d	= $(map_o:%.o=%.d)
@@ -76,7 +76,7 @@ test:	$(name)
 	@echo "${RESET}"
 	@./$(map_n)
 
-$(name):	$(set_n) #$(map_n) $(vector_n) $(stack_n)
+$(name):	$(vector_n) #$(map_n) # $(stack_n) $(set_n)
 
 # VECTOR
 $(vector_n):	$(vector_o)

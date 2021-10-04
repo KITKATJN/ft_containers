@@ -40,6 +40,5 @@ int main() {
     lower_upper_bound();
     mixup();
     swap();
-    ft_map_tests();
     return (0);
 }
