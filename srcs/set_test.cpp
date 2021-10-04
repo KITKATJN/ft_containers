@@ -21,7 +21,6 @@ void compare_set(std::set<int> std_map, ft::set<int> ft_map) {
     equal = compare_sets(std_map.begin(), std_map.end(), ft_map.begin());
     std::cout << "content: ";
     checker(equal);
-    // if (!equal) show_map(ft_map);
 
     equal = std_map.size() == ft_map.size();
     std::cout << "size: ";

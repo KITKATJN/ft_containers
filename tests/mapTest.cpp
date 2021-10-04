@@ -1,6 +1,6 @@
 #include <map>
 #include <iostream>
-#include "../map.hpp"
+#include "../ft_containers/map.hpp"
 #include "mapTest.hpp"
 
 void testMapIterator()
@@ -69,9 +69,6 @@ void testMapCapacity()
     std::cout << GREEN << "FT  map size: " << RESET << ft_map.size() << std::endl;
 	std::cout << GREEN << "STD map size: " << RESET << std_map.size() << std::endl << std::endl;
 
-    //std::cout << GREEN << "FT  map max size: " << RESET << ft_map.max_size() << std::endl;
-	//std::cout << GREEN << "STD map max size: " << RESET << ft_map.max_size() << std::endl;
-
 	std::cout << RED << LINE << RESET << std::endl << std::endl;
 }
 
@@ -104,11 +101,8 @@ void testMapElementAccess()
 	/////////////////////////////////////////////////////////////////////////
     int j = 10;
     for (int i = 0; i <= 5; ++i) {
-		//std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!2\n";
         ft_map[i] = ft_map[j];
-		//std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!1\n";
         std_map[i] = std_map[j];
-		//std::cout << ft_map[i] << " <i-map-j> " << ft_map[j] << std::endl;
         j--;
     }
 
@@ -364,15 +358,6 @@ void testOperationsModifiers()
         std::cout << val << " ";
     }
 	std::cout << std::endl << std::endl;
-	//ft::pair<int,int> ft_highest = *ft_map.rbegin();
-	/////////////////////////////////////////////////////////////////////////
-	// std::cout << GREEN << "FT map elements:   " << RESET;
-	// ft::map<int,int>::iterator ft_it2 = ft_map.begin();
-	// do {
-	// 		std::cout << "[" << ft_it2->first << "*]" << " " << ft_it2->second << " | ";
-	//  } while ( ft_map.value_comp()(*ft_it2++, ft_highest) );
-	// std::cout << std::endl;
-	/////////////////////////////////////////////////////////////////////////
 	std::cout << GREEN << "FT  map find elements: " << RESET;
 	for(int i = 0; i <= 5; i++) {
 		if (ft_map.count(i))

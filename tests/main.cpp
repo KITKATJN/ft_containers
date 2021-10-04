@@ -3,17 +3,17 @@
 #include <iomanip>
 #include <string.h>
 
-#include "ft_containers/vector.hpp"
-#include "ft_containers/tests/vectorTest.hpp"
+#include "../ft_containers/vector.hpp"
+#include "vectorTest.hpp"
 
-#include "ft_containers/stack.hpp"
-#include "ft_containers/tests/stackTest.hpp"
+#include "../ft_containers/stack.hpp"
+#include "stackTest.hpp"
 
-#include "ft_containers/map.hpp"
-#include "ft_containers/tests/mapTest.hpp"
+#include "../ft_containers/map.hpp"
+#include "mapTest.hpp"
 
-#include "ft_containers/set.hpp"
-#include "ft_containers/tests/setTest.hpp"
+#include "../ft_containers/set.hpp"
+#include "setTest.hpp"
 
 void vectorTest()
 {

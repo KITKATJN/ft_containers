@@ -1,6 +1,6 @@
 #include <set>
 #include <iostream>
-#include "../set.hpp"
+#include "../ft_containers/set.hpp"
 #include "setTest.hpp"
 
 void testSetIterator()
@@ -68,10 +68,6 @@ void testSetCapacity()
 
     std::cout << GREEN << "FT  set size: " << RESET << ft_set.size() << std::endl;
 	std::cout << GREEN << "STD set size: " << RESET << std_set.size() << std::endl << std::endl;
-
-    //std::cout << GREEN << "FT  set max size: " << RESET << ft_set.max_size() << std::endl;
-	//std::cout << GREEN << "STD set max size: " << RESET << ft_set.max_size() << std::endl;
-
 	std::cout << RED << LINE << RESET << std::endl << std::endl;
 }
 
