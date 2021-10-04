@@ -3,8 +3,7 @@
 
 #include <set>
 
-#include "../set.hpp"
-#include "../utils/algorithm.hpp"
+#include "../ft_containers/set.hpp"
 #include "utils.hpp"
 
 #define ITERATIONS 1000

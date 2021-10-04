@@ -282,13 +282,10 @@ void operation_test() {
     test_title("find test 1");
 
     checker(*std_set.find(1) == *ft_set.find(1));
-    checker(*std_set.find(ITERATIONS + 1) == *ft_set.find(ITERATIONS + 1));
 
     test_title("find test 2");
     std_set.clear();
     ft_set.clear();
-    checker(*std_set.find(1) == *ft_set.find(1));
-    checker(*std_set.find(ITERATIONS + 1) == *ft_set.find(ITERATIONS + 1));
 
     test_title("count test 1");
     for (size_t i = 0; i < ITERATIONS; i++) {
@@ -298,11 +295,6 @@ void operation_test() {
     checker(std_set.count(1) == ft_set.count(1));
     checker(std_set.count(ITERATIONS + 1) == ft_set.count(ITERATIONS + 1));
 
-    test_title("count test 2");
-    std_set.clear();
-    ft_set.clear();
-    checker(std_set.count(1) == ft_set.count(1));
-    checker(std_set.count(ITERATIONS + 1) == ft_set.count(ITERATIONS + 1));
 
     std_set.clear();
     ft_set.clear();
@@ -314,13 +306,6 @@ void operation_test() {
     }
 
     checker(*std_set.lower_bound(1) == *ft_set.lower_bound(1));
-    checker(*std_set.lower_bound(ITERATIONS + 1) == *ft_set.lower_bound(ITERATIONS + 1));
-
-    test_title("lower_bound test 2");
-    std_set.clear();
-    ft_set.clear();
-    checker(*std_set.lower_bound(1) == *ft_set.lower_bound(1));
-    checker(*std_set.lower_bound(ITERATIONS + 1) == *ft_set.lower_bound(ITERATIONS + 1));
 
     std_set.clear();
     ft_set.clear();
@@ -332,13 +317,7 @@ void operation_test() {
     }
 
     checker(*std_set.upper_bound(1) == *ft_set.upper_bound(1));
-    checker(*std_set.upper_bound(ITERATIONS + 1) == *ft_set.upper_bound(ITERATIONS + 1));
 
-    test_title("upper_bound test 2");
-    std_set.clear();
-    ft_set.clear();
-    checker(*std_set.upper_bound(1) == *ft_set.upper_bound(1));
-    checker(*std_set.upper_bound(ITERATIONS + 1) == *ft_set.upper_bound(ITERATIONS + 1));
 
     std_set.clear();
     ft_set.clear();

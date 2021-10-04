@@ -43,6 +43,8 @@ public :
         second()
     {}
 
+    //~pair(){}
+
     template<class U, class V>
     pair (const pair<U, V>& pr)
     :
@@ -93,7 +95,7 @@ struct Node
 
     Node(T *data) {
         this->data = data;
-        left = right = parent = NULL;
+        left = right = parent = 0;
         this->color = true;
     }
 };
@@ -109,7 +111,7 @@ void swap(T &t1, T &t2)
 
 template<bool B, class T, class F>
 struct conditional { typedef T type; };
- 
+
 template<class T, class F>
 struct conditional<false, T, F> { typedef F type; };
 

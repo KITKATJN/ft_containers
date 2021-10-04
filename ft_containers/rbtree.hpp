@@ -20,6 +20,7 @@ public:
     typedef T                                                           value_type;
     typedef Alloc                                                       allocator_type;
     typedef NAlloc                                                      nalloc_type;
+    typedef typename allocator_type::reference                          reference;
     typedef const T                                                     &const_reference;
     typedef T                                                           *pointer;
     typedef const T                                                     *const_pointer;
@@ -43,6 +44,30 @@ public:
         m_end = m_nodeAllocator.allocate(1);
         m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
     }
+
+    template <class InputIterator>
+  		rbtree(InputIterator first, typename ft::enable_if<
+                !std::numeric_limits<InputIterator>::is_integer,
+                    InputIterator>::type last, const compare_type comp = Compare(), const allocator_type &alloc = Alloc(), const nalloc_type &nalloc = NAlloc()) :
+		m_compare(comp), m_allocator(alloc), m_nodeAllocator(nalloc), m_root(NULL), m_size(0)
+		{
+			m_end = m_nodeAllocator.allocate(1);
+			m_nodeAllocator.construct(m_end, Node<value_type>(NULL));
+			insert(first, last);
+		}
+
+    // template <class InputIterator>
+    // rbtree(
+    //     InputIterator first, typename ft::enable_if<
+    //             !std::numeric_limits<InputIterator>::is_integer,
+    //                 InputIterator>::type last,
+    //     const key_compare& comp = key_compare(),
+    //     const allocator_type& allocator = allocator_type(),
+    //     const node_allocator_type& nallocator = node_allocator_type()):
+    //     m_compare(comp), m_allocator(allocator), m_nodeAllocator(nallocator), m_root(NULL), m_size(0)
+    //     {
+    //         insert(first, last);
+    //     }
 
     ~rbtree()
     {
@@ -264,6 +289,8 @@ public:
     iterator find( const value_type& value )
     {
         NodePtr tmp = findNode(value);
+        //if (tmp != 0)
+        //    std::cout << (*tmp->data) << "fff\n";
         if (tmp == NULL)
             return end();
 
@@ -362,6 +389,8 @@ public:
         while(x)
         {
             y = x;
+            //if (y != 0)
+            // std::cout  << *y->data << " here1!!!\n";
             if(m_compare(*x->data, val))
                 x = y->right;
             else if (m_compare(val, *x->data))
@@ -369,6 +398,10 @@ public:
             else
                 return (y);
         }
+        //if (y != 0)
+        //    std::cout << (y == 0) << " " << *y->data << " here!!!\n";
+        if (x == 0 && y != 0 && y->data == 0)
+            return 0;
         return (y);
     }
 
@@ -481,6 +514,7 @@ private:
         fixClear(n->right);
         fixClear(n->left);
         m_allocator.destroy(n->data);
+        m_allocator.deallocate(n->data, 1);
         m_nodeAllocator.destroy(n);
         m_nodeAllocator.deallocate(n, 1);
     }

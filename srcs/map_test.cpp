@@ -14,11 +14,11 @@ template <class Key, class T>
 void show_map(ft::map<Key, T> &map) {
     typename ft::map<Key, T>::iterator it = map.begin();
 
-    std::cout << "[ " << std::addressof(map) << " ]"
+    std::cout << "[ " << std::__addressof(map) << " ]"
               << "\n";
-    // for (; it != map.end(); it++) {
-    //     std::cout << it->first << " ";
-    // }
+    for (; it != map.end(); it++) {
+        std::cout << it->first << " ";
+    }
     std::cout << "\n";
 }
 
@@ -331,14 +331,14 @@ void erase_test() {
     ft_map.erase(25);
 
     start = clock();
-    
+
     std:: cout << "size! = " << ft_map.size() << " lower = " <<  ((*(std_map.upper_bound(25))).second <<  (*(std_map.lower_bound(10))).second) << " " << std_map.size() << std::endl;
     std_map.erase(std_map.lower_bound(10), std_map.upper_bound(25));
     end = clock();
     std::cout << "STD:\t";
     time(start, end);
     std_ticks = end - start;
-    
+
     std:: cout << "size! = " << ft_map.size() << " lower = " <<  ((*(ft_map.upper_bound(25))).second <<  (*(ft_map.lower_bound(10))).second) << " " << std_map.size() << std::endl;
     start = clock();
     ft_map.erase(ft_map.lower_bound(10), ft_map.upper_bound(25));

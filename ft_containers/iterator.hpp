@@ -97,7 +97,7 @@ public:
     { Iterator tmp = current;tmp--;return *tmp; }
 
     pointer operator->()
-    { return std::addressof(operator*()); }
+    { return std::__addressof(operator*()); }
 
     reference operator[]( difference_type n ) const { return *(*this + n);}
     reverse_iterator&    operator++() { --this->current; return *this; }

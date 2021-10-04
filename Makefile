@@ -37,11 +37,11 @@ map_h	= map.hpp
 map_o	= $(map_s:$(srcdir)/%.cpp=$(objdir)/%.o)
 map_d	= $(map_o:%.o=%.d)
 
-# set_n	= set
-# set_s	= $(srcdir)/set_main.cpp $(srcdir)/set_test.cpp $(srcdir)/utils.cpp
-# set_h	= set.hpp
-# set_o	= $(set_s:$(srcdir)/%.cpp=$(objdir)/%.o)
-# set_d	= $(set_o:%.o=%.d)
+set_n	= set
+set_s	= $(srcdir)/set_main.cpp $(srcdir)/set_test.cpp $(srcdir)/utils.cpp
+set_h	= set.hpp
+set_o	= $(set_s:$(srcdir)/%.cpp=$(objdir)/%.o)
+set_d	= $(set_o:%.o=%.d)
 
 stack_n	= stack
 stack_s	= $(srcdir)/stack_main.cpp  $(srcdir)/utils.cpp $(srcdir)/stack_test.cpp
@@ -51,7 +51,7 @@ stack_d	= $(stack_o:%.o=%.d)
 
 sanit 	= -fsanitize=address
 linker	= clang++
-flags	= -Wall -Wextra -Werror -g -std=c++98 -O2
+flags	= -Wall -Wextra -Werror -g -std=c++98 -O2 -fsanitize=address
 sanit	= -fsanitize=address
 std		= -std=c++98
 
@@ -76,7 +76,7 @@ test:	$(name)
 	@echo "${RESET}"
 	@./$(map_n)
 
-$(name):	$(map_n) $(vector_n) $(stack_n)   #$(set_n)
+$(name):	$(set_n) #$(map_n) $(vector_n) $(stack_n)
 
 # VECTOR
 $(vector_n):	$(vector_o)
@@ -103,10 +103,10 @@ $(objdir)/%.o:	$(srcdir)/%.cpp Makefile
 		@mkdir -p $(objdir)
 		@$(linker) $(flags) -MMD -c $< -o $@
 
-# set
-# $(set_n):	$(set_o)
-# 		@$(linker) $(flags) $^ -o $(set_n)
-# 		@echo "Compiled${Green}["$@"]${RESET}\n"
+#set
+$(set_n):	$(set_o)
+		@$(linker) $(flags) $^ -o $(set_n)
+		@echo "Compiled${Green}["$@"]${RESET}\n"
 
 -include $(set_d)
 $(objdir)/%.o:	$(srcdir)/%.cpp Makefile
