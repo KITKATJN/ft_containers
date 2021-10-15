@@ -56,19 +56,6 @@ public:
 			insert(first, last);
 		}
 
-    // template <class InputIterator>
-    // rbtree(
-    //     InputIterator first, typename ft::enable_if<
-    //             !std::numeric_limits<InputIterator>::is_integer,
-    //                 InputIterator>::type last,
-    //     const key_compare& comp = key_compare(),
-    //     const allocator_type& allocator = allocator_type(),
-    //     const node_allocator_type& nallocator = node_allocator_type()):
-    //     m_compare(comp), m_allocator(allocator), m_nodeAllocator(nallocator), m_root(NULL), m_size(0)
-    //     {
-    //         insert(first, last);
-    //     }
-
     ~rbtree()
     {
         clear();
